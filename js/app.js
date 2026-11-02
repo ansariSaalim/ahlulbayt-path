@@ -308,8 +308,8 @@
     $("#rSummary").textContent = s.summary;
     $("#rContent").innerHTML = s.body;
     $("#rLesson").innerHTML = `<b>Lesson</b>${esc(s.lesson)}`;
-    const differ = $("#rDiffer");
-    if (s.differ) { differ.hidden = false; differ.innerHTML = `<b>Where accounts differ</b>${esc(s.differ)}`; } else differ.hidden = true;
+    const proof = $("#rDiffer");
+    if (s.proof) { proof.hidden = false; proof.innerHTML = `<b>The proof, even from their own books</b>${esc(s.proof)}`; } else proof.hidden = true;
     $("#rSources").innerHTML = `<b>Sources:</b> ${esc(s.sources)}`;
     const img = $("#rHeroImg"); img.style.backgroundImage = ""; img.classList.remove("ph-fallback");
     img.style.setProperty("--c", e.color);
@@ -439,6 +439,36 @@
   }
 
   /* ===========================================================
+     PROOFS
+     =========================================================== */
+  function renderProofs() {
+    $("#pGrid").innerHTML = PROOFS.map((p, i) => `
+      <article class="p-card reveal" style="transition-delay:${(i % 3) * 70}ms">
+        <button class="p-head" aria-expanded="false">
+          <span class="p-num">${i + 1}</span>
+          <span class="p-title">${esc(p.title)}</span>
+          <i class="chev"></i>
+        </button>
+        <p class="p-ar" dir="rtl" lang="ar">${p.ar}</p>
+        <div class="p-more">
+          <div>
+            <p class="p-en">${esc(p.en)}</p>
+            <p class="p-src"><b>Source:</b> ${esc(p.src)}</p>
+            <p class="p-why">${esc(p.why)}</p>
+            <a class="p-link" href="#story/${p.story}">Read the story: ${esc(storyById[p.story].title)} →</a>
+          </div>
+        </div>
+      </article>`).join("");
+    $$("#pGrid .p-card").forEach(c => {
+      const h = $(".p-head", c);
+      const toggle = () => { const o = c.classList.toggle("open"); h.setAttribute("aria-expanded", o); };
+      h.addEventListener("click", toggle);
+      $(".p-ar", c).addEventListener("click", toggle);
+    });
+    observeReveals($("#pGrid"));
+  }
+
+  /* ===========================================================
      COMPANIONS & DATES
      =========================================================== */
   function renderCompanions() {
@@ -456,6 +486,7 @@
      INIT
      =========================================================== */
   renderEras();
+  renderProofs();
   renderTimeline();
   renderStoryChips();
   renderStories();

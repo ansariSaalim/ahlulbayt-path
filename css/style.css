@@ -232,6 +232,29 @@ body::before {
 .found-grid li { margin: .25rem 0; }
 .found-note { grid-column: 1 / -1; font-family: var(--serif); padding: 1rem 1.2rem; border-left: 3px solid var(--gold); background: var(--card); border-radius: 0 12px 12px 0; }
 
+/* ---------- proofs ---------- */
+.p-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.1rem; align-items: start; }
+.p-card { border-radius: var(--radius); border: 1px solid var(--line); background: var(--card); overflow: hidden; transition: border-color .3s, box-shadow .4s, opacity .9s var(--ease), transform .9s var(--ease); position: relative; }
+.p-card::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--gold) 14%, transparent), transparent 55%); pointer-events: none; }
+.p-card:hover, .p-card.open { border-color: var(--gold); box-shadow: var(--shadow); }
+.p-head { display: flex; align-items: center; gap: .9rem; width: 100%; padding: 1.1rem 1.2rem .3rem; text-align: left; }
+.p-num { flex-shrink: 0; width: 36px; height: 36px; display: grid; place-items: center; font-family: var(--display); font-weight: 700; font-size: 1.1rem; color: #1b1407; background: linear-gradient(135deg, var(--gold-2), var(--gold-deep)); clip-path: polygon(50% 0, 63% 20%, 85% 15%, 80% 37%, 100% 50%, 80% 63%, 85% 85%, 63% 80%, 50% 100%, 37% 80%, 15% 85%, 20% 63%, 0 50%, 20% 37%, 15% 15%, 37% 20%); }
+.p-title { flex: 1; font-family: var(--display); font-size: 1.35rem; font-weight: 600; line-height: 1.15; }
+.p-card .chev { transform: rotate(45deg); }
+.p-card.open .chev { transform: rotate(-135deg); }
+.p-ar { font-family: var(--arabic); font-size: 1.45rem; line-height: 1.9; color: var(--gold); text-align: right; padding: .2rem 1.2rem 1rem; cursor: pointer; }
+.p-more { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .6s var(--ease); }
+.p-more > div { overflow: hidden; padding: 0 1.2rem; }
+.p-card.open .p-more { grid-template-rows: 1fr; }
+.p-card.open .p-more > div { padding-bottom: 1.3rem; }
+.p-en { font-family: var(--serif); font-style: italic; font-size: 1.04rem; border-top: 1px solid var(--line); padding-top: .9rem; }
+.p-src { font-size: .8rem; color: var(--muted); margin: .6rem 0; }
+.p-src b { color: var(--text); }
+.p-why { font-family: var(--serif); padding: .8rem 1rem; border-left: 3px solid var(--gold); background: color-mix(in srgb, var(--gold) 9%, transparent); border-radius: 0 10px 10px 0; }
+.p-link { display: inline-block; margin-top: .8rem; font-size: .85rem; color: var(--gold); text-decoration: none; font-weight: 600; }
+.p-link:hover { text-decoration: underline; }
+@media (max-width: 720px) { .p-grid { grid-template-columns: 1fr; } }
+
 /* ---------- chips & tabs ---------- */
 .chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.6rem; }
 .chip {
@@ -437,8 +460,8 @@ body::before {
 .r-box b { display: block; font-family: var(--sans); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; margin-bottom: .35rem; }
 .r-lesson { background: color-mix(in srgb, var(--gold) 12%, transparent); border: 1px solid color-mix(in srgb, var(--gold) 40%, transparent); }
 .r-lesson b { color: var(--gold); }
-.r-differ { background: color-mix(in srgb, #4a7fc1 12%, transparent); border: 1px solid color-mix(in srgb, #4a7fc1 40%, transparent); }
-.r-differ b { color: #6d9ad3; }
+.r-differ { background: color-mix(in srgb, #2f8f6b 14%, transparent); border: 1px solid color-mix(in srgb, #2f8f6b 50%, transparent); }
+.r-differ b { color: #3fae7e; }
 .r-sources { font-family: var(--sans); font-size: .82rem; color: var(--muted); margin: 1.2rem 0 1.8rem; }
 .r-sources b { color: var(--text); }
 .r-done.done { background: none; border: 1px solid var(--gold); color: var(--gold); box-shadow: none; }

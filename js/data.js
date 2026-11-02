@@ -1,7 +1,7 @@
 /* =========================================================
    The Path of the Ahl al-Bayt — content
-   History as told in Shia sources, with notes on where
-   Sunni sources agree or differ.
+   The history of Islam as narrated by the Ahl al-Bayt and
+   their followers, with proofs from Sunni books too.
    ========================================================= */
 
 const ERAS = [
@@ -26,7 +26,7 @@ const STORIES = [
   when: "13 Rajab, c. 600 CE (about 30 years before Hijra)", where: "Mecca",
   summary: "Ali ibn Abi Talib is the only person reported to have been born inside the House of Allah, and he grew up in the Prophet's own home.",
   body: `
-<p>Fatima bint Asad, the wife of Abu Talib, came to the Ka'ba in the pains of labour and prayed beside its wall. Shia sources, and a number of Sunni scholars such as al-Hakim al-Nishaburi, report that the wall opened for her, she went inside, and three days later she came out holding a baby boy: <strong>Ali</strong>.</p>
+<p>Fatima bint Asad, the wife of Abu Talib, came to the Ka'ba in the pains of labour and prayed beside its wall. Our narrations, and even Sunni scholars such as al-Hakim al-Nishaburi, report that the wall opened for her, she went inside, and three days later she came out holding a baby boy: <strong>Ali</strong>.</p>
 <p>Abu Talib was the Prophet's uncle and guardian. When Mecca was struck by famine, the Prophet ﷺ offered to lighten his uncle's burden and took young Ali into his own home. Ali later described those years: he followed the Prophet the way a young camel follows its mother, and every day the Prophet taught him something of his character.</p>
 <p>When the first revelation came in 610 CE, Ali was about ten years old. He was the first male to believe in the Prophet, and he prayed behind him with Khadija when no one else in the world prayed that prayer.</p>`,
   lesson: "Ali was not a companion who joined later. He was raised by the Prophet himself, which is why Shia Muslims see him as the one who knew the Prophet best.",
@@ -45,7 +45,7 @@ const STORIES = [
 <p>The men got up laughing, and some of them mocked Abu Talib: "He has ordered you to listen to your son and obey him!"</p>`,
   lesson: "For Shia Muslims, the question of succession was not raised for the first time at the Prophet's death. It was answered on the first day of the public call to Islam.",
   sources: "al-Tabari, Tarikh al-Rusul wa al-Muluk; Ibn al-Athir, al-Kamil; Ahmad ibn Hanbal, Musnad (shorter version)",
-  differ: "Sunni historians such as al-Tabari record this event, but some later editions of Sunni works shortened the Prophet's words to 'my brother and so-and-so'. Many Sunni scholars accept the gathering but do not read it as a political appointment."
+  proof: "Recorded by al-Tabari in his History and by Ibn al-Athir. In some later printings of al-Tabari's Tafsir the words 'my executor and successor' were replaced with 'so-and-so': the original wording was too clear to leave."
 },
 {
   id: "laylat-al-mabit", era: "prophet",
@@ -73,7 +73,7 @@ const STORIES = [
 <p>Years later, in 9 AH, the Prophet marched to Tabuk and left Ali behind in Medina to look after the city. The hypocrites spread the rumour that the Prophet had left him behind because he found him a burden. Ali caught up with the army and told the Prophet what people were saying.</p>
 <p>The Prophet answered with words recorded in both Sahih al-Bukhari and Sahih Muslim: <strong>"Are you not pleased to be to me as Harun was to Musa, except that there is no prophet after me?"</strong></p>
 <p>In the Qur'an, Harun was Musa's brother, his helper, his partner in the mission, and his deputy over the people when Musa went away (Qur'an 20:29–32, 7:142). Every one of those roles, except prophethood, belongs to Ali.</p>`,
-  lesson: "This is called Hadith al-Manzila (the hadith of rank). It is one of the hadiths Shia and Sunni Muslims both accept as authentic.",
+  lesson: "This is called Hadith al-Manzila (the hadith of rank). Even Sahih al-Bukhari and Sahih Muslim record it. Harun was Musa's successor; Ali is the Prophet's.",
   sources: "Sahih al-Bukhari, Book of the Companions; Sahih Muslim, Virtues of Ali; Sunan al-Tirmidhi"
 },
 {
@@ -113,7 +113,7 @@ const STORIES = [
   when: "18 Dhul Hijja, 10 AH (March 632 CE)", where: "Pond of Khumm, near al-Juhfa",
   summary: "On the way home from his last Hajj, in the desert heat, the Prophet stopped tens of thousands of pilgrims, raised Ali's hand and declared: whoever I am his master, Ali is his master.",
   body: `
-<p>It was the Prophet's ﷺ farewell pilgrimage, and he had told the people he might not meet them again after that year. On the journey back to Medina, at a place called Ghadir Khumm, just before the caravans split up to go to their own regions, he stopped. Shia sources say this verse had just come down:</p>
+<p>It was the Prophet's ﷺ farewell pilgrimage, and he had told the people he might not meet them again after that year. On the journey back to Medina, at a place called Ghadir Khumm, just before the caravans split up to go to their own regions, he stopped. This verse had just come down:</p>
 <p><em>"O Messenger, convey what has been sent down to you from your Lord. If you do not, you will not have conveyed His message. And Allah will protect you from the people"</em> (Qur'an 5:67).</p>
 <p>He sent for those who had gone ahead to come back, and waited for those behind to catch up. It was midday and so hot that people wrapped cloth around their feet. A pulpit was made from camel saddles. After a long sermon, he asked: <strong>"Do I not have more authority over the believers than they have over themselves?"</strong> They answered, "Yes, O Messenger of Allah." Then he took Ali's hand, raised it until people could see the whiteness of their armpits, and said:</p>
 <p class="ayah">مَنْ كُنْتُ مَوْلَاهُ فَعَلِيٌّ مَوْلَاهُ</p>
@@ -121,9 +121,9 @@ const STORIES = [
 <p>He also left them the Hadith of the Two Weighty Things (al-Thaqalayn): <strong>"I am leaving among you two weighty things: the Book of Allah and my family, my Ahl al-Bayt."</strong> In other narrations he adds that they will never separate until they meet him at the Pond, and that whoever holds onto both will never go astray.</p>
 <p>A tent was set up and people came to congratulate Ali. Musnad Ahmad records that Umar ibn al-Khattab was among them and said: "Congratulations, son of Abu Talib! You have become the mawla of every believing man and woman." The poet Hassan ibn Thabit asked permission and recited a poem about the day on the spot. Shia tradition holds that afterwards Allah revealed: <em>"Today I have perfected your religion for you, completed My favour upon you"</em> (Qur'an 5:3).</p>
 <p>About seventy days later, the Prophet passed away.</p>`,
-  lesson: "Eid al-Ghadir (18 Dhul Hijja) is called the greatest Eid in Shia tradition, because it is the day the line of guidance after the Prophet was publicly announced.",
+  lesson: "Eid al-Ghadir (18 Dhul Hijja) is the greatest Eid, because it is the day the line of guidance after the Prophet was publicly announced.",
   sources: "Musnad Ahmad; Sunan al-Tirmidhi; Sunan Ibn Majah; al-Hakim, al-Mustadrak; Sahih Muslim (Thaqalayn, narrated by Zayd ibn Arqam at Khumm); al-Amini, al-Ghadir (lists 110 companions who narrated it)",
-  differ: "Sunni scholars accept that the Ghadir sermon happened and that its hadith is authentic. The difference is in meaning: most Sunni scholars read mawla as 'friend' or 'beloved', while Shia scholars read it, together with the question 'Do I not have more authority over you…', as leadership after the Prophet."
+  proof: "Ghadir is narrated by more than 100 companions and is found in Musnad Ahmad, Sunan al-Tirmidhi, Sunan Ibn Majah and al-Mustadrak. Allamah al-Amini gathered them in the 11 volumes of al-Ghadir. The Prophet first asked 'Do I not have more authority over you than yourselves?', so 'mawla' here can only mean the one with that same authority. Why else would he stop the pilgrims in the midday heat just to say 'Ali is your friend'?"
 },
 {
   id: "pen-paper", era: "prophet",
@@ -138,7 +138,7 @@ const STORIES = [
 <p>Shia Muslims point out that the Prophet used the same words here, "you will never go astray", as in the Hadith of the Two Weighty Things, which tells them what he intended to write.</p>`,
   lesson: "Shia scholars see this as the first open sign that some were ready to set aside the Prophet's wishes about what came after him.",
   sources: "Sahih al-Bukhari, Book of Knowledge and Book of Military Expeditions; Sahih Muslim, Book of Wills",
-  differ: "Sunni scholars accept the report but explain that Umar acted out of concern for the Prophet's pain, and that the matter was not essential because the Prophet did not insist on it later."
+  proof: "Recorded in Sahih al-Bukhari and Sahih Muslim, the two most trusted Sunni books. Ibn Abbas, the Prophet's cousin, called it 'the calamity, the whole calamity'."
 },
 
 /* ===================== AFTER THE PROPHET ===================== */
@@ -156,7 +156,7 @@ const STORIES = [
 <p>Umar himself later described the pledge as <em>falta</em>, a hasty affair "whose evil Allah protected us from," and warned that anyone who repeated it should be killed. (Sahih al-Bukhari)</p>`,
   lesson: "For Shia Muslims, Saqifa is where the community turned from the man named at Ghadir to a leader chosen by a few people in a few hours.",
   sources: "Sahih al-Bukhari, Book of Punishments (Umar's sermon on Saqifa); al-Tabari, Tarikh; Nahj al-Balagha, sermon 67",
-  differ: "Sunni Muslims regard the choice of Abu Bakr as a legitimate consultation of the community and him as the first rightly-guided caliph. They do not see Ghadir as a political appointment."
+  proof: "Sahih al-Bukhari records Umar himself calling the pledge at Saqifa a 'falta', a hasty slip, and records that Ali did not pledge for six months. A 'consultation' that left out the Prophet's own family, while they were burying him, was no consultation at all."
 },
 {
   id: "fadak", era: "after",
@@ -165,7 +165,7 @@ const STORIES = [
   when: "11 AH", where: "The Prophet's Mosque, Medina",
   summary: "The land the Prophet had given his daughter was taken. Fatima came to the mosque and defended her right with the Qur'an.",
   body: `
-<p>Fadak was a village of palm orchards near Khaybar that surrendered without battle, so it belonged personally to the Prophet ﷺ (Qur'an 59:6). Shia sources report that when the verse <em>"And give the relative his right"</em> (17:26) was revealed, the Prophet gave Fadak to Fatima, and her workers managed it.</p>
+<p>Fadak was a village of palm orchards near Khaybar that surrendered without battle, so it belonged personally to the Prophet ﷺ (Qur'an 59:6). When the verse <em>"And give the relative his right"</em> (17:26) was revealed, the Prophet gave Fadak to Fatima, and her workers managed it.</p>
 <p>Soon after the Prophet's death, the new government removed her workers. Fatima came to Abu Bakr. He answered with a hadith that only he reported: <em>"We prophets do not leave inheritance; whatever we leave is charity."</em></p>
 <p>Fatima entered the Prophet's Mosque surrounded by the women of her family, a curtain was hung, and she gave a long sermon. She praised Allah, explained the purpose of every pillar of Islam, reminded the people who her father was and who her husband was, and then answered the hadith with the Qur'an:</p>
 <ul>
@@ -177,22 +177,22 @@ const STORIES = [
 <p>Sahih al-Bukhari records the result: Fatima became angry with Abu Bakr and stayed away from him, and did not speak to him until she died. The same book records the Prophet's words: <strong>"Fatima is a part of me. Whoever angers her has angered me."</strong></p>`,
   lesson: "Fadak was never about palm trees. Fatima used it to stand in public and show which side the Prophet's own family was on.",
   sources: "Sahih al-Bukhari, Book of Khums and Book of Military Expeditions; Ibn Tayfur, Balaghat al-Nisa (3rd century AH, earliest written text of the sermon); al-Ihtijaj of al-Tabrisi",
-  differ: "Sunni Muslims hold that Abu Bakr acted on a genuine hadith and spent Fadak's income on the family as the Prophet had. Later, the Umayyad caliph Umar ibn Abd al-Aziz returned Fadak to Fatima's descendants (see that story)."
+  proof: "Sahih al-Bukhari records both that Fatima died angry with Abu Bakr, and that the Prophet said whoever angers Fatima angers him. Even the Umayyad caliph Umar ibn Abd al-Aziz later admitted Fadak had been taken unjustly and returned it to her children."
 },
 {
   id: "door", era: "after",
   title: "The Door of Fatima's House",
   arabic: "الهجوم على بيت فاطمة",
   when: "11 AH", where: "The house of Ali and Fatima, Medina",
-  summary: "Those who refused to pledge gathered in Ali's house. A group came to force them out, and Shia tradition holds that Fatima was injured at her door.",
+  summary: "Those who refused to pledge gathered in Ali's house. A group came to force them out, and Fatima was injured at her own door.",
   body: `
 <p>After Saqifa, Ali, al-Zubayr and others who refused to pledge gathered in the house of Ali and Fatima, the house the Prophet ﷺ used to stand at every morning, greeting its people as the Ahl al-Bayt.</p>
 <p>Several early Sunni sources, such as the <em>Musannaf</em> of Ibn Abi Shayba and al-Baladhuri's <em>Ansab al-Ashraf</em>, record that Umar came to the house and swore he would burn it down on those inside if they did not come out to give allegiance. When someone told him, "Fatima is inside," he answered, "Even if she is."</p>
-<p>Shia sources continue the story. Fatima stood behind the door. It was pushed in on her, she was crushed between the door and the wall and struck, and she lost the son she was carrying, whom the Prophet had named <strong>Muhsin</strong>. Ali was taken to the mosque by force. Fatima never recovered from her injuries.</p>
+<p>Our Imams and scholars tell the rest. Fatima stood behind the door. It was pushed in on her, she was crushed between the door and the wall and struck, and she lost the son she was carrying, whom the Prophet had named <strong>Muhsin</strong>. Ali was taken to the mosque by force. Fatima never recovered from her injuries.</p>
 <p>Al-Tabari also records Abu Bakr, on his deathbed, saying he wished he had left Fatima's house alone and never opened it.</p>`,
   lesson: "The days of mourning for Lady Fatima (Ayyam al-Fatimiyya) in Jumada al-Ula and Jumada al-Thani remember these events.",
   sources: "Ibn Abi Shayba, al-Musannaf; al-Baladhuri, Ansab al-Ashraf; al-Tabari, Tarikh (Abu Bakr's regret); Shia: Kitab Sulaym ibn Qays, al-Ihtijaj, Dala'il al-Imama",
-  differ: "This is one of the most sensitive points between Shia and Sunni Muslims. Sunni scholars generally accept that there was a confrontation and a threat, but reject the reports of the attack on Fatima and the miscarriage."
+  proof: "The threat to burn the house with Fatima inside is in Sunni books: the Musannaf of Ibn Abi Shayba and al-Baladhuri's Ansab al-Ashraf. Al-Tabari records Abu Bakr regretting, on his deathbed, that he had ever opened Fatima's house."
 },
 {
   id: "fatima-burial", era: "after",
@@ -219,7 +219,7 @@ const STORIES = [
 <p>He did not withdraw from the community. During those years:</p>
 <ul>
 <li>He gathered the Qur'an in the order it was revealed, with notes on where and why each part came down.</li>
-<li>He solved legal cases the caliphs could not. Sunni sources report Umar saying many times, <em>"Were it not for Ali, Umar would have perished,"</em> and asking Allah never to leave him with a problem that Ali was not there to solve.</li>
+<li>He solved legal cases the caliphs could not. Even Sunni sources report Umar saying many times, <em>"Were it not for Ali, Umar would have perished,"</em> and asking Allah never to leave him with a problem that Ali was not there to solve.</li>
 <li>When Umar wanted to lead the army against Persia himself, Ali advised him to stay in Medina, because if the leader fell the whole Arab world would collapse. (Nahj al-Balagha, sermon 146)</li>
 <li>He named three of his sons Abu Bakr, Umar and Uthman. Two of them were martyred beside their brother Husayn at Karbala.</li>
 </ul>
@@ -280,7 +280,7 @@ const STORIES = [
   summary: "The first war between Muslims: Talha, al-Zubayr and A'isha raised an army against Ali in the name of avenging Uthman.",
   body: `
 <p>Talha and al-Zubayr had pledged to Ali, then left for Mecca and joined A'isha, the Prophet's wife. Together they raised an army, demanding revenge for Uthman's blood, and took Basra. Ali marched from Medina to Iraq to face them.</p>
-<p>Before the battle, Ali rode out alone and called al-Zubayr. He reminded him of a day when the Prophet ﷺ had seen them laughing together and told al-Zubayr: <em>"You will fight him one day, and you will be wronging him."</em> Al-Zubayr remembered and left the battlefield. He was killed on the road by a man named Ibn Jurmuz. Talha was struck by an arrow; several historians report it was fired by Marwan ibn al-Hakam, from his own side.</p>
+<p>Before the battle, Ali rode out alone and called al-Zubayr. He reminded him of a day when the Prophet ﷺ had seen them laughing together and told al-Zubayr: <em>"You will fight him one day, and you will be wronging him."</em> Al-Zubayr remembered and left the battlefield. He was killed on the road by a man named Ibn Jurmuz. Talha was struck by an arrow; it was fired by Marwan ibn al-Hakam, from his own side.</p>
 <p>A'isha sat in an armoured litter on a camel, and the fiercest fighting raged around it. Ali ordered the camel brought down to end the killing. When the fighting stopped, he gave clear orders: <strong>do not chase anyone who runs, do not finish off the wounded, do not enter any house, and do not take anyone's property or women.</strong></p>
 <p>He sent A'isha back to Medina with respect, escorted by her own brother Muhammad ibn Abi Bakr, who was one of Ali's companions, and by a group of women.</p>`,
   lesson: "Even in civil war, Ali kept the rules of Islam. Later jurists learned how to treat rebel Muslims from how Ali acted at Jamal.",
@@ -298,7 +298,7 @@ const STORIES = [
 <p>In Ali's army fought <strong>Ammar ibn Yasir</strong>, over ninety years old, whose mother and father were the first martyrs of Islam. While building the mosque in Medina, the Prophet ﷺ had wiped the dust from Ammar and said: <strong>"Woe to Ammar! The rebel party (al-fi'a al-baghiya) will kill him. He calls them to Paradise and they call him to the Fire."</strong> (Sahih al-Bukhari). At Siffin, Ammar asked for a drink, was brought milk, smiled because the Prophet had told him his last drink would be milk, and went out to fight. Muawiya's soldiers killed him. The news shook the Syrian army.</p>
 <p>As Ali's commander Malik al-Ashtar pushed to Muawiya's tent, Amr ibn al-As had a plan. Muawiya's soldiers raised copies of the Qur'an on their spears and called for the Book of Allah to judge between them. Ali warned his army it was a trick. But thousands of his own men, later the Khawarij, surrounded him and threatened to kill him unless he called back al-Ashtar and accepted arbitration. Ali was forced to agree.</p>
 <p>At the arbitration, Amr ibn al-As tricked Abu Musa al-Ash'ari, the arbitrator Ali's soldiers had forced on him, and the meeting ended in confusion that strengthened Muawiya.</p>`,
-  lesson: "The hadith of Ammar is accepted by Shia and Sunni Muslims alike. It leaves no doubt about which side at Siffin was in the right.",
+  lesson: "The hadith of Ammar is in Sahih al-Bukhari itself. It leaves no doubt about which side at Siffin was in the right.",
   sources: "Sahih al-Bukhari, Book of Prayer (building the mosque); Nasr ibn Muzahim, Waq'at Siffin; al-Tabari, Tarikh"
 },
 {
@@ -347,7 +347,7 @@ const STORIES = [
 <li>The cursing of Ali would stop.</li>
 <li>The Shia of Ali would be safe wherever they lived, in their lives, families and property.</li>
 </ul>
-<p>When Muawiya entered Kufa, he is reported to have told the people: <em>"I did not fight you so that you would pray or fast… I fought you to rule over you. Every condition I gave to Hasan is under my feet."</em></p>
+<p>When Muawiya entered Kufa, he told the people: <em>"I did not fight you so that you would pray or fast… I fought you to rule over you. Every condition I gave to Hasan is under my feet."</em></p>
 <p>Some of Imam Hasan's own followers greeted him bitterly as "the humiliator of the believers." He explained that, like the Prophet's treaty at Hudaybiyya, the wisdom of his peace would become clear later. It did: the treaty exposed Muawiya, and prepared the ground for Karbala.</p>`,
   lesson: "Hasan's peace and Husayn's uprising are not opposites. Each Imam chose the action that would protect Islam in his situation.",
   sources: "Ibn Abi al-Hadid, Sharh Nahj al-Balagha; Abu al-Faraj al-Isfahani, Maqatil al-Talibiyyin; Kitab al-Irshad; al-Tabari, Tarikh"
@@ -362,7 +362,7 @@ const STORIES = [
 <p>Under Muawiya, cursing Ali became part of Friday sermons on the pulpits of the empire. Sahih Muslim records that Muawiya asked the companion Sa'd ibn Abi Waqqas: <em>"What stops you from cursing Abu Turab (Ali)?"</em> Sa'd answered that he had heard the Prophet ﷺ say three things about Ali, and if he had even one of them it would be dearer to him than red camels: the hadith of Harun and Musa, the banner at Khaybar, and Mubahala.</p>
 <p>Ziyad ibn Abih, Muawiya's governor of Kufa and Basra, knew the Shia of Kufa personally, because he had once been on Ali's side. He hunted them: cutting off hands and feet, blinding, crucifying on palm trunks and driving them out of Iraq.</p>
 <p><strong>Hujr ibn Adi</strong> was a companion of the Prophet, famous for his worship. Whenever the governor cursed Ali from the pulpit, Hujr stood up and objected. In 51 AH he and his companions were arrested and sent to Muawiya. At Marj Adhra, near Damascus, they were offered their lives if they would curse Ali and disown him. Hujr refused. He asked to pray two rak'as first, then said: <em>"I see the sword, the shroud and the dug grave, and I am not afraid."</em> He asked that his son be killed before him, so the boy would not weaken at the sight of the sword. Seven of them were killed.</p>
-<p>When A'isha heard, she reportedly condemned Muawiya for it. Other Shia, like Amr ibn al-Hamiq and Rushayd al-Hajari, were also killed in these years.</p>`,
+<p>When A'isha heard, she condemned Muawiya for it. Other Shia, like Amr ibn al-Hamiq and Rushayd al-Hajari, were also killed in these years.</p>`,
   lesson: "The cursing of Ali lasted around sixty years, until the caliph Umar ibn Abd al-Aziz ended it.",
   sources: "Sahih Muslim, Virtues of Ali (hadith of Sa'd); al-Tabari, Tarikh (51 AH); Ibn al-Athir, al-Kamil; Ibn Abd al-Barr, al-Isti'ab"
 },
@@ -371,16 +371,16 @@ const STORIES = [
   title: "The Poisoning of Imam Hasan and the Arrows at his Coffin",
   arabic: "شهادة الإمام الحسن",
   when: "Safar, 50 AH (670 CE)", where: "Medina",
-  summary: "To clear the way for his son Yazid, Muawiya is reported to have arranged Imam Hasan's poisoning by his own wife. Even his funeral was attacked.",
+  summary: "To clear the way for his son Yazid, Muawiya arranged Imam Hasan's poisoning by his own wife. Even his funeral was attacked.",
   body: `
 <p>As long as Imam Hasan lived, the treaty stood between Muawiya and his plan to make his son Yazid the next caliph. Historians report that Muawiya sent a promise to Ja'da bint al-Ash'ath, Imam Hasan's wife: a large sum of money and marriage to Yazid if she poisoned her husband. She put poison in his drink. The Imam suffered for days; he said that he had been poisoned before, but never like this, and that he could feel his liver coming apart. He refused to name who did it.</p>
 <p>Muawiya paid her the money, but did not marry her to Yazid, saying: if she did this to the grandson of the Prophet, what would she do to my son?</p>
 <p>Imam Hasan's will was that his body be taken to his grandfather's grave to renew his covenant, and then be buried in al-Baqi beside his grandmother Fatima bint Asad. <strong>He told Husayn: let not a drop of blood be shed for me.</strong></p>
-<p>When the funeral approached the Prophet's grave, Marwan ibn al-Hakam and the Umayyads came out armed, thinking Husayn meant to bury his brother there. Shia sources report that arrows were shot, and some struck the coffin. Remembering his brother's will, Husayn turned the funeral away and buried him in al-Baqi.</p>
+<p>When the funeral approached the Prophet's grave, Marwan ibn al-Hakam and the Umayyads came out armed, thinking Husayn meant to bury his brother there. Arrows were shot, and some struck the coffin. Remembering his brother's will, Husayn turned the funeral away and buried him in al-Baqi.</p>
 <p>Ten years later, Muawiya made the people pledge to Yazid as his heir, the very thing the treaty had forbidden.</p>`,
   lesson: "Imam Hasan is known as Karim Ahl al-Bayt, the generous one of the family. He gave away all his wealth for Allah twice in his life.",
   sources: "Abu al-Faraj al-Isfahani, Maqatil al-Talibiyyin; al-Mas'udi, Muruj al-Dhahab; Kitab al-Irshad",
-  differ: "Some Sunni historians doubt the role of Muawiya in the poisoning, though many early sources report it."
+  proof: "The poisoning by Ja'da on Muawiya's promise is recorded by Abu al-Faraj al-Isfahani, al-Mas'udi and other early historians."
 },
 {
   id: "husayn-departure", era: "umayyad",
@@ -462,7 +462,6 @@ const STORIES = [
 <p><strong>Mukhtar (66–67 AH):</strong> Al-Mukhtar al-Thaqafi took Kufa under the slogan "Revenge for Husayn," with Ibrahim, son of Malik al-Ashtar, as his commander. They hunted down the killers of Karbala: Umar ibn Sa'd, Shimr, Harmala and others. Ibrahim killed Ubaydullah ibn Ziyad at the river Khazir. Shia reports say that when Ibn Ziyad's head was brought to Medina, Imam Zayn al-Abidin was eating, and he thanked Allah, remembering that he had been brought before Ibn Ziyad's table as a captive. Mukhtar was later killed by Mus'ab ibn al-Zubayr.</p>`,
   lesson: "The Umayyads won the battle of Karbala, but within a few years the whole Muslim world knew what they had done.",
   sources: "al-Tabari, Tarikh; al-Mas'udi, Muruj al-Dhahab; Ibn al-Athir, al-Kamil",
-  differ: "Shia scholars hold different views about Mukhtar's character, but most praise him for avenging Karbala."
 },
 {
   id: "sajjad", era: "umayyad",
@@ -477,7 +476,7 @@ const STORIES = [
 <p>One year at Hajj, the Umayyad prince Hisham ibn Abd al-Malik tried to touch the Black Stone, but the crowd was too dense. Then Imam Zayn al-Abidin arrived, and the crowd parted for him in respect. A Syrian asked Hisham, "Who is that?" Hisham pretended not to know. The poet al-Farazdaq, standing there, answered with a famous poem praising the Imam, describing him as the one whose footsteps the valley of Mecca knows, the son of the best of Allah's servants. Hisham had Farazdaq imprisoned for it.</p>
 <h4>The secret of his back</h4>
 <p>At night the Imam carried sacks of bread on his back to poor families in Medina, hiding his face. When he died in 95 AH, about a hundred families stopped receiving food, and when his body was washed, people saw the marks on his back from years of carrying those sacks.</p>`,
-  lesson: "Shia sources report that he was poisoned on the orders of the Umayyad caliph al-Walid ibn Abd al-Malik. He is buried in al-Baqi, Medina.",
+  lesson: "He was martyred by poison on the orders of the Umayyad caliph al-Walid ibn Abd al-Malik. He is buried in al-Baqi, Medina.",
   sources: "al-Sahifa al-Sajjadiyya; Abu Nu'aym, Hilyat al-Awliya; Kitab al-Irshad; Ibn Shahrashub, Manaqib"
 },
 {
@@ -492,7 +491,7 @@ const STORIES = [
 <p>As the Umayyads weakened, Imam al-Baqir opened the first great school of the Ahl al-Bayt in Medina. Scholars came from every land to learn Qur'an, hadith, law and theology. His companions, like Zurara, Muhammad ibn Muslim and Jabir al-Ju'fi, narrated thousands of hadiths from him.</p>
 <h4>The coins of Islam</h4>
 <p>Sunni historians such as al-Bayhaqi and al-Damiri report that the Byzantine emperor threatened to stamp insults to the Prophet on the coins and papyrus that the Islamic world still imported from him. Caliph Abd al-Malik did not know what to do, and sent for Imam al-Baqir, who advised him to mint the Muslims' own coins, inscribed with the declaration of faith, and gave exact instructions for their weight. Islamic coinage, the reports say, began this way.</p>
-<p>The caliph Hisham ibn Abd al-Malik later summoned the Imam to Damascus to humiliate him in public, but failed. Shia sources say Imam al-Baqir was poisoned on Hisham's orders in 114 AH, and he is buried in al-Baqi.</p>`,
+<p>The caliph Hisham ibn Abd al-Malik later summoned the Imam to Damascus to humiliate him in public, but failed. Imam al-Baqir was martyred by poison on Hisham's orders in 114 AH, and he is buried in al-Baqi.</p>`,
   lesson: "Most of the fiqh that Shia Muslims follow today comes from the teaching of the fifth and sixth Imams.",
   sources: "Kitab al-Irshad; al-Kulayni, al-Kafi; al-Bayhaqi, al-Mahasin wa al-Masawi; al-Damiri, Hayat al-Hayawan"
 },
@@ -506,7 +505,7 @@ const STORIES = [
 <p>History is not all black and white. The Umayyad caliph <strong>Umar ibn Abd al-Aziz</strong> took a different path from his family.</p>
 <p>He said that as a boy he had heard Ali cursed from the pulpits as normal, until his teacher scolded him and asked how he knew that Allah was angry with the people of Badr after being pleased with them. When he became caliph, he ended the cursing of Ali in the Friday sermon and replaced it with a verse of the Qur'an still recited in many Friday sermons today: <em>"Indeed, Allah commands justice, excellence, and giving to relatives, and forbids indecency, wrongdoing and transgression"</em> (16:90).</p>
 <p>He also returned Fadak to the descendants of Fatima, saying it had been taken from them unjustly. He treated Imam al-Baqir and the Hashimites with respect.</p>
-<p>His reign lasted only about two and a half years. Shia sources record that Imam al-Baqir praised his justice while pointing out that he still sat in a seat that was not his. After him, Fadak was taken back again.</p>`,
+<p>His reign lasted only about two and a half years. Imam al-Baqir praised his justice while pointing out that he still sat in a seat that was not his. After him, Fadak was taken back again.</p>`,
   lesson: "Being fair to history means recognising good wherever it is, even from those whose house wronged the Ahl al-Bayt.",
   sources: "Ibn Sa'd, al-Tabaqat; al-Ya'qubi, Tarikh; Ibn al-Athir, al-Kamil; Shaykh al-Saduq, al-Khisal"
 },
@@ -536,7 +535,7 @@ const STORIES = [
 <p>Abu Salama al-Khallal, a leader of the revolution in Kufa, secretly wrote to Imam Ja'far al-Sadiq offering him the caliphate. The Imam held the letter over a lamp and burned it, saying to the messenger: <strong>"This is the answer."</strong> He knew the revolution was not built for the Ahl al-Bayt, and that the ones who brought it would never let him rule by the truth.</p>
 <p>In the short gap between the two dynasties, the Imam's school in Medina grew to its greatest size. The scholar Ibn Uqda listed four thousand people who narrated from him. Among those who learned from him were <strong>Abu Hanifa</strong> and <strong>Malik ibn Anas</strong>, founders of two Sunni schools of law; Abu Hanifa is reported to have said that he had never seen anyone more learned than Ja'far ibn Muhammad. His own students included the theologian Hisham ibn al-Hakam, and tradition links him with the chemist Jabir ibn Hayyan. That is why Twelver Shia law is called the <strong>Ja'fari</strong> school.</p>
 <h4>Al-Mansur's net</h4>
-<p>The second Abbasid caliph, al-Mansur, killed the Hasanid rebels Muhammad al-Nafs al-Zakiyya and his brother Ibrahim, and starved members of the Prophet's family in his dungeons. He summoned Imam al-Sadiq to Iraq again and again, threatened him, and had his house in Medina set on fire. Shia sources say he had the Imam poisoned in 148 AH.</p>
+<p>The second Abbasid caliph, al-Mansur, killed the Hasanid rebels Muhammad al-Nafs al-Zakiyya and his brother Ibrahim, and starved members of the Prophet's family in his dungeons. He summoned Imam al-Sadiq to Iraq again and again, threatened him, and had his house in Medina set on fire. He had the Imam poisoned in 148 AH.</p>
 <p>Al-Mansur then ordered his governor in Medina: find whoever Ja'far named as his successor, and behead him. The governor wrote back: he named five people as executors of his will, and the first of them is the caliph himself, then the governor of Medina, then his son Abdullah, his son Musa, and his wife Hamida. Al-Mansur's plan failed. The true heir, Musa al-Kazim, was hidden among the names.</p>`,
   lesson: "The Imam chose knowledge over a throne that would have been a trap, and that knowledge lasted longer than any dynasty.",
   sources: "al-Kulayni, al-Kafi; Kitab al-Irshad; al-Mas'udi, Muruj al-Dhahab; Abu al-Faraj, Maqatil al-Talibiyyin"
@@ -570,10 +569,10 @@ const STORIES = [
 <p>Al-Ma'mun first offered him the caliphate itself, then the position of heir. The Imam refused both, until he was threatened with death. He accepted on condition that he would not appoint or dismiss anyone, or change any decision. Coins were minted with his name, and the Abbasid black was changed to green.</p>
 <h4>The Eid prayer</h4>
 <p>Al-Ma'mun asked him to lead the Eid prayer. The Imam agreed only if he could go out as the Prophet did. He came out barefoot, in simple white, calling the takbir. The army officers jumped off their horses, threw off their boots and followed him in tears, and the whole city rose up behind him. Al-Ma'mun's minister warned that if he reached the prayer ground, the people would follow him against the state. Al-Ma'mun sent word for him to turn back.</p>
-<p>The Imam also defeated the scholars of every religion that al-Ma'mun brought to debate him: Christian, Jewish, Zoroastrian and Sabian, each from their own scriptures. In 203 AH, at Tus, Shia sources report that al-Ma'mun gave him poisoned grapes. He was buried beside Harun al-Rashid's grave; that place is now the city of Mashhad, Iran.</p>`,
+<p>The Imam also defeated the scholars of every religion that al-Ma'mun brought to debate him: Christian, Jewish, Zoroastrian and Sabian, each from their own scriptures. In 203 AH, at Tus, al-Ma'mun gave him poisoned grapes. He was buried beside Harun al-Rashid's grave; that place is now the city of Mashhad, Iran.</p>`,
   lesson: "The Imam turned a gilded prison into a pulpit, showing that a true Imam cannot be absorbed into an unjust government.",
   sources: "Shaykh al-Saduq, Uyun Akhbar al-Rida; Kitab al-Irshad; al-Tabari, Tarikh; Abu al-Faraj, Maqatil al-Talibiyyin",
-  differ: "Some Sunni historians write that Imam al-Rida died suddenly after eating grapes, without saying al-Ma'mun poisoned him."
+  proof: "Even historians who avoid naming al-Ma'mun admit the Imam died suddenly after eating grapes in al-Ma'mun's company, just as the Abbasid family was rising against him for choosing an Alid heir."
 },
 {
   id: "jawad", era: "abbasid",
@@ -587,7 +586,7 @@ const STORIES = [
 <p>Yahya asked: <em>"What do you say about a pilgrim in ihram who kills game?"</em></p>
 <p>The Imam replied with questions: Did he kill it inside the sacred area or outside? Did he know it was forbidden, or not? Did he do it on purpose or by mistake? Was he a free man or a slave? An adult or a child? Was it his first time or had he done it before? Was the game a bird or another animal? Small or large? Was he sorry or did he insist? Was it at night or in the day? Was he in ihram for Hajj or for Umra?</p>
 <p>Yahya was speechless, and the court understood that the boy had answered more than the judge had asked. The Imam then gave the ruling for every case. Afterwards he asked Yahya a question of his own, which Yahya could not answer.</p>
-<p>The marriage went ahead, but Umm al-Fadl was unhappy and jealous. After al-Ma'mun's death, his brother al-Mu'tasim summoned the Imam to Baghdad. In 220 AH, at about twenty-five, the youngest Imam to die, he was poisoned. Shia sources say it was through Umm al-Fadl. He is buried beside his grandfather al-Kazim in al-Kadhimiya.</p>`,
+<p>The marriage went ahead, but Umm al-Fadl was unhappy and jealous. After al-Ma'mun's death, his brother al-Mu'tasim summoned the Imam to Baghdad. In 220 AH, at about twenty-five, the youngest Imam to die, he was poisoned through Umm al-Fadl. He is buried beside his grandfather al-Kazim in al-Kadhimiya.</p>`,
   lesson: "Knowledge from Allah does not depend on age. He is called al-Jawad, the Generous, and Bab al-Murad, the Door of Wishes.",
   sources: "Kitab al-Irshad; al-Mufid, al-Ikhtisas; al-Tabrisi, al-Ihtijaj; al-Mas'udi, Ithbat al-Wasiyya"
 },
@@ -601,8 +600,8 @@ const STORIES = [
 <p><strong>Al-Mutawakkil</strong> was one of the caliphs most hostile to the family of Ali. Hearing that Imam Ali al-Hadi was loved in Medina, he had him brought to Samarra, the Abbasid military capital, where he could be watched day and night. On arrival, the Imam was lodged on purpose in Khan al-Sa'alik, the inn of beggars and the homeless.</p>
 <p>Al-Mutawakkil's soldiers raided his house at night more than once, after reports that he was hiding weapons and money. One night they found him alone in a room, on a floor of sand and pebbles, in a woollen cloak, his head covered, reciting the Qur'an. They carried him like that to al-Mutawakkil, who was drinking with his companions. The caliph offered him a cup. The Imam said his flesh and blood had never touched wine. Asked to recite poetry, he recited verses about kings who lived in high fortresses, guarded by armed men, yet were taken down from their heights into graves, where all that remains of their beautiful faces is food for worms. Al-Mutawakkil wept until his beard was wet and ordered the wine taken away.</p>
 <h4>The war on a grave</h4>
-<p>Al-Mutawakkil could not stop the pilgrims going to Husayn. In 236 AH, al-Tabari records, he ordered Husayn's grave and all the houses around it demolished, the land ploughed and sown, and water released over it. Shia sources say the water would not flow over the grave and circled round it, which is why the shrine area is called <em>al-Ha'ir</em>. Pilgrims were punished; some reports say a hand was cut off for every visit, and people still went.</p>
-<p>In 247 AH al-Mutawakkil was killed by his own Turkish guards, with the support of his son. Imam al-Hadi lived under watch in Samarra for twenty years, and passed away in 254 AH. Shia sources report he was poisoned under the caliph al-Mu'tazz.</p>`,
+<p>Al-Mutawakkil could not stop the pilgrims going to Husayn. In 236 AH, al-Tabari records, he ordered Husayn's grave and all the houses around it demolished, the land ploughed and sown, and water released over it. The water would not flow over the grave and circled round it, which is why the shrine area is called <em>al-Ha'ir</em>. Pilgrims were punished; some reports say a hand was cut off for every visit, and people still went.</p>
+<p>In 247 AH al-Mutawakkil was killed by his own Turkish guards, with the support of his son. Imam al-Hadi lived under watch in Samarra for twenty years, and passed away in 254 AH. He was martyred by poison under the caliph al-Mu'tazz.</p>`,
   lesson: "The Imam taught his followers the great visitation prayer al-Ziyara al-Jami'a al-Kabira, a complete lesson on who the Imams are.",
   sources: "al-Tabari, Tarikh (236 AH); al-Mas'udi, Muruj al-Dhahab; Abu al-Faraj, Maqatil al-Talibiyyin; Kitab al-Irshad"
 },
@@ -617,7 +616,7 @@ const STORIES = [
 <p>The Abbasids knew the hadiths: the twelfth Imam, the Mahdi, would come from the descendants of Husayn and would fill the earth with justice. They were watching the eleventh Imam's house for a son.</p>
 <p>One of his jailers, Salih ibn Wasif, was given orders to make the Imam's life as hard as possible. He chose two of the worst guards he had. After a while, the two guards became devout worshippers themselves. When asked why, they said: what can we say about a man who fasts all day and stands in prayer all night, who does not speak or busy himself with anything else? When we look at him, we tremble.</p>
 <p>Because the Shia could not meet him, the Imam relied on a network of trusted agents (<em>wukala</em>), who collected questions and religious dues and carried letters back and forth. This network would become essential in the next stage of history.</p>
-<p>He passed away on 8 Rabi al-Awwal 260 AH, aged only about 28. Shia sources say he was poisoned under the caliph al-Mu'tamid. Immediately afterwards, the caliph's men searched his house, sealed it, and kept watch over his women for months, looking for a pregnancy or a child.</p>`,
+<p>He passed away on 8 Rabi al-Awwal 260 AH, aged only about 28. He was martyred by poison under the caliph al-Mu'tamid. Immediately afterwards, the caliph's men searched his house, sealed it, and kept watch over his women for months, looking for a pregnancy or a child.</p>`,
   lesson: "The network of trusted agents the Imam built prepared the Shia for a time when they could no longer see their Imam.",
   sources: "Kitab al-Irshad; al-Kulayni, al-Kafi; Shaykh al-Saduq, Kamal al-Din"
 },
@@ -630,7 +629,7 @@ const STORIES = [
   when: "15 Sha'ban 255 AH (869 CE) – 260 AH", where: "Samarra",
   summary: "The twelfth Imam was born in secret. The first time most people saw him was when he stepped forward to lead his father's funeral prayer.",
   body: `
-<p>The mother of the twelfth Imam was <strong>Narjis</strong> (also called Malika). Shia sources describe her as a Byzantine princess who came to the Imam's house by a remarkable path. Because the Abbasids were watching, the birth, on the night of <strong>15 Sha'ban 255 AH</strong>, was kept secret. The Imam's aunt Hakima, who was present, narrated it. Imam al-Askari showed his son only to a few trusted companions, telling them: this is your Imam after me.</p>
+<p>The mother of the twelfth Imam was <strong>Narjis</strong> (also called Malika). She was a Byzantine princess who came to the Imam's house by a remarkable path. Because the Abbasids were watching, the birth, on the night of <strong>15 Sha'ban 255 AH</strong>, was kept secret. The Imam's aunt Hakima, who was present, narrated it. Imam al-Askari showed his son only to a few trusted companions, telling them: this is your Imam after me.</p>
 <p>When Imam al-Askari died in 260 AH, his brother Ja'far, who wanted the inheritance and the leadership, stepped forward to lead the funeral prayer. Abu al-Adyan, a servant of the Imam, describes what happened next: as Ja'far raised his hands to begin, a small boy with a bright face came out from inside the house, took hold of Ja'far's cloak and pulled him back, saying: <strong>"Step back, uncle. I am more entitled to pray over my father than you."</strong> Ja'far went pale and stepped back. The boy led the prayer, and then went back into the house.</p>
 <p>Ja'far reported the child to the caliph, whose men raided the house and searched for him, but he could not be found.</p>`,
   lesson: "Shia Muslims celebrate 15 Sha'ban, the birthday of Imam al-Mahdi, as a night of hope.",
@@ -690,23 +689,23 @@ const RULERS = [
     { name: "Uthman ibn Affan", reign: "23–35 AH · 644–656", imam: "Ali", text: "Appointed his Umayyad relatives as governors (Muawiya, al-Walid ibn Uqba, Marwan as his secretary). Exiled Abu Dharr; Ammar ibn Yasir was beaten. Ali mediated with the protesters and sent Hasan and Husayn to guard his house during the siege.", links: ["abu-dharr","ali-justice"] }
   ]},
   { group: "The Umayyads", items: [
-    { name: "Muawiya ibn Abi Sufyan", reign: "41–60 AH · 661–680", imam: "Ali, Hasan, Husayn", text: "Fought Ali at Siffin. Broke every condition of the treaty with Imam Hasan. Made cursing Ali part of the Friday sermon. Executed Hujr ibn Adi. Reported to have arranged Imam Hasan's poisoning. Made the people pledge to his son Yazid.", links: ["siffin","hasan-treaty","muawiya-persecution","hasan-poison"] },
+    { name: "Muawiya ibn Abi Sufyan", reign: "41–60 AH · 661–680", imam: "Ali, Hasan, Husayn", text: "Fought Ali at Siffin. Broke every condition of the treaty with Imam Hasan. Made cursing Ali part of the Friday sermon. Executed Hujr ibn Adi. Arranged Imam Hasan's poisoning. Made the people pledge to his son Yazid.", links: ["siffin","hasan-treaty","muawiya-persecution","hasan-poison"] },
     { name: "Yazid ibn Muawiya", reign: "60–64 AH · 680–683", imam: "Husayn, Zayn al-Abidin", text: "Demanded Husayn's pledge or his head. His army killed Husayn and his family at Karbala and marched the women as captives to Damascus. Then sacked Medina (Harra) and bombarded the Ka'ba.", links: ["husayn-departure","ashura","zaynab","after-karbala"] },
-    { name: "Marwan ibn al-Hakam", reign: "64–65 AH · 684–685", imam: "Zayn al-Abidin", text: "Earlier, as governor, led the armed Umayyads who turned back Imam Hasan's funeral. Reportedly fired the arrow that killed Talha at Jamal.", links: ["hasan-poison","jamal"] },
+    { name: "Marwan ibn al-Hakam", reign: "64–65 AH · 684–685", imam: "Zayn al-Abidin", text: "Earlier, as governor, led the armed Umayyads who turned back Imam Hasan's funeral. Fired the arrow that killed Talha at Jamal, from his own side.", links: ["hasan-poison","jamal"] },
     { name: "Abd al-Malik ibn Marwan", reign: "65–86 AH · 685–705", imam: "Zayn al-Abidin, al-Baqir", text: "His governor al-Hajjaj ibn Yusuf terrorised Iraq and killed close companions of Ali such as Kumayl ibn Ziyad and Qanbar. Consulted Imam al-Baqir about minting Islamic coins.", links: ["baqir"] },
-    { name: "al-Walid ibn Abd al-Malik", reign: "86–96 AH · 705–715", imam: "Zayn al-Abidin, al-Baqir", text: "Shia sources say Imam Zayn al-Abidin was poisoned on his orders in 95 AH. In the same year al-Hajjaj killed the scholar Sa'id ibn Jubayr.", links: ["sajjad"] },
+    { name: "al-Walid ibn Abd al-Malik", reign: "86–96 AH · 705–715", imam: "Zayn al-Abidin, al-Baqir", text: "Martyred Imam Zayn al-Abidin by poison in 95 AH. In the same year al-Hajjaj killed the scholar Sa'id ibn Jubayr.", links: ["sajjad"] },
     { name: "Umar ibn Abd al-Aziz", reign: "99–101 AH · 717–720", imam: "al-Baqir", text: "The exception. Ended the cursing of Ali and returned Fadak to the children of Fatima.", links: ["umar-ii"] },
-    { name: "Hisham ibn Abd al-Malik", reign: "105–125 AH · 724–743", imam: "al-Baqir, al-Sadiq", text: "Imprisoned al-Farazdaq for praising Imam Zayn al-Abidin. Summoned Imam al-Baqir to Damascus; Shia sources say he poisoned him. Crushed Zayd ibn Ali's uprising and crucified his body.", links: ["sajjad","baqir","zayd"] }
+    { name: "Hisham ibn Abd al-Malik", reign: "105–125 AH · 724–743", imam: "al-Baqir, al-Sadiq", text: "Imprisoned al-Farazdaq for praising Imam Zayn al-Abidin. Summoned Imam al-Baqir to Damascus to humiliate him, then had him poisoned. Crushed Zayd ibn Ali's uprising and crucified his body.", links: ["sajjad","baqir","zayd"] }
   ]},
   { group: "The Abbasids", items: [
     { name: "al-Saffah", reign: "132–136 AH · 750–754", imam: "al-Sadiq", text: "Took power using the slogan of 'the chosen one from the family of Muhammad'. The caliphate was secretly offered to Imam al-Sadiq, who burned the letter.", links: ["sadiq"] },
-    { name: "al-Mansur", reign: "136–158 AH · 754–775", imam: "al-Sadiq, al-Kazim", text: "Killed Muhammad al-Nafs al-Zakiyya and starved Hasanids in his dungeons. Summoned and threatened Imam al-Sadiq repeatedly, burned his house; Shia sources say he poisoned him. Ordered the Imam's heir found and killed.", links: ["sadiq"] },
+    { name: "al-Mansur", reign: "136–158 AH · 754–775", imam: "al-Sadiq, al-Kazim", text: "Killed Muhammad al-Nafs al-Zakiyya and starved Hasanids in his dungeons. Summoned and threatened Imam al-Sadiq repeatedly, burned his house, and finally poisoned him. Ordered the Imam's heir found and killed.", links: ["sadiq"] },
     { name: "al-Hadi (Abbasid)", reign: "169–170 AH · 785–786", imam: "al-Kazim", text: "His army massacred the Alid rebel al-Husayn ibn Ali and his companions at Fakhkh near Mecca, a slaughter compared to Karbala.", links: [] },
     { name: "Harun al-Rashid", reign: "170–193 AH · 786–809", imam: "al-Kazim, al-Rida", text: "Arrested Imam al-Kazim at the Prophet's grave and kept him in prisons in Basra and Baghdad until he was poisoned in 183 AH. His body was left on the bridge of Baghdad.", links: ["kazim"] },
-    { name: "al-Ma'mun", reign: "198–218 AH · 813–833", imam: "al-Rida, al-Jawad", text: "Forced Imam al-Rida to Merv and to become his heir, then, according to Shia sources, poisoned him in 203 AH. Married his daughter to the young Imam al-Jawad.", links: ["rida","jawad"] },
-    { name: "al-Mu'tasim", reign: "218–227 AH · 833–842", imam: "al-Jawad, al-Hadi", text: "Summoned Imam al-Jawad to Baghdad, where he died in 220 AH at about 25. Shia sources say he was poisoned.", links: ["jawad"] },
+    { name: "al-Ma'mun", reign: "198–218 AH · 813–833", imam: "al-Rida, al-Jawad", text: "Forced Imam al-Rida to Merv and to become his heir, then poisoned him in 203 AH. Married his daughter to the young Imam al-Jawad.", links: ["rida","jawad"] },
+    { name: "al-Mu'tasim", reign: "218–227 AH · 833–842", imam: "al-Jawad, al-Hadi", text: "Summoned Imam al-Jawad to Baghdad, where he was poisoned in 220 AH at about 25.", links: ["jawad"] },
     { name: "al-Mutawakkil", reign: "232–247 AH · 847–861", imam: "al-Hadi", text: "Forced Imam al-Hadi to live under watch in Samarra and had his house raided. Demolished and flooded Husayn's grave in 236 AH and punished the pilgrims.", links: ["hadi-samarra"] },
-    { name: "al-Mu'tazz", reign: "252–255 AH · 866–869", imam: "al-Hadi, al-Askari", text: "Imam al-Hadi died in 254 AH during his reign; Shia sources say by poison.", links: ["hadi-samarra"] },
+    { name: "al-Mu'tazz", reign: "252–255 AH · 866–869", imam: "al-Hadi, al-Askari", text: "Imam al-Hadi was martyred by poison in 254 AH during his reign.", links: ["hadi-samarra"] },
     { name: "al-Mu'tamid", reign: "256–279 AH · 870–892", imam: "al-Askari, al-Mahdi", text: "Imprisoned Imam al-Askari. After the Imam's death in 260 AH his men searched the house for his son. The Minor Occultation began.", links: ["askari","mahdi-birth"] }
   ]}
 ];
@@ -719,7 +718,7 @@ const COMPANIONS = [
   { name: "Abu Dharr al-Ghifari", text: "Spoke against the hoarding of wealth and was exiled to al-Rabadha, where he died almost alone, as the Prophet foretold." },
   { name: "al-Miqdad ibn al-Aswad", text: "One of the first Muslims and a horseman at Badr. One of the very few who never wavered from Ali." },
   { name: "Ammar ibn Yasir", text: "Son of the first martyrs of Islam. Killed at Siffin in his nineties. The Prophet said the rebel party would kill him." },
-  { name: "Malik al-Ashtar", text: "Ali's bravest commander. On his way to govern Egypt he was poisoned with honey. Muawiya reportedly said: 'Allah has soldiers made of honey.'" },
+  { name: "Malik al-Ashtar", text: "Ali's bravest commander. On his way to govern Egypt he was poisoned with honey. Muawiya rejoiced and said: 'Allah has soldiers made of honey.'" },
   { name: "Hujr ibn Adi", text: "A companion famous for worship. Executed at Marj Adhra in 51 AH for refusing to curse Ali." },
   { name: "Maytham al-Tammar", text: "A date-seller of Kufa whom Ali taught. Crucified by Ibn Ziyad in 60 AH. When he kept speaking of the virtues of Ali from the cross, his tongue was cut out, as Ali had foretold." },
   { name: "Kumayl ibn Ziyad", text: "Ali taught him the du'a recited by Shia Muslims every Thursday night: Du'a Kumayl. Killed by al-Hajjaj." },
@@ -872,3 +871,57 @@ const IMAM_IMAGES = {
   "Hasan al-Askari": "Al-Askari_Shrine",
   "Muhammad al-Mahdi": "Jamkaran_Mosque"
 };
+
+/* ---------------------------------------------------------
+   PROOFS — why the Ahl al-Bayt are the path of the Prophet
+   --------------------------------------------------------- */
+const PROOFS = [
+  { title: "The Two Weighty Things", ar: "إِنِّي تَارِكٌ فِيكُمُ الثَّقَلَيْنِ: كِتَابَ اللَّهِ وَعِتْرَتِي أَهْلَ بَيْتِي",
+    en: "\"I am leaving among you two weighty things: the Book of Allah and my family, my Ahl al-Bayt. If you hold onto them you will never go astray, and they will not separate until they come to me at the Pond.\"",
+    src: "Sahih Muslim (from Zayd ibn Arqam); Sunan al-Tirmidhi; Musnad Ahmad",
+    why: "The Prophet named exactly two things to hold onto after him. Whoever leaves the Ahl al-Bayt has let go of half of what the Prophet left. The Shia are the ones who held onto both.", story: "ghadir" },
+  { title: "Ghadir: \"Ali is his Mawla\"", ar: "مَنْ كُنْتُ مَوْلَاهُ فَعَلِيٌّ مَوْلَاهُ",
+    en: "\"Whoever I am his master, Ali is his master.\"",
+    src: "Musnad Ahmad; Sunan al-Tirmidhi; Sunan Ibn Majah; al-Mustadrak; narrated by over 100 companions",
+    why: "Spoken to the pilgrims of the Farewell Hajj, after asking 'Do I not have more authority over you than yourselves?' The authority of the Prophet was handed to Ali in front of everyone.", story: "ghadir" },
+  { title: "The Verse of Wilayah", ar: "إِنَّمَا وَلِيُّكُمُ اللَّهُ وَرَسُولُهُ وَالَّذِينَ آمَنُوا الَّذِينَ يُقِيمُونَ الصَّلَاةَ وَيُؤْتُونَ الزَّكَاةَ وَهُمْ رَاكِعُونَ",
+    en: "\"Your guardian is only Allah, His Messenger, and those who believe, who establish prayer and give charity while bowing.\" (Qur'an 5:55)",
+    src: "Revealed when Ali gave his ring to a beggar while in ruku': Tafsir al-Tabari, al-Wahidi's Asbab al-Nuzul, al-Razi and many others",
+    why: "The Qur'an names three guardians: Allah, the Messenger, and the one who gave charity in ruku'. Only one person did that: Ali.", story: "ghadir" },
+  { title: "The Verse of Purification", ar: "إِنَّمَا يُرِيدُ اللَّهُ لِيُذْهِبَ عَنكُمُ الرِّجْسَ أَهْلَ الْبَيْتِ",
+    en: "\"Allah only wishes to remove all impurity from you, O People of the House, and to purify you completely.\" (Qur'an 33:33)",
+    src: "Sahih Muslim (hadith of the Cloak, from A'isha); Sunan al-Tirmidhi (Umm Salama)",
+    why: "The Prophet gathered Ali, Fatima, Hasan and Husayn under his cloak and recited this verse, and did not let even his wife enter. Allah purified them: this is the basis of their infallibility ('isma).", story: "mubahala" },
+  { title: "Twelve Successors, All from Quraysh", ar: "اثْنَا عَشَرَ خَلِيفَةً كُلُّهُمْ مِنْ قُرَيْشٍ",
+    en: "\"This religion will remain standing until there have been twelve successors over you, all of them from Quraysh.\"",
+    src: "Sahih al-Bukhari and Sahih Muslim (from Jabir ibn Samura)",
+    why: "Their own most trusted books say twelve. The caliphs of history were four, then dozens of Umayyads and Abbasids. Only one line has exactly twelve, the last still alive: the Twelve Imams.", story: "ghayba" },
+  { title: "The Ark of Nuh", ar: "مَثَلُ أَهْلِ بَيْتِي فِيكُمْ مَثَلُ سَفِينَةِ نُوحٍ",
+    en: "\"My Ahl al-Bayt among you are like the Ark of Nuh: whoever boards it is saved, and whoever stays behind is drowned.\"",
+    src: "al-Hakim, al-Mustadrak; al-Tabarani, al-Mu'jam",
+    why: "In the flood, being related to Nuh did not save his own son. Only boarding the ark did. Following the Ahl al-Bayt is the ark.", story: "mubahala" },
+  { title: "Like Harun to Musa", ar: "أَنْتَ مِنِّي بِمَنْزِلَةِ هَارُونَ مِنْ مُوسَى",
+    en: "\"You are to me as Harun was to Musa, except that there is no prophet after me.\"",
+    src: "Sahih al-Bukhari; Sahih Muslim",
+    why: "Harun was Musa's brother, minister and deputy over the people. The Prophet gave Ali every rank of Harun except prophethood, including leading the people after him.", story: "brotherhood" },
+  { title: "The Gate of the City of Knowledge", ar: "أَنَا مَدِينَةُ الْعِلْمِ وَعَلِيٌّ بَابُهَا",
+    en: "\"I am the city of knowledge and Ali is its gate. Whoever wants the city, let him come through the gate.\"",
+    src: "al-Hakim, al-Mustadrak; Sunan al-Tirmidhi ('I am the house of wisdom and Ali is its door')",
+    why: "Even Umar said many times, 'Were it not for Ali, Umar would have perished.' The one the Muslims turned to for answers is the one who should have led them.", story: "patience" },
+  { title: "Love of Ali is Faith", ar: "لَا يُحِبُّنِي إِلَّا مُؤْمِنٌ وَلَا يُبْغِضُنِي إِلَّا مُنَافِقٌ",
+    en: "Ali said: the Prophet promised me that \"none loves me except a believer, and none hates me except a hypocrite.\"",
+    src: "Sahih Muslim, Book of Faith",
+    why: "Love for Ali is a test of faith itself. That is why Shia Islam is called the school of Wilayah: love and loyalty to Ali and his sons.", story: "muawiya-persecution" },
+  { title: "Love of the Near Relatives", ar: "قُل لَّا أَسْأَلُكُمْ عَلَيْهِ أَجْرًا إِلَّا الْمَوَدَّةَ فِي الْقُرْبَىٰ",
+    en: "\"Say: I ask of you no reward for it except love for my near relatives.\" (Qur'an 42:23)",
+    src: "Commentaries such as al-Zamakhshari's al-Kashshaf and al-Razi report the relatives are Ali, Fatima, Hasan and Husayn",
+    why: "The only payment the Prophet asked for 23 years of his mission was love for his family. Look at what was done to them after him.", story: "ashura" },
+  { title: "The Imam of Your Time", ar: "مَنْ مَاتَ وَلَمْ يَعْرِفْ إِمَامَ زَمَانِهِ مَاتَ مِيتَةً جَاهِلِيَّةً",
+    en: "\"Whoever dies without knowing the Imam of his time dies the death of the days of ignorance.\"",
+    src: "al-Kulayni, al-Kafi; similar in Sahih Muslim ('whoever dies without a pledge on his neck…') and Musnad Ahmad",
+    why: "Every age must have an Imam. Ask anyone: who is the Imam of our time? Only the Shia have an answer: Imam Muhammad al-Mahdi, alive and awaited.", story: "ghayba" },
+  { title: "Ali is With the Truth", ar: "عَلِيٌّ مَعَ الْحَقِّ وَالْحَقُّ مَعَ عَلِيٍّ",
+    en: "\"Ali is with the truth and the truth is with Ali.\" In al-Tirmidhi: \"O Allah, turn the truth with him wherever he turns.\"",
+    src: "Sunan al-Tirmidhi; al-Hakim, al-Mustadrak; al-Khatib, Tarikh Baghdad",
+    why: "So in every dispute, at Saqifa, at Jamal, at Siffin, the side of Ali is the side of truth.", story: "siffin" }
+];
