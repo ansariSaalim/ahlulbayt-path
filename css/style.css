@@ -36,7 +36,7 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; overflow-x: clip; }
 body {
   background: var(--ink);
   color: var(--text);
@@ -455,6 +455,47 @@ body::before {
 }
 @keyframes flicker { 0% { opacity: .75; transform: scale(1); } 50% { opacity: 1; transform: scale(1.08) translateY(-1px); } 100% { opacity: .8; transform: scale(.96); } }
 
+.pf-h { font-family: var(--display); font-size: 1.6rem; color: var(--gold); margin: 1.8rem 0 .7rem; }
+.r-lesson .pg { margin-bottom: .8rem; }
+.wr-p { padding: .9rem 1rem; border-left: 3px solid #a83a3a; background: color-mix(in srgb, #a83a3a 10%, transparent); border-radius: 0 12px 12px 0; }
+/* ---------- abbas ---------- */
+.ab-in { display: grid; grid-template-columns: 110px 1fr; gap: 1.6rem; align-items: end; }
+.alam { width: 100px; height: 250px; overflow: visible; }
+.al-pole { stroke: #f0d28c; stroke-width: 5; stroke-linecap: round; }
+.al-finial { fill: #f0d28c; }
+.al-flag { transform-origin: 24px 50px; animation: flagWave 3.2s ease-in-out infinite alternate; }
+.al-flag path { fill: #1d6b4f; stroke: #f0d28c; stroke-width: 2; }
+.al-flag .al-trim { fill: none; stroke: #f0d28c; stroke-width: 4; }
+.ab-titles { display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: 2rem; }
+.ab-t { padding: .55rem 1rem; border-radius: 99px; border: 1px solid var(--gold); background: color-mix(in srgb, var(--gold) 10%, transparent); font-size: .85rem; transition: opacity .9s var(--ease), transform .9s var(--ease); }
+.ab-t b { color: var(--gold); margin-right: .35rem; }
+.ab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.ab-facts .btn { margin-top: .4rem; }
+.ab-quote { margin: 2.6rem auto 0; max-width: 860px; text-align: center; font-family: var(--display); font-size: clamp(1.25rem, 2.6vw, 1.7rem); line-height: 1.4; padding: 2rem; border-radius: 22px; border: 1px solid var(--gold); background: radial-gradient(ellipse at 50% 0%, color-mix(in srgb, #1d6b4f 30%, transparent), transparent 70%); }
+.ab-quote cite { display: block; margin-top: .8rem; font-family: var(--sans); font-size: .8rem; font-style: normal; color: var(--gold); }
+@keyframes flagWave { from { transform: skewY(-3deg) scaleX(1); } to { transform: skewY(3deg) scaleX(.94); } }
+
+/* ---------- wronged ---------- */
+.wr-list { display: grid; gap: .7rem; }
+.wr { display: grid; grid-template-columns: 230px 1fr auto; gap: 1rem; align-items: center; padding: 1rem 1.2rem; border-radius: 14px; border: 1px solid var(--line); background: var(--card); transition: opacity .9s var(--ease), transform .9s var(--ease), border-color .3s; }
+.wr:hover { border-color: #a83a3a; }
+.wr b { font-family: var(--display); font-size: 1.25rem; }
+.wr p { font-family: var(--serif); font-size: .97rem; }
+.wr a { font-size: .8rem; font-weight: 600; color: var(--gold); text-decoration: none; white-space: nowrap; }
+.kl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
+.kl { padding: 1.2rem; border-radius: var(--radius); border: 1px solid var(--line); border-top: 3px solid #a83a3a; background: var(--card); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+.kl h4 { font-family: var(--display); font-size: 1.35rem; }
+.kl p { font-family: var(--serif); font-size: .95rem; margin-top: .3rem; }
+.kl .kf { margin-top: .7rem; padding-top: .7rem; border-top: 1px dashed var(--line); color: var(--muted); }
+.kl .kf b { color: var(--gold); font-family: var(--sans); font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; display: block; }
+.pg .pw.ab, .chip.ab { }
+@media (max-width: 860px) {
+  .ab-in { grid-template-columns: 1fr; }
+  .alam { width: 70px; height: 170px; }
+  .ab-grid { grid-template-columns: 1fr; }
+  .wr { grid-template-columns: 1fr; gap: .3rem; }
+}
+
 /* ---------- chips & tabs ---------- */
 .chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.6rem; }
 .chip {
@@ -469,7 +510,7 @@ body::before {
 .tab.on { background: var(--gold); color: #1b1407; font-weight: 600; }
 
 /* ---------- timeline ---------- */
-.tl { position: relative; }
+.tl { position: relative; overflow-x: clip; padding-right: 2px; }
 .tl-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--line); transform: translateX(-50%); }
 .tl-line i { display: block; width: 100%; height: 0; background: linear-gradient(180deg, var(--gold-2), var(--gold-deep)); box-shadow: 0 0 10px var(--gold); }
 #tlList { list-style: none; }
@@ -564,10 +605,11 @@ body::before {
 
 /* ---------- masumin flip cards ---------- */
 .m-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.2rem; }
-.m-card { perspective: 1200px; height: 340px; cursor: pointer; }
-.m-inner { position: relative; width: 100%; height: 100%; transition: transform .9s var(--ease); transform-style: preserve-3d; }
+.m-card { perspective: 1200px; cursor: pointer; }
+.m-inner { position: relative; display: grid; width: 100%; transition: transform .9s var(--ease); transform-style: preserve-3d; }
 .m-card.flip .m-inner { transform: rotateY(180deg); }
-.m-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); }
+.m-face { grid-area: 1 / 1; position: relative; min-height: 340px; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); }
+.m-front .ph { position: absolute; inset: 0; }
 .m-front { display: flex; flex-direction: column; justify-content: flex-end; padding: 1.3rem; color: #f3ecda; isolation: isolate; }
 .m-front .ph { z-index: -2; }
 .m-front::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(0,0,0,.1), rgba(8,12,10,.92) 72%); }
@@ -583,6 +625,7 @@ body::before {
 .m-back dt { color: var(--muted); font-size: .74rem; text-transform: uppercase; letter-spacing: .08em; padding-top: .1rem; }
 .m-back p { font-family: var(--serif); }
 .m-back .btn { margin-top: auto; align-self: flex-start; padding: .55rem 1rem; font-size: .8rem; }
+.m-back dd { margin: 0; }
 
 /* ---------- companions ---------- */
 .c-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }

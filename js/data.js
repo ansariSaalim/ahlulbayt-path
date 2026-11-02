@@ -1591,3 +1591,169 @@ PROOFS.push(
   TIMELINE.splice(t + 1, 0, { y: "625 · 3 AH", era: "prophet", t: "Ali receives Dhul-Fiqar from the Prophet", s: "dhulfiqar" });
   BATTLES.find(b => b.name === "Uhud").brave = "Killed the standard-bearers of Quraysh. When his sword broke, the Prophet gave him Dhul-Fiqar, and he held the line alone when most of the army ran.";
 })();
+
+/* ---------------------------------------------------------
+   AL-ABBAS IBN ALI — story + section data
+   --------------------------------------------------------- */
+(function () {
+  const s = {
+    id: "abbas", era: "umayyad",
+    title: "Abul Fadl al-Abbas: The Moon of Banu Hashim",
+    arabic: "أبو الفضل العباس قمر بني هاشم",
+    when: "4 Sha'ban 26 AH – 10 Muharram 61 AH", where: "Medina → Siffin → Karbala",
+    summary: "Imam Ali asked for a son who would stand by Husayn at Karbala. Allah gave him al-Abbas, who held the standard to the end and would not drink while his brother was thirsty.",
+    body: `
+<h4>A son for Karbala</h4>
+<p>After Lady Fatima's death, Imam Ali asked his brother Aqil, an expert in the lineages of the Arabs, to find him a wife "from a family of brave men, so she may bear me a brave son". Aqil chose <strong>Fatima bint Hizam</strong> of the tribe of Kilab, known as <strong>Umm al-Banin</strong>, the mother of sons. She gave Ali four sons: <strong>al-Abbas</strong>, Abdullah, Ja'far and Uthman. All four were martyred at Karbala.</p>
+<p>When she entered Ali's house, she asked them not to call her Fatima, so that Hasan and Husayn would not be reminded of their mother's loss, and she told her own sons that they were servants of the children of Fatima.</p>
+<h4>The Moon of Banu Hashim</h4>
+<p>Al-Abbas was born on <strong>4 Sha'ban 26 AH</strong>. He grew up so handsome that he was called <strong>Qamar Bani Hashim</strong>, the Moon of Banu Hashim, and so tall that when he rode a horse his feet nearly touched the ground. Narrations say Imam Ali would hold the baby's arms, kiss them and weep, and when Umm al-Banin asked why, he told her what would happen to those arms at Karbala.</p>
+<p>All his life he never called Husayn "my brother" out of respect; he called him "my master", <em>ya sayyidi</em>. Only once, as he was dying, did he say <em>"ya akhi"</em>: my brother.</p>
+<h4>At Karbala</h4>
+<ul>
+<li><strong>The standard-bearer</strong>: Husayn gave him the banner of the army. He is <strong>Alamdar</strong>, the one who holds the 'alam.</li>
+<li><strong>7 Muharram</strong>: when the river was blocked, he led a party at night with Nafi' ibn Hilal, broke through the guards and brought water back to the camp. From then on he was called <strong>al-Saqqa</strong>, the water-bearer.</li>
+<li><strong>9 Muharram</strong>: Shimr, whose tribe was related to Umm al-Banin, came to offer him and his brothers safety. Al-Abbas answered: <strong>"May Allah curse you and your safety! You offer us safety while the son of the Messenger of Allah has none?"</strong> That evening it was al-Abbas whom Husayn sent to ask the army for one more night of prayer.</li>
+</ul>
+<h4>The water of Ashura</h4>
+<p>On the afternoon of Ashura, al-Abbas had already sent his three brothers out before him, so he could see their reward before his own. Then he came to Husayn and asked permission to fight. Husayn told him: if you must go, bring some water for the children. Little <strong>Sakina</strong> had given him her dry waterskin.</p>
+<p>He charged into the guards at the Euphrates and reached the water. He scooped some up in his hand, then remembered his brother's thirst, and threw it back: <em>"O soul of Abbas, will you drink while Husayn is thirsty?"</em> He filled the waterskin, put it on his shoulder, and turned his horse back towards the tents.</p>
+<p>They ambushed him in the palm grove. A man named <strong>Zayd ibn Warqa'</strong> struck off his <strong>right hand</strong>. He took the sword in his left and kept going, reciting that he would defend his religion and his Imam. <strong>Hakim ibn al-Tufayl</strong> struck off his <strong>left hand</strong>. He held the waterskin in his teeth. Then an arrow pierced the waterskin and the water ran out onto the sand. Another arrow struck his eye, and a blow of an iron club struck his head, and he fell.</p>
+<p>He called out: <strong>"O my brother, come to your brother!"</strong> Husayn rushed to him, sat by his head, and said: <strong>"Now my back is broken, my means are few, and my enemy rejoices."</strong> Al-Abbas asked his brother not to carry him back to the tents, because he had promised Sakina water and could not face her. Husayn left him by the river. That is why the shrine of al-Abbas stands apart from Husayn's, near where the river ran.</p>
+<h4>What the Imams said about him</h4>
+<p>Imam Zayn al-Abidin wept and said: "May Allah have mercy on my uncle al-Abbas. He preferred his brother over himself and sacrificed himself for him until both his hands were cut off, so Allah gave him two wings with which he flies with the angels in Paradise, as He gave Ja'far ibn Abi Talib. Al-Abbas has a rank with Allah that all the martyrs will envy on the Day of Resurrection."</p>
+<p>Imam al-Sadiq said: <strong>"My uncle al-Abbas had a penetrating insight and a firm faith. He fought alongside Abu Abdillah and was martyred."</strong> In the ziyarat he taught, al-Abbas is greeted as <em>"the righteous servant, obedient to Allah, to His Messenger, to Amir al-Mu'minin, to al-Hasan and al-Husayn."</em></p>
+<p>In Medina, Umm al-Banin sat every day at al-Baqi with al-Abbas's young son Ubaydullah, reciting elegies so moving that even Marwan ibn al-Hakam stopped to weep. Millions today call al-Abbas <strong>Bab al-Hawa'ij</strong>, the door to whom people turn for their needs, and the 'alam that is carried in every Muharram is his standard.</p>`,
+    lesson: "Wafa', loyalty. Al-Abbas teaches what it means to follow an Imam: never put yourself before him, even in thirst, even in death.",
+    sources: "Ibn Shahrashub, Manaqib; Shaykh al-Saduq, al-Amali and al-Khisal (Imam al-Sajjad on al-Abbas); Ibn Qulawayh, Kamil al-Ziyarat (his ziyarat); al-Tabari, Tarikh (9 Muharram and the water party); Abu al-Faraj, Maqatil al-Talibiyyin; al-Mufid, al-Irshad",
+    proof: "Al-Tabari, from Abu Mikhnaf, records Shimr's offer of safety to al-Abbas and his brothers and their refusal, and al-Abbas leading the water party of the 7th. Abu al-Faraj, a Sunni-leaning historian, records Umm al-Banin's elegies at al-Baqi that made Marwan weep."
+  };
+  const k = STORIES.findIndex(x => x.id === "ashura");
+  STORIES.splice(k, 0, s);
+  STORY_IMAGES.abbas = "Al-Abbas_Shrine";
+  const t = TIMELINE.findIndex(x => x.s === "ashura");
+  TIMELINE.splice(t, 0, { y: "680 · 61 AH", era: "umayyad", t: "Al-Abbas, the standard-bearer, at the river", s: "abbas" });
+})();
+
+const ABBAS = {
+  titles: [
+    ["Abul Fadl", "Father of virtue"], ["Qamar Bani Hashim", "Moon of Banu Hashim"], ["al-Saqqa", "The water-bearer"],
+    ["Alamdar", "The standard-bearer"], ["Bab al-Hawa'ij", "The door to needs"], ["al-'Abd al-Salih", "The righteous servant"]
+  ],
+  facts: [
+    ["Born", "4 Sha'ban 26 AH, Medina"], ["Father", "Imam Ali ibn Abi Talib"], ["Mother", "Fatima bint Hizam, Umm al-Banin"],
+    ["Brothers martyred with him", "Abdullah, Ja'far and Uthman"], ["Martyred", "10 Muharram 61 AH, by the Euphrates, about 34 years old"], ["Shrine", "Karbala, a short walk from Imam Husayn's"]
+  ],
+  moments: [
+    ["Childhood", "Imam Ali kisses his arms and weeps for what they will suffer."],
+    ["A life of adab", "He calls Husayn 'my master', never 'my brother', until his last breath."],
+    ["7 Muharram", "Breaks through the guards at night and brings water to the camp."],
+    ["9 Muharram", "Refuses Shimr's safety: 'Safety for us, and none for the son of the Prophet?'"],
+    ["Ashura", "Reaches the river, throws the water back, and loses both arms carrying it to Sakina."],
+    ["His last words", "'O my brother, come to your brother.'"]
+  ],
+  ar: "السَّلَامُ عَلَيْكَ أَيُّهَا الْعَبْدُ الصَّالِحُ، الْمُطِيعُ لِلَّهِ وَلِرَسُولِهِ وَلِأَمِيرِ الْمُؤْمِنِينَ وَالْحَسَنِ وَالْحُسَيْنِ",
+  en: "Peace be upon you, O righteous servant, obedient to Allah, to His Messenger, to the Commander of the Faithful, to al-Hasan and al-Husayn. (Ziyarat of al-Abbas)"
+};
+
+/* ---------------------------------------------------------
+   THOSE WHO WRONGED THE AHL AL-BAYT
+   --------------------------------------------------------- */
+const WRONGED = [
+  { who: "Lady Fatima al-Zahra", by: "The government formed at Saqifa: Abu Bakr took Fadak and refused her inheritance; Umar led the party that came to her door to force the pledge.", s: "door" },
+  { who: "Imam Ali", by: "Struck in prayer by Abd al-Rahman ibn Muljam, a Kharijite. Fought by Talha, al-Zubayr and A'isha at Jamal, and by Muawiya and Amr ibn al-As at Siffin; cursed from the pulpits for decades on Muawiya's orders.", s: "ali-martyrdom" },
+  { who: "Imam al-Hasan", by: "Poisoned by his wife Ja'da bint al-Ash'ath on the promise of Muawiya. His funeral was turned back with arrows by Marwan ibn al-Hakam and the Umayyads.", s: "hasan-poison" },
+  { who: "Imam al-Husayn", by: "Yazid ibn Muawiya ordered it; Ubaydullah ibn Ziyad organised it; Umar ibn Sa'd commanded it; Shimr ibn Dhil-Jawshan beheaded him. See the killers of Karbala below.", s: "ashura" },
+  { who: "Imam Zayn al-Abidin", by: "Chained and paraded as a captive by Ibn Ziyad and Yazid. Martyred by poison under the Umayyad caliph al-Walid ibn Abd al-Malik.", s: "sajjad" },
+  { who: "Imam al-Baqir", by: "Summoned to Damascus to be humiliated, then poisoned under the caliph Hisham ibn Abd al-Malik.", s: "baqir" },
+  { who: "Imam al-Sadiq", by: "Harassed, summoned and threatened again and again by the Abbasid caliph al-Mansur, who burned his house and finally had him poisoned.", s: "sadiq" },
+  { who: "Imam al-Kazim", by: "Arrested by Harun al-Rashid and held for years in his prisons; poisoned by his jailer al-Sindi ibn Shahak.", s: "kazim" },
+  { who: "Imam al-Rida", by: "Forced to Khurasan and made heir by al-Ma'mun, who then poisoned him at Tus.", s: "rida" },
+  { who: "Imam al-Jawad", by: "Poisoned at about twenty-five under al-Mu'tasim, through his wife Umm al-Fadl, daughter of al-Ma'mun.", s: "jawad" },
+  { who: "Imam al-Hadi", by: "Forced to Samarra and raided by al-Mutawakkil, who also ploughed over Husayn's grave. Poisoned under al-Mu'tazz.", s: "hadi-samarra" },
+  { who: "Imam al-Askari", by: "Kept under house arrest and imprisoned by the Abbasids; poisoned under al-Mu'tamid, whose men then hunted for his son.", s: "askari" },
+  { who: "Imam al-Mahdi", by: "Hunted from birth by the Abbasids under al-Mu'tamid; betrayed to the caliph by his own uncle Ja'far.", s: "mahdi-birth" }
+];
+const KILLERS = [
+  { n: "Yazid ibn Muawiya", d: "Demanded Husayn's pledge or his head, and struck his lips with a cane in Damascus.", f: "Died in 64 AH, aged about 38, after three and a half years of rule. His own son, Muawiya II, gave up the throne within weeks; it is reported he said his father and grandfather had taken what was not theirs." },
+  { n: "Ubaydullah ibn Ziyad", d: "Governor of Kufa. Killed Muslim ibn Aqil and Hani, ordered the water cut and the attack.", f: "Killed by Ibrahim, son of Malik al-Ashtar, at the river Khazir in 67 AH; his head was sent to Mukhtar." },
+  { n: "Umar ibn Sa'd", d: "Commander of the army, for the promise of governing Rayy. Ordered the horses over Husayn's body.", f: "Never got Rayy. Killed by Mukhtar's men in Kufa, together with his son Hafs." },
+  { n: "Shimr ibn Dhil-Jawshan", d: "Brought the order to attack; beheaded Imam Husayn; tried to kill Imam Zayn al-Abidin.", f: "Hunted down and killed by Mukhtar's men as he fled from Kufa." },
+  { n: "Harmala ibn Kahil al-Asadi", d: "Shot the arrow that killed the six-month-old Ali al-Asghar in his father's arms.", f: "Captured and executed by Mukhtar." },
+  { n: "Khawli ibn Yazid al-Asbahi", d: "Carried the head of Imam Husayn to Kufa and kept it in his house overnight.", f: "Found hiding in his house and killed by Mukhtar's men." },
+  { n: "Hakim ibn al-Tufayl", d: "Struck off the left hand of al-Abbas and stripped his body.", f: "Captured and killed by Mukhtar's men." },
+  { n: "Zayd ibn Warqa' al-Juhani", d: "Struck off the right hand of al-Abbas.", f: "Hunted by Mukhtar's men and killed." },
+  { n: "Shabath ibn Rib'i & Hajjar ibn Abjar", d: "Wrote letters inviting Husayn to Kufa, then stood in the army against him.", f: "Remembered forever as the men who invited their Imam and then fought him." }
+];
+
+/* Profiles: related stories for each of the Fourteen, in MASUMIN order */
+const PROFILE = {
+  lessons: [null, "l-fatima", "l-ali", "l-hasan", "l-husayn", "l-sajjad", "l-baqir", "l-sadiq", "l-kazim", "l-rida", "l-jawad", "l-hadi", "l-askari", "l-mahdi"],
+  stories: [
+    ["dhul-ashira", "abu-talib", "mubahala", "ghadir", "usama", "pen-paper"],
+    ["marriage", "fadak", "door", "fatima-visit", "fatima-burial"],
+    ["kaaba-birth", "laylat-al-mabit", "badr", "khandaq", "dhulfiqar", "khaybar", "ghadir", "patience", "ali-justice", "siffin", "ali-martyrdom"],
+    ["husayn-prophet", "hasan-treaty", "hasan-poison"],
+    ["husayn-prophet", "husayn-departure", "hurr-karbala", "abbas", "ashura", "night-11"],
+    ["zaynab", "captives-damascus", "arbain", "sajjad"],
+    ["baqir", "umar-ii", "zayd"],
+    ["sadiq", "mourning"],
+    ["fadak-borders", "kazim"],
+    ["rida", "mourning"],
+    ["jawad"],
+    ["hadi-samarra"],
+    ["askari", "mahdi-birth"],
+    ["mahdi-birth", "ghayba"]
+  ],
+  pearlWho: ["Prophet Muhammad ﷺ", "Lady Fatima al-Zahra", "Imam Ali", "Imam al-Hasan", "Imam al-Husayn", "Imam Zayn al-Abidin", "Imam al-Baqir", "Imam al-Sadiq", "Imam al-Kazim", "Imam al-Rida", "Imam al-Jawad", "Imam al-Hadi", "Imam al-Askari", "Imam al-Mahdi"]
+};
+
+/* ---------------------------------------------------------
+   MORE DIVINE PEARLS, with references
+   --------------------------------------------------------- */
+PEARLS.push(
+  { who: "Prophet Muhammad ﷺ", q: "I am the city of knowledge and Ali is its gate. Whoever wants the city, let him come through its gate.", src: "al-Hakim, al-Mustadrak; al-Saduq, 'Uyun Akhbar al-Rida" },
+  { who: "Prophet Muhammad ﷺ", q: "Ali is with the Qur'an and the Qur'an is with Ali. They will not separate until they come to me at the Pond.", src: "al-Hakim, al-Mustadrak; al-Tabarani, al-Mu'jam al-Awsat" },
+  { who: "Prophet Muhammad ﷺ", q: "Seeking knowledge is an obligation upon every Muslim.", src: "al-Kafi, Book of the Merit of Knowledge; Sunan Ibn Majah" },
+  { who: "Prophet Muhammad ﷺ", q: "The strong one is not the one who overpowers others, but the one who controls himself when angry.", src: "Sahih al-Bukhari; al-Kafi" },
+  { who: "Prophet Muhammad ﷺ", q: "Whoever wakes up and does not care about the affairs of the Muslims is not one of them.", src: "al-Kafi, Book of Faith and Disbelief" },
+  { who: "Prophet Muhammad ﷺ", q: "Paradise lies beneath the feet of mothers.", src: "Mustadrak al-Wasa'il; Kanz al-'Ummal" },
+  { who: "Lady Fatima al-Zahra", q: "First the neighbour, then the house.", src: "al-Saduq, 'Ilal al-Shara'i' (Imam Hasan heard her pray all night for the neighbours before her own family)" },
+  { who: "Lady Fatima al-Zahra", q: "Whoever sends up his sincere worship to Allah, Allah sends down to him the best of what is good for him.", src: "Ibn Fahd al-Hilli, 'Uddat al-Da'i; Bihar al-Anwar" },
+  { who: "Lady Fatima al-Zahra", q: "The best of you are the gentlest with people, and the most generous to their wives.", src: "al-Tabari al-Imami, Dala'il al-Imama" },
+  { who: "Imam Ali", q: "Knowledge is better than wealth. Knowledge guards you, while you have to guard wealth. Wealth decreases when spent, and knowledge grows when spent.", src: "Nahj al-Balagha, saying 147 (to Kumayl)" },
+  { who: "Imam Ali", q: "Opportunity passes like the clouds, so make use of good opportunities.", src: "Nahj al-Balagha, saying 21" },
+  { who: "Imam Ali", q: "Patience is of two kinds: patience over what you dislike, and patience over what you love.", src: "Nahj al-Balagha, saying 55" },
+  { who: "Imam Ali", q: "The tongue of the wise man is behind his heart, and the heart of the fool is behind his tongue.", src: "Nahj al-Balagha, saying 40" },
+  { who: "Imam Ali", q: "There is no wealth like intelligence, no poverty like ignorance, and no loneliness more desolate than self-conceit.", src: "Nahj al-Balagha, saying 113" },
+  { who: "Imam Ali", q: "In times of trouble, be like a young camel: with no back to be ridden and no udder to be milked.", src: "Nahj al-Balagha, saying 1" },
+  { who: "Imam Ali", q: "This world is a house of passing, and the hereafter is the house of staying. Take from where you are passing for where you will stay.", src: "Nahj al-Balagha, sermon 203" },
+  { who: "Imam Ali", q: "Whoever knows himself knows his Lord.", src: "al-Amidi, Ghurar al-Hikam" },
+  { who: "Imam al-Hasan", q: "Teach people your knowledge, and learn the knowledge of others. Then you will have perfected your knowledge and learned what you did not know.", src: "Tuhaf al-'Uqul" },
+  { who: "Imam al-Husayn", q: "People are slaves of this world, and religion is only on their tongues. They hold onto it as long as their living is comfortable; when they are tested with trials, the truly religious become few.", src: "Tuhaf al-'Uqul (his words on the way to Karbala)" },
+  { who: "Imam al-Husayn", q: "Know that people's needs coming to you are among Allah's blessings upon you, so do not grow weary of them.", src: "al-Irbili, Kashf al-Ghumma; Bihar al-Anwar" },
+  { who: "Imam al-Husayn", q: "Death with dignity is better than life with humiliation.", src: "Ibn Shahrashub, Manaqib Al Abi Talib" },
+  { who: "Imam Zayn al-Abidin", q: "The right of your father is that you know he is your root; without him you would not be. Whenever you see something in yourself that pleases you, know that your father is its root.", src: "Risalat al-Huquq" },
+  { who: "Imam Zayn al-Abidin", q: "O Allah, bless Muhammad and his family, and let my faith reach the most perfect faith, my certainty the best certainty, and my intention the best intention.", src: "al-Sahifa al-Sajjadiyya, supplication 20" },
+  { who: "Imam al-Baqir", q: "Nothing is joined to anything better than forbearance joined to knowledge.", src: "al-Kafi" },
+  { who: "Imam al-Baqir", q: "Whoever's outward is better than his inward, his scale will be light.", src: "Tuhaf al-'Uqul" },
+  { who: "Imam al-Sadiq", q: "Our intercession will not reach the one who takes the prayer lightly.", src: "al-Kafi; Man la Yahduruhu al-Faqih" },
+  { who: "Imam al-Sadiq", q: "The believer is the brother of the believer: his eye and his guide. He does not betray him, wrong him or deceive him.", src: "al-Kafi" },
+  { who: "Imam al-Kazim", q: "Try to divide your time into four parts: an hour for speaking to Allah, an hour for earning your living, an hour for trusted brothers who show you your faults, and an hour for halal pleasure, which gives you strength for the other three.", src: "Tuhaf al-'Uqul" },
+  { who: "Imam al-Kazim", q: "Whoever wants wealth without property, a heart free of envy and a sound religion, let him ask Allah humbly to perfect his intellect.", src: "al-Kafi, Book of Intellect (to Hisham ibn al-Hakam)" },
+  { who: "Imam al-Rida", q: "May Allah have mercy on the servant who keeps our affair alive: he learns our knowledge and teaches it to people. If people knew the beauty of our words, they would follow us.", src: "al-Saduq, 'Uyun Akhbar al-Rida" },
+  { who: "Imam al-Rida", q: "Every person's friend is his intellect, and his enemy is his ignorance.", src: "al-Kafi" },
+  { who: "Imam al-Jawad", q: "Whoever listens to a speaker has worshipped him. If the speaker speaks from Allah, he has worshipped Allah; if he speaks from Iblis, he has worshipped Iblis.", src: "al-Kafi; Tuhaf al-'Uqul" },
+  { who: "Imam al-Jawad", q: "Trust in Allah is the price of every precious thing, and a ladder to every height.", src: "Bihar al-Anwar" },
+  { who: "Imam al-Hadi", q: "Whoever is pleased with himself, many become displeased with him.", src: "Tuhaf al-'Uqul" },
+  { who: "Imam al-Hadi", q: "Whoever fears Allah is respected, and whoever obeys Allah is obeyed.", src: "Tuhaf al-'Uqul" },
+  { who: "Imam al-Askari", q: "The best of your brothers is the one who forgets your mistakes and remembers your kindness to him.", src: "Bihar al-Anwar" },
+  { who: "Imam al-Askari", q: "Two qualities have nothing above them: faith in Allah, and being of benefit to your brothers.", src: "Tuhaf al-'Uqul" },
+  { who: "Imam al-Mahdi", q: "I am the security of the people of the earth, as the stars are the security of the people of the sky.", src: "al-Saduq, Kamal al-Din (his letter)" },
+  { who: "Imam al-Mahdi", q: "We do not neglect your affairs and we do not forget you. Were it not so, hardships would have come down upon you.", src: "al-Tabrisi, al-Ihtijaj (his letter to Shaykh al-Mufid)" },
+  { who: "al-Abbas ibn Ali", q: "By Allah, even if you cut off my right hand, I will go on defending my religion, and an Imam who is true in certainty.", src: "His words at the river, recorded in the maqatil (Ibn Shahrashub, Manaqib)" }
+);
+(function sortPearls() {
+  const order = [...PROFILE.pearlWho, "al-Abbas ibn Ali"];
+  PEARLS.sort((a, b) => order.indexOf(a.who) - order.indexOf(b.who));
+})();

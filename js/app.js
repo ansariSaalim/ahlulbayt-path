@@ -408,7 +408,7 @@
     document.body.classList.remove("locked");
     document.title = "The Path of the Ahl al-Bayt · History & Stories for Learning Shia Islam";
     currentId = null;
-    if (!fromHash && /^#(story|chapter|learn|lesson)\//.test(location.hash)) history.replaceState(null, "", location.pathname + location.search);
+    if (!fromHash && /^#(story|chapter|learn|lesson|imam)\//.test(location.hash)) history.replaceState(null, "", location.pathname + location.search);
     if (lastFocus) lastFocus.focus({ preventScroll: true });
   }
   $$("[data-close]", reader).forEach(b => b.addEventListener("click", () => closeStory()));
@@ -447,6 +447,7 @@
     else if (h.startsWith("#chapter/")) openChapter(h.slice(9));
     else if (h.startsWith("#learn/")) openCategory(h.slice(7));
     else if (h.startsWith("#lesson/")) openLesson(h.slice(8));
+    else if (h.startsWith("#imam/")) openImam(+h.slice(6));
     else closeStory(true);
   }
   window.addEventListener("hashchange", route);
@@ -500,7 +501,7 @@
               <dt>Rulers</dt><dd>${esc(m.rulers)}</dd>
             </dl>
             <p>${esc(m.note)}</p>
-            <a class="btn btn-gold" href="#story/${m.story}">Read the story</a>
+            <a class="btn btn-gold" href="#imam/${MASUMIN.indexOf(m)}">Open full profile →</a>
           </div>
         </div>
       </div>`).join("");
@@ -729,6 +730,7 @@
     if (tab === "martyrs") body.innerHTML = MARTYRS.map(g => `<div class="k-group"><h4>${esc(g.g)}</h4><div class="m-list">${g.items.map(m => `<div class="mt reveal"><b>${esc(m[0])}</b><p>${esc(m[1])}</p></div>`).join("")}</div></div>`).join("");
     if (tab === "women") body.innerHTML = `<div class="m-list">${KARBALA_WOMEN.map(m => `<div class="mt reveal"><b>${esc(m[0])}</b><p>${esc(m[1])}</p></div>`).join("")}</div>`;
     if (tab === "after") body.innerHTML = `<div class="k-after">${["night-11", "zaynab", "captives-damascus", "arbain", "after-karbala", "sajjad", "mourning"].map(id => { const st = storyById[id]; return `<a class="ka reveal" href="#story/${id}"><div class="ka-img"><div class="ph" data-wiki="${STORY_IMAGES[id]}"></div></div><div class="ka-b"><b>${esc(st.title)}</b><small>${esc(st.when)}</small></div></a>`; }).join("")}</div>`;
+    if (tab === "killers") body.innerHTML = killersHTML() + `<p style="margin-top:1rem"><a href="#wronged" style="color:var(--gold)">See who wronged each of the Fourteen →</a></p>`;
     $$("#kBody .ph").forEach(lazy);
     observeReveals(body);
   }
@@ -743,10 +745,64 @@
     $("#pearlFeature").innerHTML = `<p class="pf-label">Pearl of the day</p><blockquote>“${esc(p.q)}”</blockquote><cite>${esc(p.who)} · ${esc(p.src)}</cite><br><button id="pearlNext">Another pearl ↻</button>`;
     $("#pearlNext").onclick = () => { pearlIdx = (pearlIdx + 1) % PEARLS.length; showPearl(); };
   }
+  let pearlWho = "all";
+  const pearlCard = p => `<div class="pg reveal"><q>${esc(p.q)}</q><div class="pw">${esc(p.who)}</div><div class="ps">📖 ${esc(p.src)}</div></div>`;
   function renderPearls() {
     showPearl();
-    $("#pearlGrid").innerHTML = PEARLS.map(p => `<div class="pg reveal"><q>${esc(p.q)}</q><div class="pw">${esc(p.who)}</div><div class="ps">${esc(p.src)}</div></div>`).join("");
+    $("#pearlCount").textContent = PEARLS.length;
+    const whos = [...new Set(PEARLS.map(p => p.who))];
+    $("#pearlChips").innerHTML = `<button class="chip ${pearlWho === "all" ? "on" : ""}" data-w="all">All (${PEARLS.length})</button>` + whos.map(w => `<button class="chip ${pearlWho === w ? "on" : ""}" data-w="${esc(w)}">${esc(w.replace("Imam ", ""))}</button>`).join("");
+    $$("#pearlChips .chip").forEach(c => c.addEventListener("click", () => { pearlWho = c.dataset.w; renderPearls(); }));
+    $("#pearlGrid").innerHTML = PEARLS.filter(p => pearlWho === "all" || p.who === pearlWho).map(pearlCard).join("");
     observeReveals($("#pearlGrid"));
+  }
+  function killersHTML() {
+    return `<div class="kl-grid">${KILLERS.map(k => `<div class="kl reveal"><h4>${esc(k.n)}</h4><p>${esc(k.d)}</p><p class="kf"><b>Their end</b>${esc(k.f)}</p></div>`).join("")}</div>`;
+  }
+  function renderWronged() {
+    $("#wrList").innerHTML = WRONGED.map(w => `<div class="wr reveal"><b>${esc(w.who)}</b><p>${esc(w.by)}</p><a href="#story/${w.s}">Read →</a></div>`).join("");
+    $("#klGrid").outerHTML = killersHTML().replace('class="kl-grid"', 'class="kl-grid" id="klGrid"');
+    observeReveals($("#wronged"));
+  }
+  function renderAbbas() {
+    $("#abAr").textContent = ABBAS.ar; $("#abEn").textContent = ABBAS.en;
+    $("#abTitles").innerHTML = ABBAS.titles.map((t, i) => `<span class="ab-t reveal" style="transition-delay:${i * 60}ms"><b>${esc(t[0])}</b>${esc(t[1])}</span>`).join("");
+    $("#abFacts").innerHTML = ABBAS.facts.map(f => `<tr><td>${esc(f[0])}</td><td>${esc(f[1])}</td></tr>`).join("");
+    $("#abMoments").innerHTML = ABBAS.moments.map(m => `<li class="reveal"><b>${esc(m[0])}</b><p>${esc(m[1])}</p></li>`).join("");
+    observeReveals($("#abbas"));
+  }
+
+  /* ---------- Imam profiles ---------- */
+  function openImam(i) {
+    const m = MASUMIN[i]; if (!m) return;
+    if (!reader.classList.contains("open")) lastFocus = document.activeElement;
+    currentId = null; setMode("lesson");
+    reader.style.setProperty("--c", "#b9822e");
+    $("#rEra").textContent = i < 2 ? (i === 0 ? "The Prophet" : "Lady of the Worlds") : "Imam " + m.n;
+    $("#rArabic").textContent = "";
+    $("#rTitle").textContent = m.name + (i === 0 ? " ﷺ" : " (ع)");
+    $("#rMeta").textContent = m.title;
+    const img = $("#rHeroImg"); img.style.backgroundImage = ""; img.classList.remove("ph-fallback"); $("#rCredit").textContent = "";
+    paint(img, IMAM_IMAGES[m.name], $("#rCredit"), SZ.big);
+    $("#rBack").hidden = false; $("#rBack").href = "#masumin"; $("#rBack").textContent = "← The Fourteen Ma'sumin";
+    const lid = PROFILE.lessons[i], L = lid && LESSONS_LIB[lid], LS = LESSONS[m.name];
+    const pearls = PEARLS.filter(p => p.who === PROFILE.pearlWho[i]);
+    const wr = WRONGED.find(w => w.who.endsWith(m.name.split(" ").slice(-1)[0]) || w.who.includes(m.name.replace("Muhammad ", "")));
+    const prev = MASUMIN[i - 1], next = MASUMIN[i + 1];
+    $("#rLessonView").innerHTML = `
+      <table class="facts"><tr><td>Born</td><td>${esc(m.born)}</td></tr><tr><td>${i === 13 ? "Now" : "Died / martyred"}</td><td>${esc(m.died)}</td></tr><tr><td>Age</td><td>${esc(m.age)}</td></tr><tr><td>Rulers of the time</td><td>${esc(m.rulers)}</td></tr></table>
+      <p class="r-summary">${esc(m.note)}</p>
+      ${L ? `<div class="r-content">${L.body.replace(/<table class="facts">[\s\S]*?<\/table>/, "")}</div>` : ""}
+      ${LS ? `<h4 class="pf-h">What we learn</h4><p class="l-teach">${esc(LS.teach)}</p><div class="l-grid">${LS.items.map((it, k) => `<div class="l-item" style="animation-delay:${.1 + k * .1}s"><b><i>${k + 1}</i>${esc(it[0])}</b><p>${esc(it[1])}</p></div>`).join("")}</div>` : ""}
+      ${pearls.length ? `<h4 class="pf-h">Divine pearls</h4>${pearls.map(pearlCard).join("").replace(/ reveal/g, "")}` : ""}
+      <h4 class="pf-h">Stories</h4><div class="l-rel">${PROFILE.stories[i].map(sid => `<a href="#story/${sid}">📜 ${esc(storyById[sid].title)}</a>`).join("")}</div>
+      ${wr && i > 0 ? `<h4 class="pf-h">Who wronged ${i === 1 ? "her" : "him"}</h4><p class="wr-p">${esc(wr.by)}</p>` : ""}
+      ${L ? `<a class="btn btn-gold" href="#lesson/${lid}" style="margin-top:1rem">Take the lesson & quiz →</a>` : ""}
+      <nav class="r-nav">
+        <button class="r-nav-btn" ${prev ? "" : "disabled"} onclick="location.hash='imam/${i - 1}'"><small>Previous</small><span>${prev ? esc(prev.name) : ""}</span></button>
+        <button class="r-nav-btn" ${next ? "" : "disabled"} onclick="location.hash='imam/${i + 1}'"><small>Next</small><span>${next ? esc(next.name) : ""}</span></button>
+      </nav>`;
+    showReader(m.name);
   }
   function paintBanners() {
     $$(".sec-banner[data-wiki]").forEach(b => {
@@ -767,6 +823,8 @@
   renderProofs();
   $("#proofCount").textContent = ["Twelve","Thirteen","Fourteen","Fifteen","Sixteen"][PROOFS.length - 12] || PROOFS.length;
   renderHaq();
+  renderAbbas();
+  renderWronged();
   renderKarbala();
   renderPearls();
   paintBanners();
