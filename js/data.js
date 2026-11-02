@@ -1191,3 +1191,403 @@ const ERA_INTRO = {
   DATES.splice(d, 0, { month: "Dhul Hijja", day: "1", name: "Marriage of Imam Ali and Lady Fatima", story: "marriage" });
   LESSONS["Fatima al-Zahra"].items.push(["A simple marriage", "The daughter of the Prophet married with a dowry of one coat of armour and a home of clay pots."]);
 })();
+
+/* ---------------------------------------------------------
+   MORE STORIES (v6)
+   --------------------------------------------------------- */
+const MORE_STORIES = [
+{ after: "dhul-ashira", s: {
+  id: "abu-talib", era: "prophet",
+  title: "Abu Talib: The Shield of the Prophet",
+  arabic: "أبو طالب وشعب أبي طالب",
+  when: "c. 613–619 CE (3rd–10th year of the mission)", where: "Mecca, the valley of Abu Talib",
+  summary: "Ali's father protected the Prophet against all of Quraysh, endured three years of siege and starvation for him, and died in the Year of Sorrow.",
+  body: `
+<p>When the Prophet's ﷺ grandfather Abd al-Muttalib died, the eight-year-old Muhammad was raised by his uncle <strong>Abu Talib</strong>, chief of Banu Hashim and father of Ali. Abu Talib loved him more than his own sons.</p>
+<h4>"The sun in my right hand"</h4>
+<p>As Islam grew, the leaders of Quraysh came to Abu Talib again and again: stop your nephew, or hand him over. When Abu Talib told the Prophet, he answered with words recorded by Ibn Hisham: <strong>"By Allah, if they put the sun in my right hand and the moon in my left to make me leave this matter, I would not leave it until Allah makes it victorious or I die for it."</strong> Abu Talib replied: "Go, my nephew, and say what you wish. By Allah, I will never hand you over to anyone."</p>
+<h4>Three years in the valley</h4>
+<p>In about the seventh year of the mission, Quraysh signed a document and hung it inside the Ka'ba: no one would marry, trade or even sell food to Banu Hashim until they gave up Muhammad. Abu Talib led the whole clan into a narrow valley outside Mecca, known as <strong>Shi'b Abi Talib</strong>.</p>
+<p>For about three years they lived there under siege. People ate leaves; the crying of hungry children could be heard from outside. <strong>Khadija</strong>, once the richest woman of Mecca, spent all her wealth on food smuggled in at night. And every night Abu Talib moved the Prophet from his bed and put one of his own sons, often Ali, in his place, so that if anyone came to kill the Prophet in the dark, they would kill his own son instead.</p>
+<p>The Prophet then told Abu Talib that Allah had sent termites to eat the document, leaving only the name of Allah. Abu Talib went to Quraysh and challenged them to look. They opened it and found exactly that, and the siege ended.</p>
+<h4>The Year of Sorrow</h4>
+<p>Soon after, in the tenth year, <strong>Abu Talib died</strong>, and within days <strong>Khadija</strong> died too. The Prophet called it <em>'Am al-Huzn</em>, the Year of Sorrow. With Abu Talib gone, Quraysh dared to throw dirt on the Prophet's head in the street, and he soon had to leave Mecca.</p>
+<h4>Was Abu Talib a believer?</h4>
+<p>The Ahl al-Bayt, who knew him best, are clear: Abu Talib died a believer. He hid his faith so he could keep his position among Quraysh and protect the Prophet, like the believer of Pharaoh's family who hid his faith (Qur'an 40:28). His poems, recorded by Ibn Hisham, call Muhammad truthful and compare him to Musa. Imam al-Sadiq said that Abu Talib was like the People of the Cave, who hid their faith and showed shirk, and Allah gave them their reward twice. The claim that he died a disbeliever spread from those who hated his son Ali.</p>`,
+  lesson: "Before Ali defended the Prophet with his sword, his father defended him with his life, his clan and his name. The house of Abu Talib gave everything for Islam from the very first day.",
+  sources: "Ibn Hisham, al-Sira al-Nabawiyya; Ibn Sa'd, al-Tabaqat; al-Kulayni, al-Kafi (Imam al-Sadiq on Abu Talib); Shaykh al-Mufid, Iman Abi Talib",
+  proof: "Ibn Hisham, the classic Sunni biographer, records Abu Talib's protection, the boycott, the termites eating the document, and Abu Talib's poems affirming the Prophet's truthfulness."
+}},
+{ after: "mubahala", s: {
+  id: "husayn-prophet", era: "prophet",
+  title: "\"Husayn is From Me\": The Soil of Karbala",
+  arabic: "حسين مني وأنا من حسين",
+  when: "4–10 AH", where: "Medina",
+  summary: "The Prophet loved his grandsons beyond words. He also knew what would happen to Husayn, and he was the first to weep for him.",
+  body: `
+<p>Imam Hasan was born in Ramadan 3 AH and Imam Husayn in Sha'ban 4 AH. The Prophet ﷺ himself named them, recited the adhan in their ears, and was never far from them.</p>
+<h4>The masters of the youth of Paradise</h4>
+<p>Sunan al-Tirmidhi records the Prophet's words: <strong>"Hasan and Husayn are the masters of the youth of Paradise."</strong> And: <strong>"Husayn is from me and I am from Husayn. Allah loves whoever loves Husayn."</strong></p>
+<p>Once, while the Prophet was giving a sermon, the two little boys came walking into the mosque in red shirts, stumbling. He came down from the pulpit, picked them up, and put them in front of him, saying that he could not wait. Another time he prolonged his prostration so long that the people thought something had happened. Afterwards he explained: my son was riding on my back, and I did not want to hurry him. (al-Nasa'i)</p>
+<h4>The red soil</h4>
+<p>Musnad Ahmad records that one day the Prophet's eyes were filled with tears. When asked why, he said: <strong>Jibra'il has just told me that Husayn will be killed by the banks of the Euphrates</strong>, and he brought me some of the soil of that land. The Prophet gave the soil to his wife <strong>Umm Salama</strong> and told her: when this soil turns to blood, know that my son has been killed. She kept it in a bottle for fifty years.</p>
+<p>On the afternoon of 10 Muharram 61 AH, in Medina, Umm Salama looked at the bottle and saw that the soil had turned to fresh blood. She screamed, and the women of Medina came running.</p>
+<p>The same day, far from Karbala, Ibn Abbas saw the Prophet in a dream at midday, dusty and dishevelled, holding a bottle of blood. "What is this?" he asked. The Prophet said: <strong>"The blood of Husayn and his companions. I have been collecting it since this morning."</strong> Ibn Abbas noted the day. It was the day of Ashura. (Musnad Ahmad)</p>
+<p>Shia narrations add that Imam Ali, passing Karbala on the way to Siffin, stopped, wept and said: "Here they will kneel their camels, here their blood will be shed. Youths of the family of Muhammad will be killed in this open land, and heaven and earth will weep for them."</p>`,
+  lesson: "The first person to weep for Husayn was the Prophet himself, fifty years before Karbala. When we weep for Husayn, we follow his Sunnah.",
+  sources: "Sunan al-Tirmidhi; Sunan al-Nasa'i; Musnad Ahmad (the soil and Ibn Abbas's dream); al-Hakim, al-Mustadrak; Ibn Qulawayh, Kamil al-Ziyarat",
+  proof: "Musnad Ahmad, one of the main Sunni hadith books, records both Jibra'il bringing the soil of Karbala and Ibn Abbas's dream of the Prophet collecting Husayn's blood. Al-Tirmidhi records 'Husayn is from me and I am from Husayn.'"
+}},
+{ before: "pen-paper", s: {
+  id: "usama", era: "prophet",
+  title: "The Army of Usama and the Prophet's Last Days",
+  arabic: "جيش أسامة ووفاة النبي",
+  when: "Safar 11 AH (May–June 632 CE)", where: "Medina and al-Jurf",
+  summary: "In his final illness, the Prophet ordered the senior companions out of Medina under an eighteen-year-old commander, and repeated it again and again. Ali was not sent.",
+  body: `
+<p>In Safar 11 AH, the Prophet ﷺ prepared an army to march to the Byzantine frontier. He gave command to <strong>Usama ibn Zayd</strong>, about eighteen years old, son of his freed slave and beloved companion Zayd, who had been martyred at Mu'ta. Ibn Sa'd records that the senior emigrants, including <strong>Abu Bakr and Umar</strong>, were placed under Usama's command.</p>
+<p>Some objected to such a young commander. The Prophet, already ill with fever, came out with his head bandaged, climbed the pulpit and said: you criticise his command as you criticised his father's before him. By Allah, he is worthy of it. (Sahih al-Bukhari)</p>
+<p>His illness grew worse, and he kept repeating: <strong>"Send out the army of Usama! Send out the army of Usama!"</strong> Shia narrations, also recorded by al-Shahrastani, add that he cursed anyone who stayed behind from it. But the army camped at al-Jurf, just outside Medina, and delayed, and leading men kept coming back into the city.</p>
+<p>Shia scholars ask a simple question: why would the Prophet, knowing he was dying, insist on sending the senior companions far away, but keep Ali beside him? The answer is that he wanted the city clear when the succession he had announced at Ghadir took place.</p>
+<h4>His last moments</h4>
+<p>Then came the Thursday of the pen and paper. In his final days the Prophet's last advice was about the prayer and about the weak. Imam Ali said: <strong>"The Messenger of Allah passed away while his head was on my chest, and his soul flowed out into my hand, and I passed it over my face."</strong> (Nahj al-Balagha, sermon 197)</p>
+<p>Ali washed him, with al-Abbas and his sons helping, and said that the angels were helping him turn the body. The Muslims came in groups to pray over him. He was buried in his own room. And while all this was happening, a few men were meeting at Saqifa.</p>`,
+  lesson: "The Prophet's last weeks were spent preparing for what came after him: Usama's army, the pen and paper, and his repeated warnings. Very little of it was obeyed.",
+  sources: "Ibn Sa'd, al-Tabaqat al-Kubra (Abu Bakr and Umar in Usama's army); Sahih al-Bukhari (the objection to Usama); al-Shahrastani, al-Milal wa al-Nihal; Nahj al-Balagha, sermon 197; Kitab al-Irshad",
+  proof: "Sahih al-Bukhari records the Prophet defending Usama's command from the pulpit, and Ibn Sa'd records that Abu Bakr and Umar were ordered to march under him. Neither went."
+}},
+{ before: "fatima-burial", s: {
+  id: "fatima-visit", era: "after",
+  title: "Her Last Days: \"I Call Allah to Witness that You Angered Me\"",
+  arabic: "أيام الزهراء الأخيرة",
+  when: "Jumada 11 AH (632 CE)", where: "The house of Ali and Fatima, Medina",
+  summary: "Ill and in pain, Fatima refused the visits of those who had wronged her. When she finally let them in, she made them bear witness to the Prophet's words, and to her anger.",
+  body: `
+<h4>Knocking on doors at night</h4>
+<p>After Saqifa, Ibn Qutayba and Shia sources report that Ali put Fatima on a mount and went at night, with Hasan and Husayn, to the houses of the Ansar, asking them to stand by the pledge of Ghadir. They replied: "Daughter of the Messenger of Allah, our pledge has been given to this man. If your husband had come to us first, we would not have turned from him." Ali answered: should I have left the Prophet's body unwashed in his house and gone out to argue about power?</p>
+<h4>Her words to the women of Medina</h4>
+<p>As she lay ill, the women of the emigrants and the Ansar came to visit her. She gave them a short, sharp sermon, recorded by Ibn Tayfur: she said she had come to dislike their world, and asked what their men had held against Ali. Was it his sword that spared no one in Allah's cause, his fearlessness in death, his strength against the enemies of Allah? She warned them that what they had started would bring bitter fruit. Their husbands came to apologise. She would not accept it.</p>
+<h4>The visit</h4>
+<p>Abu Bakr and Umar asked many times to visit her, and she refused. In the end they asked Ali, and she told him: the house is your house; do as you wish. They came in and greeted her. She turned her face to the wall and did not answer.</p>
+<p>Then she asked them: <strong>"Did you not hear the Messenger of Allah say: 'Fatima's pleasure is my pleasure, and Fatima's anger is my anger. Whoever loves my daughter Fatima loves me, whoever pleases Fatima pleases me, and whoever angers Fatima angers me'?"</strong> They said: yes, we heard it from the Messenger of Allah.</p>
+<p>She said: <strong>"Then I call Allah and His angels to witness that you two have angered me and have not pleased me. When I meet the Prophet, I will complain to him about you."</strong> The Sunni historian Ibn Qutayba records this.</p>
+<h4>Her will</h4>
+<p>Before she died she asked Ali: to marry her niece Umama after her, to care for her children; to make her a coffin with sides, so the shape of her body would not be seen, as she had seen done in Abyssinia (Asma bint Umays made it); to wash her himself, bury her at night, and let none of those who wronged her attend.</p>`,
+  lesson: "Fatima's anger was not personal. The Prophet tied her anger to his own, and his to Allah's. She made sure that history would remember who angered her.",
+  sources: "Ibn Qutayba al-Dinawari, al-Imama wa al-Siyasa (the visit); Ibn Tayfur, Balaghat al-Nisa (sermon to the women); Sahih al-Bukhari ('whoever angers her angers me'); Shaykh al-Tusi, al-Amali",
+  proof: "Ibn Qutayba, a Sunni scholar of the 3rd century AH, records Fatima making the two of them confirm the Prophet's hadith, and then declaring that they had angered her."
+}},
+{ after: "ashura", s: {
+  id: "night-11", era: "umayyad",
+  title: "The Night of the Strangers",
+  arabic: "شام غريبان · ليلة الحادي عشر",
+  when: "Evening of 10 Muharram to 13 Muharram, 61 AH", where: "Karbala",
+  summary: "The tents burned, the bodies were trampled, and the women and children of the Prophet spent the night alone in the desert with no men left but a sick Imam.",
+  body: `
+<p>When Husayn fell, his horse <strong>Dhul-Janah</strong> came back to the tents alone, its saddle empty and its mane red with blood. The women came out and knew.</p>
+<h4>The looting and the fire</h4>
+<p>The army rushed the camp. They stripped the women of their head coverings and jewellery, pulled earrings from the ears of little girls, and set the tents on fire. Children ran into the open desert in terror. <strong>Zaynab</strong> ran from tent to tent, gathering them.</p>
+<p>Shimr came to kill <strong>Imam Ali Zayn al-Abidin</strong>, who lay too ill to stand. Zaynab threw herself over him and said they would have to kill her first. Umar ibn Sa'd told them to leave him.</p>
+<h4>The horses</h4>
+<p>Umar ibn Sa'd then called out for volunteers to trample Husayn's body with their horses. Ten horsemen rode over the body of the grandson of the Messenger of Allah until his chest and back were crushed. Al-Tabari records it.</p>
+<p>The heads of the martyrs, seventy-two of them, were cut off and divided among the tribes, so each could carry its share to Ibn Ziyad and claim a reward. The bodies were left unburied on the sand.</p>
+<h4>Sham-e-Ghariban</h4>
+<p>That night, called the <strong>Night of the Strangers</strong> (<em>Sham-e-Ghariban</em>), there was no man left to guard the family of the Prophet except a sick young Imam. Zaynab and her sister Umm Kulthum kept watch over the burnt camp, counting the children, searching the dark for the missing. Imam Zayn al-Abidin later said that his aunt Zaynab never missed her night prayer, even that night, but that night she prayed it sitting, because she could no longer stand.</p>
+<h4>The 11th: passing the bodies</h4>
+<p>In the morning the women and children were put on camels without saddles. Umar ibn Sa'd had them led past the battlefield on purpose. When Zaynab saw her brother's body, she cried out: <strong>"O Muhammad! The angels of heaven send blessings on you, and this is Husayn in the open desert, soaked in blood, his limbs cut apart. Your daughters are captives, your children are slain, and the wind blows dust over them."</strong> Al-Tabari records that every friend and enemy who heard her wept.</p>
+<h4>The burial</h4>
+<p>The bodies lay three days in the sun. Then men of the nearby tribe of <strong>Banu Asad</strong> came to bury them. Shia narrations say that Imam Zayn al-Abidin came, by the power of the Imamate, to show them who was who, and buried his father with his own hands, saying that no one else could carry him. Al-Abbas was buried where he fell by the river. Hurr was buried by his tribe a little way off. The others were buried together at Husayn's feet.</p>`,
+  lesson: "On the night after Ashura, the family of the Prophet had nothing left but Zaynab's courage and prayer. Majalis on Sham-e-Ghariban are held in darkness, to remember that night.",
+  sources: "al-Tabari, Tarikh (the trampling and Zaynab's cry); Ibn Tawus, al-Luhuf; Kitab al-Irshad; al-Khwarizmi, Maqtal al-Husayn",
+  proof: "Al-Tabari records Umar ibn Sa'd ordering the horses over Husayn's body, and Zaynab's cry over her brother that made even the enemy weep."
+}},
+{ after: "zaynab", s: {
+  id: "captives-damascus", era: "umayyad",
+  title: "The Road to Damascus, and Little Ruqayya",
+  arabic: "سبايا آل محمد في الشام",
+  when: "Muharram – Safar 61 AH", where: "Kufa → Syria → Damascus",
+  summary: "Hundreds of miles in chains, a city decorated to celebrate, a ruin with no roof, and a little girl who asked for her father.",
+  body: `
+<p>From Kufa, Ibn Ziyad sent the captives on to Yazid in Damascus, with the heads of the martyrs carried ahead of them on spears. Imam Zayn al-Abidin's neck was chained, his hands tied to it. The journey took weeks across the desert.</p>
+<h4>An old man at the gate</h4>
+<p>Damascus was decorated as if for a festival. An old Syrian came up to the captives and said: "Praise be to Allah who killed you and destroyed you." Imam Zayn al-Abidin asked him: have you read the Qur'an? Have you read <em>"Say: I ask of you no reward except love for my near relatives"</em> (42:23)? And <em>"Allah only wishes to remove all impurity from you, O People of the House"</em> (33:33)? The old man said yes. The Imam said: <strong>we are the ones these verses are about.</strong> The old man burst into tears, threw down his turban and asked Allah to forgive him for what he had said. Many in Syria had never been told who the Ahl al-Bayt were.</p>
+<h4>In Yazid's court</h4>
+<p>Besides Zaynab's sermon, al-Tabari records another moment. A red-faced Syrian stood up and asked Yazid to give him one of the girls, a daughter of Husayn, as his slave. She clung to her aunt in terror. Zaynab told him: <strong>"You lie, and you are base. That is not for you or for him."</strong> Yazid said he could do it if he wished. Zaynab said: <strong>"Never. Allah has not given you that, unless you leave our religion."</strong></p>
+<h4>The ruin</h4>
+<p>The family of the Prophet was kept in a ruined building near the palace, with no roof: burning sun by day and cold at night. Shia narrations say their faces were peeling from the sun.</p>
+<h4>Ruqayya</h4>
+<p>Shia tradition tells of a small daughter of Husayn, <strong>Ruqayya</strong> (also called Sakina in South Asia), about three or four years old. Every night she cried for her father. One night she woke from a dream and screamed for him until the women could not calm her. Yazid, disturbed by the noise, ordered: take her father to her. A covered tray was brought. She lifted the cloth and saw her father's head. She held it, kissed it, and spoke to it: who stained you with your blood? Who cut your veins? Who made me an orphan so young? She lay her face on his, and when they lifted her, she had died. She was buried there in Damascus, where her shrine stands today.</p>
+<h4>Turning of the tide</h4>
+<p>As word spread through Damascus of who the captives were, people began to turn. Yazid grew afraid, blamed Ibn Ziyad for everything, and finally released the family. The women of the Umayyad house itself held mourning. Imam Zayn al-Abidin asked for the heads to be returned, and for permission to go home.</p>`,
+  lesson: "Yazid wanted Damascus to celebrate. Instead, the captives taught Syria who the Ahl al-Bayt were. The truth was carried in chains, and still it spread.",
+  sources: "al-Tabari, Tarikh (the Syrian and Zaynab's reply); Ibn Tawus, al-Luhuf (the old man of Damascus); al-Khwarizmi, Maqtal al-Husayn; later Shia maqatil for Ruqayya",
+  proof: "Al-Tabari records the Syrian who asked for a granddaughter of the Prophet as a slave, and Zaynab's fearless answer to Yazid's face."
+}},
+{ after: "captives-damascus", s: {
+  id: "arbain", era: "umayyad",
+  title: "Arba'in: The First Pilgrims, and the Return to Medina",
+  arabic: "الأربعين والعودة إلى المدينة",
+  when: "20 Safar 61 AH and after", where: "Karbala and Medina",
+  summary: "Forty days after Ashura, an old blind companion walked to Husayn's grave. Today, millions walk the same road.",
+  body: `
+<h4>Jabir at the grave</h4>
+<p>On <strong>20 Safar 61 AH</strong>, the old companion <strong>Jabir ibn Abdullah al-Ansari</strong>, the same man who had carried the Prophet's salaam to Imam al-Baqir, came from Medina to Karbala with his student <strong>Atiyya al-Awfi</strong>. Jabir was old and nearly blind. He bathed in the Euphrates, put on clean clothes, perfumed himself, and walked to the grave barefoot, glorifying Allah with every step.</p>
+<p>When Atiyya put his hand on the grave, Jabir fell on it and fainted. When he came round, he called out three times: <strong>"Ya Husayn!"</strong> Then he said: a beloved who does not answer his beloved? How can you answer, when your veins have been cut and your head separated from your body? I bear witness that you are the son of the best of prophets…</p>
+<p>He was the first pilgrim of Husayn. That is why Shia Muslims visit Karbala on Arba'in.</p>
+<h4>The family returns</h4>
+<p>Many Shia narrations say the caravan of the Ahl al-Bayt, released from Damascus, came by way of Karbala and arrived the same day, and that Imam Zayn al-Abidin brought back the head of his father to be reunited with his body. They stayed some days mourning at the graves, then set out for Medina.</p>
+<h4>"O people of Yathrib"</h4>
+<p>Near Medina, the Imam sent <strong>Bashir ibn Jadhlam</strong>, a poet, ahead to tell the city. Bashir rode into Medina weeping and calling out a lament: people of Medina, there is no staying here for you now, Husayn has been killed; his body lies in Karbala, covered in blood, and his head is carried around on a spear. Not a man or woman stayed home. Medina had not wept like that since the day the Prophet died.</p>
+<p>Imam Zayn al-Abidin stood outside the city and spoke. He praised Allah, then told them what had happened: that his father had been killed with his family, his women taken captive, his head raised on a spear in every town. If the Prophet had ordered the people to fight us, he said, they could not have done more than they did.</p>
+<p>In Medina, <strong>Umm al-Banin</strong> sat at al-Baqi every day with Abbas's son, reciting elegies for her four sons, so moving that even Marwan wept. <strong>Zaynab</strong> lived only a short time more. Shia sources say she died in 62 AH; her shrine stands near Damascus.</p>
+<h4>Arba'in today</h4>
+<p>Every year, tens of millions of people walk from Najaf, Basra and beyond to Karbala for Arba'in: one of the largest gatherings on earth. Along the way, ordinary Iraqis open their homes and set up free food stalls (<em>mawakib</em>) for every pilgrim, whoever they are.</p>`,
+  lesson: "Yazid wanted Husayn forgotten in the desert. Forty days later his grave had its first pilgrim, and today it has millions.",
+  sources: "Bisharat al-Mustafa (Atiyya's narration); Ibn Tawus, al-Luhuf (Bashir's lament and the Imam's speech); Shaykh al-Tusi, Misbah al-Mutahajjid (Ziyarat al-Arba'in); al-Mufid, Masar al-Shi'a"
+}},
+{ after: "sadiq", s: {
+  id: "mourning", era: "abbasid",
+  title: "\"Whoever Weeps for Husayn\": How the Imams Kept Karbala Alive",
+  arabic: "إحياء ذكرى الحسين",
+  when: "61 AH onwards", where: "Medina, Merv, Baghdad and the whole Shia world",
+  summary: "The rulers wanted Karbala forgotten. The Imams made sure it never would be, through tears, poetry, gatherings and pilgrimage.",
+  body: `
+<p>After Karbala, remembering Husayn was dangerous. Every Imam made it part of the faith anyway.</p>
+<h4>Gatherings and poetry</h4>
+<p><strong>Imam Zayn al-Abidin</strong> wept for his father for over thirty years. <strong>Imam al-Baqir</strong> welcomed the poet al-Kumayt, who recited his poems for the Ahl al-Bayt at a time when such poems could cost a man his life.</p>
+<p><strong>Imam al-Sadiq</strong> would ask poets to recite elegies for Husayn, with the women of his house listening behind a curtain, until the house was filled with weeping. He taught that whoever recites poetry about Husayn, weeps and makes others weep, will be rewarded with Paradise. He taught the <em>Ziyarat Warith</em>, the visitation prayer for Husayn that names him the heir of Adam, Nuh, Ibrahim, Musa, 'Isa and Muhammad.</p>
+<h4>"If you weep for anything…"</h4>
+<p>On the first day of Muharram, <strong>Imam al-Rida</strong> told his companion al-Rayyan ibn Shabib that Muharram was a month in which even the people of jahiliyya forbade fighting, yet in it they killed the son of the Prophet. He said: <strong>"O son of Shabib, if you weep for anything, weep for Husayn ibn Ali, for he was slaughtered as a ram is slaughtered."</strong></p>
+<p>At Merv, the poet <strong>Di'bil al-Khuza'i</strong> recited his famous poem about the family of Muhammad: their homes, once full of the Qur'an, now empty, and their graves scattered from Kufa to Karbala to Baghdad. Imam al-Rida wept, and gave Di'bil one of his own robes as a gift. People later offered Di'bil a fortune for that robe, and he would not sell it.</p>
+<h4>Banned, and never stopped</h4>
+<p>The Umayyads and Abbasids tried to stop it. Al-Mutawakkil ploughed over the grave and punished pilgrims, and still people went. In 352 AH, under the Buyids in Baghdad, the day of Ashura was observed as a public day of mourning for the first time: markets closed and the people came out in the streets.</p>
+<p>From those gatherings come the <strong>majalis</strong>, the processions, the elegies (<em>marthiya</em> and <em>nawha</em>), the <em>sabeel</em> of water given out in memory of Husayn's thirst, and the pilgrimage of Arba'in that Shia Muslims keep today.</p>`,
+  lesson: "Mourning for Husayn is not only sadness. It is how the Imams kept the message of Karbala alive under rulers who wanted it erased. As the saying goes: every day is Ashura, and every land is Karbala.",
+  sources: "Ibn Qulawayh, Kamil al-Ziyarat; Shaykh al-Saduq, Uyun Akhbar al-Rida and al-Amali (al-Rayyan ibn Shabib); Abu al-Faraj, al-Aghani (Di'bil and al-Kumayt); Ibn al-Athir, al-Kamil (352 AH)",
+  proof: "Ibn al-Athir and other Sunni historians record the public mourning of Ashura in Baghdad in 352 AH, and the Sunni literary historian Abu al-Faraj records Di'bil's poem and the Imam's robe."
+}},
+{ before: "kazim", s: {
+  id: "fadak-borders", era: "abbasid",
+  title: "The Borders of Fadak",
+  arabic: "حدود فدك",
+  when: "c. 170–179 AH", where: "Baghdad / Medina",
+  summary: "The caliph offered to give Fadak back. Imam al-Kazim told him its true borders, and the caliph understood what Fadak really meant.",
+  body: `
+<p>For two centuries, Fadak was taken back and given back by one ruler after another. Then the Abbasid caliph (the narration names Harun al-Rashid, and in another version his father al-Mahdi) made Imam Musa al-Kazim an offer: <em>let me return Fadak to you.</em></p>
+<p>The Imam refused: I will only take it with its borders. The caliph asked: what are its borders? The Imam said: if I tell you, you will not return it. The caliph insisted, by the right of the Imam's grandfather.</p>
+<p>So the Imam said: <strong>its first border is Aden. Its second is Samarqand. Its third is Africa. And its fourth is the frontier of Armenia and the coasts of the sea.</strong></p>
+<p>The caliph's face changed. "Then nothing is left for us," he said. "Stand up and take my seat!" The Imam replied: <strong>"I told you that if I defined its borders, you would not return it."</strong></p>
+<p>The Imam had made the point clear. Fadak was never just a village of palm trees. It was the sign of the whole right of the Ahl al-Bayt: the leadership of the Ummah that was taken from Ali and Fatima. Narrations say that from that day, the caliph made up his mind to be rid of the Imam.</p>`,
+  lesson: "Fadak is the symbol of every right taken from the Ahl al-Bayt. When we speak of 'Fatima's haq', we mean all of it: her land, her inheritance, her husband's right, and her children's.",
+  sources: "Ibn Shahrashub, Manaqib Al Abi Talib; al-Zamakhshari, Rabi' al-Abrar; Bihar al-Anwar",
+  proof: "The Sunni scholar al-Zamakhshari records this conversation between the Imam and the caliph in his Rabi' al-Abrar."
+}}
+];
+
+(function insertMore() {
+  for (const m of MORE_STORIES) {
+    const ref = STORIES.findIndex(s => s.id === (m.after || m.before));
+    if (ref < 0) { console.warn("missing ref", m); continue; }
+    STORIES.splice(m.after ? ref + 1 : ref, 0, m.s);
+  }
+  Object.assign(STORY_IMAGES, {
+    "abu-talib": "Mecca", "husayn-prophet": "Imam_Husayn_Shrine", "usama": "Prophet's_Mosque",
+    "fatima-visit": "Al-Baqi_Cemetery", "night-11": "Karbala", "captives-damascus": "Umayyad_Mosque",
+    "arbain": "Al-Abbas_Shrine", "mourning": "Imam_Husayn_Shrine", "fadak-borders": "Fadak"
+  });
+  const add = (afterId, item) => { const i = TIMELINE.findIndex(x => x.s === afterId); TIMELINE.splice(i + 1, 0, item); };
+  add("dhul-ashira", { y: "c. 616–619", era: "prophet", t: "Siege of Shi'b Abi Talib; the Year of Sorrow", s: "abu-talib" });
+  add("mubahala", { y: "626–632", era: "prophet", t: "'Husayn is from me'; Jibra'il brings the soil of Karbala", s: "husayn-prophet" });
+  const p = TIMELINE.findIndex(x => x.s === "pen-paper");
+  TIMELINE.splice(p, 0, { y: "632 · 11 AH", era: "prophet", t: "The army of Usama; the Prophet's last days", s: "usama" });
+  const fb = TIMELINE.findIndex(x => x.s === "fatima-burial");
+  TIMELINE.splice(fb, 0, { y: "632 · 11 AH", era: "after", t: "Fatima's last days: 'you have angered me'", s: "fatima-visit" });
+  add("ashura", { y: "680 · 61 AH", era: "umayyad", t: "The Night of the Strangers; tents burned", s: "night-11" });
+  const z = TIMELINE.findIndex(x => x.s === "zaynab");
+  TIMELINE.splice(z + 1, 0,
+    { y: "680 · 61 AH", era: "umayyad", t: "Captives in Damascus; Ruqayya", s: "captives-damascus" },
+    { y: "680 · 61 AH", era: "umayyad", t: "Arba'in: Jabir, the first pilgrim", s: "arbain" });
+  add("sadiq", { y: "61 AH →", era: "abbasid", t: "The Imams keep Karbala alive", s: "mourning" });
+  const kz = TIMELINE.findIndex(x => x.s === "kazim");
+  TIMELINE.splice(kz, 0, { y: "c. 175 AH", era: "abbasid", t: "Imam al-Kazim names the borders of Fadak", s: "fadak-borders" });
+})();
+
+/* ---------------------------------------------------------
+   FATIMA'S HAQ
+   --------------------------------------------------------- */
+const HAQ = [
+  { t: "Fadak, her father's gift", ar: "فدك", d: "The Prophet gave Fadak to Fatima in his lifetime, when the verse 'give the relative his right' (17:26) came down, and her workers ran it. Within days of his death they were thrown out. She brought Ali and Umm Ayman as witnesses, and their testimony was refused.", s: "fadak" },
+  { t: "Her inheritance", ar: "الإرث", d: "When she then asked for her inheritance, she was told the Prophet had said 'we prophets leave no inheritance'. She answered with the Qur'an: Sulayman inherited from Dawud (27:16), and Zakariyya prayed for an heir (19:6). Was she not her father's daughter?", s: "fadak" },
+  { t: "Her family's share of Khums", ar: "سهم ذي القربى", d: "The Qur'an gives a share of khums to 'the near relatives' of the Prophet (8:41). After him it was stopped. Sunan Abu Dawud records that the khums was divided as before, except that the Prophet's relatives were not given what he used to give them.", s: "fadak" },
+  { t: "Her husband's right", ar: "الخلافة", d: "The leadership the Prophet gave Ali at Ghadir, in front of the pilgrims, was taken at Saqifa while Ali and Fatima were washing the Prophet's body.", s: "saqifa" },
+  { t: "The sanctity of her home", ar: "حرمة البيت", d: "The house the Prophet greeted every morning as the home of the Ahl al-Bayt was threatened with fire with her inside, and its door was forced. She lost her unborn son Muhsin.", s: "door" },
+  { t: "Her voice", ar: "الصوت", d: "She was the woman the verse of purification (33:33) speaks of, and the Prophet said whoever angers her angers him. Yet her word was not accepted, and her witnesses were turned away.", s: "fatima-visit" }
+];
+const HAQ_ANSWER = [
+  { t: "She spoke", d: "The sermon of Fadak in the Prophet's mosque, and her words to the women of Medina." },
+  { t: "She refused", d: "She did not speak to those who wronged her until she died (Sahih al-Bukhari)." },
+  { t: "She bore witness", d: "'I call Allah and His angels to witness that you have angered me.'" },
+  { t: "She hid her grave", d: "Buried at night by her will. Her hidden grave still asks every Muslim: why?" }
+];
+const FADAK_HISTORY = [
+  { who: "The Prophet ﷺ", yr: "7 AH", t: "Fadak surrenders without a battle and belongs to the Prophet alone (59:6). He gives it to Fatima." },
+  { who: "Abu Bakr", yr: "11 AH", t: "Her workers are removed. Her claim, her witnesses and her inheritance are all refused." },
+  { who: "Uthman", yr: "23–35 AH", t: "Gives Fadak to his cousin Marwan ibn al-Hakam." },
+  { who: "Imam Ali", yr: "35–40 AH", t: "Writes to his governor: 'Of all that the sky covers, we had Fadak. Some people coveted it, and others let it go. The best judge is Allah.'" },
+  { who: "Muawiya", yr: "41–60 AH", t: "Keeps it in Umayyad hands and hands its income to his family." },
+  { who: "Umar ibn Abd al-Aziz", yr: "99–101 AH", t: "Admits it was taken unjustly and returns it to the children of Fatima." },
+  { who: "Later Umayyads", yr: "after 101 AH", t: "Take it back again." },
+  { who: "al-Ma'mun", yr: "210 AH", t: "Officially returns Fadak to the descendants of Fatima, declaring it was hers by the Prophet's gift. Recorded by al-Baladhuri." },
+  { who: "al-Mutawakkil", yr: "232–247 AH", t: "Takes it back once more." },
+  { who: "Imam al-Kazim", yr: "", t: "Tells the caliph its true borders: Aden, Samarqand, Africa and Armenia. Fadak is the whole right of the Ahl al-Bayt.", s: "fadak-borders" }
+];
+
+/* ---------------------------------------------------------
+   KARBALA
+   --------------------------------------------------------- */
+const KARBALA_DAYS = [
+  { d: "28 Rajab 60", t: "Husayn leaves Medina with his family, refusing to pledge to Yazid.", s: "husayn-departure" },
+  { d: "3 Sha'ban 60", t: "Arrives in Mecca. Thousands of letters from Kufa follow.", s: "husayn-departure" },
+  { d: "15 Ramadan 60", t: "Sends his cousin Muslim ibn Aqil ahead to Kufa.", s: "husayn-departure" },
+  { d: "8 Dhul Hijja 60", t: "Leaves Mecca rather than let the Ka'ba be dishonoured with his blood.", s: "husayn-departure" },
+  { d: "9 Dhul Hijja 60", t: "Muslim ibn Aqil is abandoned and martyred in Kufa; Hani ibn Urwa too.", s: "husayn-departure" },
+  { d: "Late Dhul Hijja", t: "News of Muslim reaches him on the road. Hurr's 1,000 horsemen block his path; Husayn gives them water.", s: "hurr-karbala" },
+  { d: "2 Muharram 61", t: "Arrives at Karbala: 'a land of grief and trial'.", s: "hurr-karbala" },
+  { d: "3 Muharram", t: "Umar ibn Sa'd arrives with 4,000. More troops follow each day.", s: "hurr-karbala" },
+  { d: "7 Muharram", t: "The Euphrates is blocked. No water reaches the camp.", s: "hurr-karbala" },
+  { d: "9 Muharram (Tasu'a)", t: "Shimr brings orders to attack. Abbas refuses the offer of safety. Husayn asks for one night to pray.", s: "hurr-karbala" },
+  { d: "Night of the 10th", t: "Husayn releases his companions. Not one leaves. The camp hums with Qur'an.", s: "ashura" },
+  { d: "10 Muharram (Ashura)", t: "Hurr repents. The companions fall, then the family, then Husayn.", s: "ashura" },
+  { d: "Evening of the 10th", t: "Tents burned, the body trampled. The Night of the Strangers.", s: "night-11" },
+  { d: "11 Muharram", t: "The captives are led past the bodies to Kufa. Zaynab's cry.", s: "night-11" },
+  { d: "12–13 Muharram", t: "Zaynab's sermon in Kufa. Banu Asad bury the martyrs.", s: "zaynab" },
+  { d: "Safar 61", t: "The captives enter Damascus. Zaynab and Zayn al-Abidin speak in Yazid's court. Ruqayya dies in the ruins.", s: "captives-damascus" },
+  { d: "20 Safar 61 (Arba'in)", t: "Jabir, the first pilgrim, at Husayn's grave.", s: "arbain" }
+];
+const MARTYRS = [
+  { g: "The family of the Prophet (Banu Hashim)", items: [
+    ["al-Abbas ibn Ali", "Standard-bearer. Lost both arms bringing water for the children."],
+    ["Abdullah, Ja'far and Uthman ibn Ali", "Abbas's full brothers. He sent them out before him."],
+    ["Muhammad and Abu Bakr ibn Ali", "Sons of Imam Ali, brothers of Husayn."],
+    ["Ali al-Akbar ibn al-Husayn", "Eighteen; looked and spoke like the Prophet. First of the family to go out."],
+    ["Ali al-Asghar (Abdullah) ibn al-Husayn", "Six months old. Killed by Harmala's arrow in his father's arms."],
+    ["al-Qasim ibn al-Hasan", "About thirteen. 'Death is sweeter to me than honey.'"],
+    ["Abdullah ibn al-Hasan", "About eleven. Ran from the tents to shield his uncle; his arm was cut and he was killed in Husayn's arms."],
+    ["Abu Bakr ibn al-Hasan", "Son of Imam Hasan."],
+    ["Aun and Muhammad ibn Abdullah ibn Ja'far", "Grandsons of Ja'far al-Tayyar. Aun was Zaynab's son."],
+    ["The sons of Aqil", "Ja'far, Abd al-Rahman and others, and Abdullah, son of Muslim ibn Aqil."]
+  ]},
+  { g: "The companions", items: [
+    ["al-Hurr ibn Yazid al-Riyahi", "Blocked Husayn's road, then changed sides on the morning of Ashura. 'You are free, as your mother named you.'"],
+    ["Habib ibn Mazahir al-Asadi", "Husayn's childhood friend, past seventy. Commanded the left wing."],
+    ["Muslim ibn Awsaja al-Asadi", "Among the first to fall. Dying, he told Habib: my will is this man. Do not leave him."],
+    ["Zuhayr ibn al-Qayn", "Had avoided Husayn on the road. After one meeting he sent his wife home with his blessing and commanded the right wing."],
+    ["Burayr ibn Khudayr", "The Qur'an teacher of Kufa. He was joking on the morning of Ashura, because Paradise was so close."],
+    ["Abu Thumama al-Sa'idi", "In the middle of the battle, he reminded Husayn of the noon prayer. 'You remembered the prayer; may Allah count you among those who pray.'"],
+    ["Sa'id ibn Abdullah al-Hanafi", "Stood in front of Husayn during the prayer, taking the arrows on his body, and fell when it ended."],
+    ["Abdullah ibn Umayr al-Kalbi & Umm Wahb", "When he fell, his wife went out and sat by his body. She was killed there, the only woman killed at Karbala (al-Tabari)."],
+    ["Jaun (John) ibn Huwayy", "A Black freed slave of Abu Dharr. Husayn placed his cheek on Jaun's face as he died."],
+    ["Abis ibn Abi Shabib al-Shakiri", "Threw off his armour and helmet: 'Love of Husayn has made me mad.'"],
+    ["Nafi' ibn Hilal al-Jamali", "An archer who wrote his name on his arrows. Led the water party with Abbas on the 7th."],
+    ["Hanzala ibn As'ad al-Shibami", "Stood before the army reciting the warnings of the believer of Pharaoh's family."],
+    ["The Ghifari brothers", "Abdullah and Abd al-Rahman wept, not for themselves, but because they could not protect him."]
+  ]},
+  { g: "Martyrs on the road", items: [
+    ["Muslim ibn Aqil", "Husayn's envoy. Abandoned by Kufa and thrown from the palace on 9 Dhul Hijja."],
+    ["Hani ibn Urwa", "Sheltered Muslim in Kufa and was killed for it."],
+    ["Qays ibn Mus'hir al-Saydawi", "Carried Husayn's letter to Kufa; thrown from the top of the palace."],
+    ["Abdullah ibn Yaqtur", "Another of Husayn's messengers, also thrown from the palace."]
+  ]}
+];
+const KARBALA_WOMEN = [
+  ["Zaynab bint Ali", "The heroine of Karbala. Protected the survivors, prayed her night prayer on the Night of the Strangers, and silenced Ibn Ziyad and Yazid with her sermons."],
+  ["Umm Kulthum bint Ali", "Zaynab's sister. Shared the captivity and the sermons in Kufa."],
+  ["Rubab", "Mother of Ali al-Asghar. It is narrated she never sat in the shade again after Karbala."],
+  ["Sukayna bint al-Husayn", "Husayn's beloved daughter. Narrations say she was found lying on her father's body."],
+  ["Fatima bint al-Husayn", "The girl the Syrian asked for in Yazid's court. Zaynab shielded her."],
+  ["Ruqayya bint al-Husayn", "The little girl who died in the ruins of Damascus holding her father's head."],
+  ["Umm Wahb", "The only woman killed at Karbala, at her husband's side."],
+  ["Umm al-Banin", "In Medina, mother of Abbas and his three brothers. She asked first about Husayn, then about her sons."]
+];
+
+/* ---------------------------------------------------------
+   DIVINE PEARLS — sayings, in order of the Fourteen
+   --------------------------------------------------------- */
+const PEARLS = [
+  { who: "Prophet Muhammad ﷺ", q: "The best of you is the one who is best to his family, and I am the best of you to my family.", src: "Sunan al-Tirmidhi" },
+  { who: "Prophet Muhammad ﷺ", q: "None of you truly believes until he loves for his brother what he loves for himself.", src: "Sahih al-Bukhari; Sahih Muslim" },
+  { who: "Prophet Muhammad ﷺ", q: "Fatima is a part of me. Whoever angers her has angered me.", src: "Sahih al-Bukhari" },
+  { who: "Lady Fatima al-Zahra", q: "Allah made faith a purification from shirk, and prayer a cure for arrogance… and He made obedience to us order for the community, and our leadership a protection from division.", src: "The Sermon of Fadak" },
+  { who: "Imam Ali", q: "People are of two kinds: either your brother in religion, or your equal in creation.", src: "Nahj al-Balagha, letter 53" },
+  { who: "Imam Ali", q: "The worth of every person is in what he does well.", src: "Nahj al-Balagha, saying 81" },
+  { who: "Imam Ali", q: "A man is hidden under his tongue.", src: "Nahj al-Balagha, saying 392" },
+  { who: "Imam Ali", q: "Do not be the slave of another, when Allah has made you free.", src: "Nahj al-Balagha, letter 31" },
+  { who: "Imam al-Hasan", q: "Work for your world as if you will live forever, and work for your hereafter as if you will die tomorrow.", src: "Bihar al-Anwar (his advice to Junada)" },
+  { who: "Imam al-Husayn", q: "I see death as nothing but happiness, and life with oppressors as nothing but misery.", src: "Tuhaf al-'Uqul" },
+  { who: "Imam al-Husayn", q: "If you have no religion and do not fear the Day of Return, then at least be free people in this world.", src: "Words to the army on Ashura (al-Luhuf)" },
+  { who: "Imam Zayn al-Abidin", q: "The right of your mother is that you know she carried you where no one carries anyone, and fed you from the fruit of her heart what no one feeds anyone.", src: "Risalat al-Huquq" },
+  { who: "Imam al-Baqir", q: "A scholar whose knowledge benefits others is better than seventy thousand worshippers.", src: "al-Kafi" },
+  { who: "Imam al-Baqir", q: "Our Shia is only the one who fears Allah and obeys Him.", src: "al-Kafi" },
+  { who: "Imam al-Sadiq", q: "Be an adornment for us, and do not be a disgrace to us.", src: "al-Amali of al-Saduq" },
+  { who: "Imam al-Sadiq", q: "Do not be fooled by the length of a man's bowing and prostration. Look at his truthfulness and how he returns what is entrusted to him.", src: "al-Kafi" },
+  { who: "Imam al-Kazim", q: "Allah has two proofs over people: an outer proof, the prophets and Imams, and an inner proof, the intellect.", src: "al-Kafi, Book of Intellect" },
+  { who: "Imam al-Rida", q: "Among the signs of understanding are knowledge, forbearance and silence. Silence is one of the gates of wisdom.", src: "al-Kafi" },
+  { who: "Imam al-Rida", q: "If you weep for anything, weep for Husayn.", src: "Uyun Akhbar al-Rida" },
+  { who: "Imam al-Jawad", q: "The believer needs three things: success from Allah, a preacher within himself, and acceptance of advice from those who advise him.", src: "Tuhaf al-'Uqul" },
+  { who: "Imam al-Hadi", q: "The world is a market: some profit in it, and some lose.", src: "Tuhaf al-'Uqul" },
+  { who: "Imam al-Askari", q: "Worship is not much fasting and prayer. Worship is much reflection on the affair of Allah.", src: "Tuhaf al-'Uqul" },
+  { who: "Imam al-Mahdi", q: "People benefit from me in my occultation as they benefit from the sun when clouds hide it.", src: "Kamal al-Din" }
+];
+
+/* extra proofs, rulers */
+PROOFS.push(
+  { title: "Close Every Door but Ali's", ar: "سُدُّوا الْأَبْوَابَ إِلَّا بَابَ عَلِيٍّ",
+    en: "The Prophet ordered every door opening into his mosque to be closed, except the door of Ali. When people complained, he said he had not closed or opened anything himself, but was commanded to.",
+    src: "Sunan al-Tirmidhi; Musnad Ahmad; al-Nasa'i, Khasa'is",
+    why: "Like Harun, whose house opened into the place of worship of Musa, only Ali was given this rank. It was Allah's command, not the Prophet's preference.", story: "brotherhood" },
+  { title: "\"The Guardian of Every Believer After Me\"", ar: "عَلِيٌّ مِنِّي وَأَنَا مِنْهُ، وَهُوَ وَلِيُّ كُلِّ مُؤْمِنٍ بَعْدِي",
+    en: "When some companions complained about Ali, the Prophet's face changed and he said: \"What do you want from Ali? Ali is from me and I am from him, and he is the guardian (wali) of every believer after me.\"",
+    src: "Sunan al-Tirmidhi; Musnad Ahmad",
+    why: "'After me' leaves no room for doubt. The Prophet himself said who the wali of the believers would be once he was gone.", story: "ghadir" }
+);
+(function moreRulers() {
+  const ab = RULERS[2].items, i = ab.findIndex(r => r.name === "al-Mansur");
+  ab.splice(i + 1, 0, { name: "al-Mahdi (Abbasid)", reign: "158–169 AH · 775–785", imam: "al-Kazim", text: "Had Imam al-Kazim arrested and brought to Baghdad. He released him after dreaming of Imam Ali reciting the verse about those who cut off the ties of kinship (47:22).", links: ["kazim"] });
+  const m = ab.findIndex(r => r.name === "al-Mutawakkil");
+  ab.splice(m + 1, 0, { name: "al-Muntasir", reign: "247–248 AH · 861–862", imam: "al-Hadi", good: true, text: "An exception. After his father al-Mutawakkil was killed, he allowed pilgrims back to Husayn's grave and eased the persecution of the family of Ali. He ruled only six months.", links: ["hadi-samarra"] });
+  RULERS[0].items[0].text = "Chosen at Saqifa while Ali was burying the Prophet. Took Fadak from Fatima, refused her inheritance and stopped her family's share of khums. Ali did not pledge for about six months, and Fatima died angry with him (Bukhari).";
+  RULERS[0].items[0].links = ["saqifa", "fadak", "door", "fatima-visit"];
+  RULERS[1].items.find(r => r.name === "Umar ibn Abd al-Aziz").good = true;
+  RULERS[1].items.find(r => r.name === "Yazid ibn Muawiya").links = ["husayn-departure", "ashura", "night-11", "captives-damascus", "after-karbala"];
+})();
+
+/* Dhul-Fiqar */
+(function () {
+  const s = {
+    id: "dhulfiqar", era: "prophet",
+    title: "Dhul-Fiqar: How Ali Got His Sword",
+    arabic: "ذو الفقار سيف علي",
+    when: "2–3 AH (Badr and Uhud)", where: "Medina",
+    summary: "The most famous sword in Islamic history came to Ali from the hand of the Prophet, and the heavens themselves named it.",
+    body: `
+<h4>A sword from the Prophet's hand</h4>
+<p>Its name, <strong>Dhul-Fiqar</strong>, means "the one with notches" or "the one with vertebrae", after the grooves along its blade. Later tradition pictures it with a <strong>split, two-pointed tip</strong>, the shape you see today on every 'alam and banner of Imam Ali.</p>
+<p>Ibn Hisham and al-Tabari record that Dhul-Fiqar came to the Prophet ﷺ after the <strong>Battle of Badr</strong>. It had belonged to a champion of Quraysh who was killed there, and it became the Prophet's own sword. Then the Prophet gave it to Ali.</p>
+<h4>Uhud: the sword that did not break</h4>
+<p>Shia narrations, and some Sunni historians, tell it more fully. At Uhud, when the army fled and Ali stood alone in front of the Prophet, he fought so hard that <strong>his own sword broke</strong>. He came to the Prophet and said: "O Messenger of Allah, a man fights with his sword, and mine is broken." The Prophet handed him Dhul-Fiqar. Ali went back into the battle and drove back group after group of Quraysh.</p>
+<p>It was then that the voice was heard from the sky, recorded by al-Tabari: <strong>"There is no youth like Ali, and no sword like Dhul-Fiqar."</strong> Some Shia narrations say that Jibra'il himself brought the sword down from Paradise.</p>
+<h4>The battles of Dhul-Fiqar</h4>
+<p>With it Ali killed <strong>Amr ibn Abd Wadd</strong> at Khandaq, <strong>Marhab</strong> at Khaybar, and the standard-bearer of Hawazin at Hunayn. It was in his hand at Jamal, Siffin and Nahrawan. Yet he never once drew it in anger or for himself. At Khandaq he waited until his anger had passed before he struck.</p>
+<h4>Where is it now?</h4>
+<p>The Imams taught that the weapons and relics of the Prophet passed from Imam to Imam, like the Ark of the Covenant among the Children of Israel: whoever holds them holds the Imamate (al-Kafi, Book of the Proof). Dhul-Fiqar passed from Ali to Hasan, to Husayn, and down the line of the Imams. Shia narrations say it is today with <strong>Imam al-Mahdi</strong>, who will draw it when Allah allows him to appear.</p>`,
+    lesson: "Dhul-Fiqar is the symbol of strength that serves the truth. The sword is famous because of the hand that held it, a hand that never struck for the sake of the self.",
+    sources: "Ibn Hisham, al-Sira; al-Tabari, Tarikh (Badr and Uhud); al-Kulayni, al-Kafi, Kitab al-Hujja (the Prophet's weapons with the Imams); Kitab al-Irshad; Bihar al-Anwar",
+    proof: "Al-Tabari, a Sunni historian, records both that Dhul-Fiqar was the Prophet's sword from Badr and the call at Uhud: 'There is no youth like Ali, and no sword like Dhul-Fiqar.'"
+  };
+  const k = STORIES.findIndex(x => x.id === "uhud");
+  STORIES.splice(k + 1, 0, s);
+  STORY_IMAGES.dhulfiqar = "Imam_Ali_Shrine";
+  const t = TIMELINE.findIndex(x => x.s === "uhud");
+  TIMELINE.splice(t + 1, 0, { y: "625 · 3 AH", era: "prophet", t: "Ali receives Dhul-Fiqar from the Prophet", s: "dhulfiqar" });
+  BATTLES.find(b => b.name === "Uhud").brave = "Killed the standard-bearers of Quraysh. When his sword broke, the Prophet gave him Dhul-Fiqar, and he held the line alone when most of the army ran.";
+})();

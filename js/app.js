@@ -28,8 +28,11 @@
 
   /* ---------- menu ---------- */
   const menuBtn = $("#menuBtn"), navLinks = $("#navLinks");
-  menuBtn.addEventListener("click", () => { menuBtn.classList.toggle("open"); navLinks.classList.toggle("open"); });
-  $$("a", navLinks).forEach(a => a.addEventListener("click", () => { menuBtn.classList.remove("open"); navLinks.classList.remove("open"); }));
+  const scrim = $("#navScrim");
+  const setMenu = open => { menuBtn.classList.toggle("open", open); navLinks.classList.toggle("open", open); scrim.classList.toggle("open", open); document.documentElement.style.overflow = open ? "hidden" : ""; };
+  menuBtn.addEventListener("click", () => setMenu(!navLinks.classList.contains("open")));
+  scrim.addEventListener("click", () => setMenu(false));
+  $$("a", navLinks).forEach(a => a.addEventListener("click", () => setMenu(false)));
 
   /* ---------- toast ---------- */
   let toastT;
@@ -42,11 +45,12 @@
      PHOTOS from Wikipedia (Wikimedia Commons)
      =========================================================== */
   const imgCache = new Map();
-  function wikiImage(title) {
-    if (imgCache.has(title)) return imgCache.get(title);
+  function wikiImage(title, want = 1000) {
+    const key = title + "@" + want;
+    if (imgCache.has(key)) return imgCache.get(key);
     const p = (async () => {
       let cached = null;
-      try { cached = JSON.parse(sessionStorage.getItem("wk:" + title)); } catch { /* ignore */ }
+      try { cached = JSON.parse(sessionStorage.getItem("wk:" + key)); } catch { /* ignore */ }
       if (cached) return cached;
       const r = await fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" + encodeURIComponent(title), { headers: { "Accept": "application/json" } });
       if (!r.ok) throw new Error("no page");
@@ -54,20 +58,22 @@
       const orig = j.originalimage, thumb = j.thumbnail;
       if (!orig && !thumb) throw new Error("no image");
       let src;
-      if (thumb && orig && orig.width > 1400) src = thumb.source.replace(/\/\d+px-/, "/1400px-");
+      if (thumb && orig && orig.width > want) src = thumb.source.replace(/\/\d+px-/, "/" + want + "px-");
       else src = (orig || thumb).source;
       const out = { src, page: (j.content_urls && j.content_urls.desktop && j.content_urls.desktop.page) || ("https://en.wikipedia.org/wiki/" + title), name: j.title };
-      try { sessionStorage.setItem("wk:" + title, JSON.stringify(out)); } catch { /* ignore */ }
+      try { sessionStorage.setItem("wk:" + key, JSON.stringify(out)); } catch { /* ignore */ }
       return out;
     })();
-    imgCache.set(title, p);
+    imgCache.set(key, p);
     return p;
   }
-  function paint(el, title, creditEl) {
+  const small = window.innerWidth < 700;
+  const SZ = { card: small ? 640 : 800, big: small ? 1000 : 1600 };
+  function paint(el, title, creditEl, want = SZ.card) {
     if (!title) { el.classList.add("ph-fallback"); return; }
     el.classList.add("shimmer");
-    wikiImage(title).then(info => new Promise((res, rej) => {
-      const im = new Image();
+    wikiImage(title, want).then(info => new Promise((res, rej) => {
+      const im = new Image(); im.decoding = "async";
       im.onload = () => res(info); im.onerror = rej; im.src = info.src;
     })).then(info => {
       el.classList.remove("shimmer", "ph-fallback");
@@ -84,7 +90,7 @@
     entries.forEach(en => {
       if (!en.isIntersecting) return;
       const el = en.target; lazyImgs.unobserve(el);
-      paint(el, el.dataset.wiki);
+      paint(el, el.dataset.wiki, el.dataset.credit ? $(el.dataset.credit, el) : null, el.dataset.size === "big" ? SZ.big : SZ.card);
     });
   }, { rootMargin: "300px" });
   const lazy = el => lazyImgs.observe(el);
@@ -107,7 +113,7 @@
 
   // hero photo
   const heroBg = $("#heroBg");
-  wikiImage("Imam_Husayn_Shrine").then(info => new Promise((res, rej) => {
+  wikiImage("Imam_Husayn_Shrine", SZ.big).then(info => new Promise((res, rej) => {
     const im = new Image(); im.onload = () => res(info); im.onerror = rej; im.src = info.src;
   })).then(info => {
     heroBg.style.background = `url("${info.src}") center/cover no-repeat`;
@@ -119,34 +125,38 @@
   (function motes() {
     const c = $("#motes"); if (!c || reduceMotion) return;
     const ctx = c.getContext("2d");
-    let w, h, dpr, parts = [], running = true;
+    const sprite = document.createElement("canvas"); sprite.width = sprite.height = 32;
+    const sc = sprite.getContext("2d"), g = sc.createRadialGradient(16, 16, 0, 16, 16, 16);
+    g.addColorStop(0, "rgba(255,228,160,1)"); g.addColorStop(.35, "rgba(250,210,130,.5)"); g.addColorStop(1, "rgba(250,210,130,0)");
+    sc.fillStyle = g; sc.fillRect(0, 0, 32, 32);
+    let w, h, parts = [], running = true, last = 0;
     function size() {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       w = c.clientWidth; h = c.clientHeight;
       c.width = w * dpr; c.height = h * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const n = Math.round(Math.min(90, (w * h) / 16000));
+      const n = Math.round(Math.min(small ? 22 : 45, (w * h) / 26000));
       parts = Array.from({ length: n }, () => spawn(true));
     }
     function spawn(any) {
-      return { x: Math.random() * w, y: any ? Math.random() * h : h + 10, r: Math.random() * 2.2 + .4,
-        vy: Math.random() * .35 + .1, vx: (Math.random() - .5) * .15, a: Math.random() * .6 + .2, t: Math.random() * 6.28 };
+      return { x: Math.random() * w, y: any ? Math.random() * h : h + 10, s: Math.random() * 14 + 6,
+        vy: Math.random() * .5 + .15, vx: (Math.random() - .5) * .2, a: Math.random() * .6 + .25, t: Math.random() * 6.28 };
     }
-    function frame() {
+    function frame(now) {
       if (!running) return;
+      requestAnimationFrame(frame);
+      if (now - last < 33) return; last = now;
       ctx.clearRect(0, 0, w, h);
       for (const p of parts) {
-        p.t += .02; p.y -= p.vy; p.x += p.vx + Math.sin(p.t) * .15;
-        if (p.y < -10) Object.assign(p, spawn(false));
-        const tw = p.a * (.6 + .4 * Math.sin(p.t * 1.7));
-        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 5);
-        g.addColorStop(0, `rgba(250,220,150,${tw})`); g.addColorStop(1, "rgba(250,220,150,0)");
-        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 5, 0, 6.283); ctx.fill();
+        p.t += .04; p.y -= p.vy * 2; p.x += p.vx + Math.sin(p.t) * .2;
+        if (p.y < -20) Object.assign(p, spawn(false));
+        ctx.globalAlpha = p.a * (.6 + .4 * Math.sin(p.t * 1.7));
+        ctx.drawImage(sprite, p.x - p.s / 2, p.y - p.s / 2, p.s, p.s);
       }
-      requestAnimationFrame(frame);
     }
     size(); window.addEventListener("resize", size);
-    new IntersectionObserver(([e]) => { const was = running; running = e.isIntersecting; if (running && !was) frame(); }).observe(c);
-    frame();
+    new IntersectionObserver(([e]) => { const was = running; running = e.isIntersecting && !document.hidden; if (running && !was) requestAnimationFrame(frame); }).observe(c);
+    document.addEventListener("visibilitychange", () => { const was = running; running = !document.hidden; if (running && !was) requestAnimationFrame(frame); });
+    requestAnimationFrame(frame);
   })();
 
   // animated counters
@@ -166,13 +176,22 @@
      =========================================================== */
   const nav = $("#nav"), bar = $("#progress");
   const sections = $$("section[id]");
+  let ticking = false, secTops = [];
+  const measure = () => { secTops = sections.map(x => [x.id, x.offsetTop]); };
+  window.addEventListener("load", measure); window.addEventListener("resize", measure);
   function onScroll() {
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(() => { ticking = false; doScroll(); });
+  }
+  let lastActive = "";
+  function doScroll() {
+    if (!secTops.length) measure();
     const y = window.scrollY, H = document.documentElement.scrollHeight - innerHeight;
     nav.classList.toggle("solid", y > 40);
     bar.style.width = (H > 0 ? (y / H) * 100 : 0) + "%";
     let cur = "";
-    for (const s of sections) if (s.offsetTop - 120 <= y) cur = s.id;
-    $$("a", navLinks).forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + cur));
+    for (const [id, top] of secTops) if (top - 120 <= y) cur = id;
+    if (cur !== lastActive) { lastActive = cur; $$("a", navLinks).forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + cur)); }
     tlProgress();
   }
   window.addEventListener("scroll", onScroll, { passive: true });
@@ -319,7 +338,7 @@
     const img = $("#rHeroImg"); img.style.backgroundImage = ""; img.classList.remove("ph-fallback");
     img.style.setProperty("--c", e.color);
     $("#rCredit").textContent = "";
-    paint(img, STORY_IMAGES[id], $("#rCredit"));
+    paint(img, STORY_IMAGES[id], $("#rCredit"), SZ.big);
     updateDoneBtn();
     const prev = STORIES[idx - 1], next = STORIES[idx + 1];
     const pb = $("#rPrev"), nb = $("#rNext");
@@ -338,6 +357,14 @@
   function setMode(mode) {
     $("#rChapter").hidden = mode !== "chapter";
     $("#rStory").hidden = mode !== "story";
+    $("#rLessonView").hidden = mode !== "lesson";
+  }
+  function showReader(title) {
+    const body = $(".r-body"); body.classList.remove("fade"); void body.offsetWidth; body.classList.add("fade");
+    rScroll.scrollTop = 0;
+    reader.classList.add("open"); reader.setAttribute("aria-hidden", "false");
+    document.body.classList.add("locked");
+    document.title = title + " · The Path of the Ahl al-Bayt";
   }
   function openChapter(eraId) {
     const e = eraById[eraId]; if (!e) return;
@@ -353,7 +380,7 @@
     $("#rMeta").textContent = e.years + " · " + list.length + " stories";
     const img = $("#rHeroImg"); img.style.backgroundImage = ""; img.classList.remove("ph-fallback");
     $("#rCredit").textContent = "";
-    paint(img, ERA_IMAGES[eraId], $("#rCredit"));
+    paint(img, ERA_IMAGES[eraId], $("#rCredit"), SZ.big);
     const back = $("#rBack"); back.hidden = true;
     const next = list.find(s => !readSet.has(s.id)) || list[0];
     const done = list.filter(s => readSet.has(s.id)).length;
@@ -381,7 +408,7 @@
     document.body.classList.remove("locked");
     document.title = "The Path of the Ahl al-Bayt · History & Stories for Learning Shia Islam";
     currentId = null;
-    if (!fromHash && (location.hash.startsWith("#story/") || location.hash.startsWith("#chapter/"))) history.replaceState(null, "", location.pathname + location.search);
+    if (!fromHash && /^#(story|chapter|learn|lesson)\//.test(location.hash)) history.replaceState(null, "", location.pathname + location.search);
     if (lastFocus) lastFocus.focus({ preventScroll: true });
   }
   $$("[data-close]", reader).forEach(b => b.addEventListener("click", () => closeStory()));
@@ -418,6 +445,8 @@
     const h = decodeURIComponent(location.hash);
     if (h.startsWith("#story/")) openStory(h.slice(7));
     else if (h.startsWith("#chapter/")) openChapter(h.slice(9));
+    else if (h.startsWith("#learn/")) openCategory(h.slice(7));
+    else if (h.startsWith("#lesson/")) openLesson(h.slice(8));
     else closeStory(true);
   }
   window.addEventListener("hashchange", route);
@@ -522,6 +551,7 @@
       <li class="b-card reveal">
         <span class="b-wm" dir="rtl" lang="ar">${b.ar}</span>
         <div>
+          <div class="b-thumb"><div class="ph" data-wiki="${STORY_IMAGES[b.story] || ""}"></div></div>
           <div class="b-num">${String(i + 1).padStart(2, "0")}</div>
           <h3>${esc(b.name)}</h3>
           <span class="b-year">${esc(b.year)}</span>
@@ -533,9 +563,10 @@
           <a href="#story/${b.story}">Read the full story: ${esc(storyById[b.story].title)} →</a>
         </div>
       </li>`).join("");
+    $$("#bList .ph").forEach(el => el.dataset.wiki ? lazy(el) : el.classList.add("ph-fallback"));
     observeReveals($("#bList"));
     const z = $(".zulfiqar");
-    new IntersectionObserver(([e], o) => { if (e.isIntersecting) { z.classList.add("in"); o.disconnect(); } }, { threshold: .3 }).observe(z);
+    new IntersectionObserver(([e], o) => { if (e.isIntersecting) { z.classList.add("in"); z.parentElement.classList.add("lit"); o.disconnect(); } }, { threshold: .3 }).observe(z);
   }
 
   /* ===========================================================
@@ -579,11 +610,166 @@
     observeReveals($("#dGrid"));
   }
 
+
+  /* ===========================================================
+     LEARN & PRACTICE LIBRARY
+     =========================================================== */
+  let doneLessons = new Set(store.get("abp-lessons", []));
+  const catOf = id => LEARN_CATS.find(c => c.lessons.includes(id));
+  function renderLearn() {
+    $("#learnGrid").innerHTML = LEARN_CATS.map((c, i) => {
+      const d = c.lessons.filter(l => doneLessons.has(l)).length;
+      return `<a class="lc reveal" href="#learn/${c.id}" style="transition-delay:${(i % 4) * 60}ms;text-decoration:none">
+        <span class="lc-icon">${c.icon}</span><h3>${esc(c.name)}</h3><p>${esc(c.desc)}</p>
+        <div class="lc-foot"><div class="overall-bar"><i style="width:${(d / c.lessons.length) * 100}%"></i></div><span>${d}/${c.lessons.length} lessons</span></div></a>`;
+    }).join("");
+    observeReveals($("#learnGrid"));
+  }
+  function openCategory(cid) {
+    const c = LEARN_CATS.find(x => x.id === cid); if (!c) return;
+    if (!reader.classList.contains("open")) lastFocus = document.activeElement;
+    currentId = null; setMode("chapter");
+    reader.style.setProperty("--c", "#b9822e");
+    $("#rEra").textContent = "Learn & practise";
+    $("#rArabic").textContent = "";
+    $("#rTitle").textContent = c.icon + "  " + c.name;
+    $("#rMeta").textContent = c.lessons.length + " lessons";
+    const img = $("#rHeroImg"); img.style.backgroundImage = ""; img.classList.remove("ph-fallback"); img.classList.add("ph-fallback"); $("#rCredit").textContent = "";
+    $("#rBack").hidden = false; $("#rBack").href = "#learn"; $("#rBack").textContent = "← All categories";
+    const next = c.lessons.find(l => !doneLessons.has(l)) || c.lessons[0];
+    $("#rChapter").innerHTML = `<p class="r-summary">${esc(c.desc)}</p>
+      <a class="btn btn-gold ch-start" href="#lesson/${next}">${doneLessons.has(next) ? "Review" : "Start"}: ${esc(LESSONS_LIB[next].title)} →</a>
+      <ol class="ch-list">${c.lessons.map((l, k) => { const L = LESSONS_LIB[l]; return `
+        <li style="animation-delay:${.06 + k * .05}s"><a href="#lesson/${l}" class="${doneLessons.has(l) ? "read" : ""}">
+          <span class="ch-n">${doneLessons.has(l) ? "✓" : k + 1}</span>
+          <span class="ch-t"><b>${esc(L.title)}</b><small>${esc(L.tag)}${L.quiz ? " · " + L.quiz.length + "-question quiz" : ""}</small></span></a></li>`; }).join("")}</ol>`;
+    showReader(c.name);
+  }
+  function openLesson(id) {
+    const L = LESSONS_LIB[id]; if (!L) return;
+    const c = catOf(id), idx = c.lessons.indexOf(id);
+    if (!reader.classList.contains("open")) lastFocus = document.activeElement;
+    currentId = null; setMode("lesson");
+    reader.style.setProperty("--c", "#b9822e");
+    $("#rEra").textContent = c.name;
+    $("#rArabic").textContent = "";
+    $("#rTitle").textContent = L.title;
+    $("#rMeta").textContent = L.tag + " · lesson " + (idx + 1) + " of " + c.lessons.length;
+    const img = $("#rHeroImg"); img.style.backgroundImage = ""; img.classList.remove("ph-fallback"); $("#rCredit").textContent = "";
+    const imgTitle = (L.links && L.links[0] && STORY_IMAGES[L.links[0]]) || ERA_IMAGES.prophet;
+    paint(img, imgTitle, $("#rCredit"), SZ.big);
+    $("#rBack").hidden = false; $("#rBack").href = "#learn/" + c.id; $("#rBack").textContent = "← " + c.name;
+    const secName = { proofs: "The proofs", battles: "Ali's battles", karbala: "Karbala", haq: "Fatima's Haq", pearls: "Divine pearls", lessons: "Lessons of the Fourteen", rulers: "The caliphs", masumin: "The Ma'sumin", dates: "Key dates", reading: "Books" };
+    const rel = [...(L.links || []).map(sid => `<a href="#story/${sid}">📜 ${esc(storyById[sid].title)}</a>`),
+                 ...(L.sections || []).map(sec => `<a href="#${sec}" data-sec="${sec}">✦ ${secName[sec] || sec}</a>`)].join("");
+    const prev = c.lessons[idx - 1], next = c.lessons[idx + 1];
+    const quizHTML = L.quiz && L.quiz.length ? `<div class="quiz" id="quiz"><h4>Test yourself</h4><p class="qz-score" id="qzScore">${L.quiz.length} questions</p>
+      ${L.quiz.map((q, qi) => `<div class="qz" data-qi="${qi}"><p>${qi + 1}. ${esc(q.q)}</p><div class="qz-opts">${q.o.map((o, oi) => `<button data-oi="${oi}">${esc(o)}</button>`).join("")}</div><div class="qz-fb"></div></div>`).join("")}
+      <button class="qz-retake" id="qzRetake" hidden>Retake the quiz</button></div>` : "";
+    $("#rLessonView").innerHTML = `
+      <div class="r-content">${L.body}</div>
+      ${L.practice ? `<div class="l-practice"><b>Practise today</b>${esc(L.practice)}</div>` : ""}
+      ${rel ? `<p style="font-family:var(--sans);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)">Read more on this site</p><div class="l-rel">${rel}</div>` : ""}
+      ${quizHTML}
+      <button class="btn btn-gold r-done ${doneLessons.has(id) ? "done" : ""}" id="lDone">${doneLessons.has(id) ? "✓ Lesson complete · tap to undo" : "Mark lesson complete"}</button>
+      <nav class="r-nav">
+        <button class="r-nav-btn" ${prev ? "" : "disabled"} onclick="location.hash='lesson/${prev || ""}'"><small>Previous</small><span>${prev ? esc(LESSONS_LIB[prev].title) : ""}</span></button>
+        <button class="r-nav-btn" ${next ? "" : "disabled"} onclick="location.hash='lesson/${next || ""}'"><small>Next</small><span>${next ? esc(LESSONS_LIB[next].title) : ""}</span></button>
+      </nav>`;
+    $$("#rLessonView .l-rel a[data-sec]").forEach(a => a.addEventListener("click", e => { e.preventDefault(); closeStory(); setTimeout(() => $("#" + a.dataset.sec).scrollIntoView(), 80); }));
+    $("#lDone").onclick = () => {
+      const on = !doneLessons.has(id); if (on) doneLessons.add(id); else doneLessons.delete(id);
+      store.set("abp-lessons", [...doneLessons]);
+      $("#lDone").classList.toggle("done", on); $("#lDone").textContent = on ? "✓ Lesson complete · tap to undo" : "Mark lesson complete";
+      renderLearn(); if (on) toast("Lesson complete ✓");
+    };
+    if (quizHTML) setupQuiz(L.quiz, id);
+    showReader(L.title);
+  }
+  function setupQuiz(quiz, id) {
+    let answered = 0, right = 0;
+    const score = $("#qzScore"), retake = $("#qzRetake");
+    $$("#quiz .qz").forEach(box => {
+      const q = quiz[+box.dataset.qi];
+      $$("button", box).forEach(btn => btn.addEventListener("click", () => {
+        const oi = +btn.dataset.oi, ok = oi === q.a;
+        $$("button", box).forEach((b, j) => { b.disabled = true; if (j === q.a) b.classList.add("ok"); });
+        if (!ok) btn.classList.add("bad");
+        $(".qz-fb", box).textContent = ok ? "Correct! ✓" : "Not quite. The answer is: " + q.o[q.a];
+        answered++; if (ok) right++;
+        score.textContent = `${right} / ${answered} correct` + (answered === quiz.length ? (right === quiz.length ? " · MashaAllah, full marks!" : " · review and try again") : "");
+        if (answered === quiz.length) {
+          retake.hidden = false;
+          if (right === quiz.length && !doneLessons.has(id)) { $("#lDone").click(); }
+        }
+      }));
+    });
+    retake.onclick = () => openLesson(id);
+  }
+
+  /* ===========================================================
+     FATIMA'S HAQ
+     =========================================================== */
+  function renderHaq() {
+    $("#haqGrid").innerHTML = HAQ.map((h, i) => `<div class="haq-card reveal" style="transition-delay:${(i % 3) * 70}ms">
+      <span class="hn">${i + 1}</span><span class="har" dir="rtl" lang="ar">${h.ar}</span><h4>${esc(h.t)}</h4><p>${esc(h.d)}</p>
+      <a href="#story/${h.s}">Read: ${esc(storyById[h.s].title)} →</a></div>`).join("");
+    $("#haqAnswer").innerHTML = HAQ_ANSWER.map((h, i) => `<div class="ha reveal" style="transition-delay:${i * 70}ms"><b>${esc(h.t)}</b><p>${esc(h.d)}</p></div>`).join("");
+    $("#fadakTl").innerHTML = FADAK_HISTORY.map(f => `<li class="reveal"><b>${esc(f.who)}</b>${f.yr ? `<small>${esc(f.yr)}</small>` : ""}<p>${esc(f.t)}${f.s ? ` <a href="#story/${f.s}" style="color:var(--gold)">Read →</a>` : ""}</p></li>`).join("");
+    observeReveals($("#haq"));
+  }
+
+  /* ===========================================================
+     KARBALA
+     =========================================================== */
+  function renderKarbala(tab = "days") {
+    $$("#kTabs .tab").forEach(t => t.classList.toggle("on", t.dataset.k === tab));
+    const body = $("#kBody");
+    if (tab === "days") body.innerHTML = `<ol class="k-days">${KARBALA_DAYS.map(d => `<li><a class="k-day reveal ${/Ashura\)/.test(d.d) ? "ashura" : ""}" href="#story/${d.s}"><time>${esc(d.d)}</time><span>${esc(d.t)}</span></a></li>`).join("")}</ol>`;
+    if (tab === "martyrs") body.innerHTML = MARTYRS.map(g => `<div class="k-group"><h4>${esc(g.g)}</h4><div class="m-list">${g.items.map(m => `<div class="mt reveal"><b>${esc(m[0])}</b><p>${esc(m[1])}</p></div>`).join("")}</div></div>`).join("");
+    if (tab === "women") body.innerHTML = `<div class="m-list">${KARBALA_WOMEN.map(m => `<div class="mt reveal"><b>${esc(m[0])}</b><p>${esc(m[1])}</p></div>`).join("")}</div>`;
+    if (tab === "after") body.innerHTML = `<div class="k-after">${["night-11", "zaynab", "captives-damascus", "arbain", "after-karbala", "sajjad", "mourning"].map(id => { const st = storyById[id]; return `<a class="ka reveal" href="#story/${id}"><div class="ka-img"><div class="ph" data-wiki="${STORY_IMAGES[id]}"></div></div><div class="ka-b"><b>${esc(st.title)}</b><small>${esc(st.when)}</small></div></a>`; }).join("")}</div>`;
+    $$("#kBody .ph").forEach(lazy);
+    observeReveals(body);
+  }
+  $$("#kTabs .tab").forEach(t => t.addEventListener("click", () => renderKarbala(t.dataset.k)));
+
+  /* ===========================================================
+     DIVINE PEARLS
+     =========================================================== */
+  let pearlIdx = new Date().getDate() % PEARLS.length;
+  function showPearl() {
+    const p = PEARLS[pearlIdx];
+    $("#pearlFeature").innerHTML = `<p class="pf-label">Pearl of the day</p><blockquote>“${esc(p.q)}”</blockquote><cite>${esc(p.who)} · ${esc(p.src)}</cite><br><button id="pearlNext">Another pearl ↻</button>`;
+    $("#pearlNext").onclick = () => { pearlIdx = (pearlIdx + 1) % PEARLS.length; showPearl(); };
+  }
+  function renderPearls() {
+    showPearl();
+    $("#pearlGrid").innerHTML = PEARLS.map(p => `<div class="pg reveal"><q>${esc(p.q)}</q><div class="pw">${esc(p.who)}</div><div class="ps">${esc(p.src)}</div></div>`).join("");
+    observeReveals($("#pearlGrid"));
+  }
+  function paintBanners() {
+    $$(".sec-banner[data-wiki]").forEach(b => {
+      const credit = $(".photo-credit", b);
+      new IntersectionObserver(([e], o) => {
+        if (!e.isIntersecting) return; o.disconnect();
+        wikiImage(b.dataset.wiki, SZ.big).then(info => new Promise((res, rej) => { const im = new Image(); im.onload = () => res(info); im.onerror = rej; im.src = info.src; }))
+          .then(info => { b.style.backgroundImage = `url("${info.src}")`; credit.innerHTML = `Photo: <a href="${esc(info.page)}" target="_blank" rel="noopener">${esc(info.name)}</a> · Wikimedia Commons`; }).catch(() => {});
+      }, { rootMargin: "400px" }).observe(b);
+    });
+  }
+
   /* ===========================================================
      INIT
      =========================================================== */
   renderEras();
+  renderLearn();
   renderProofs();
+  $("#proofCount").textContent = ["Twelve","Thirteen","Fourteen","Fifteen","Sixteen"][PROOFS.length - 12] || PROOFS.length;
+  renderHaq();
+  renderKarbala();
+  renderPearls();
+  paintBanners();
   renderBattles();
   renderTimeline();
   renderStoryChips();

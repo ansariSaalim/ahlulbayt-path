@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=5" />
+<link rel="stylesheet" href="css/style.css?v=6" />
 </head>
 <body>
 
@@ -25,16 +25,23 @@
     <span><span class="bp">The Path of the </span><em>Ahl al-Bayt</em></span>
   </a>
   <nav class="nav-links" id="navLinks">
-    <a href="#path">Start</a>
+    <a href="#learn">Learn</a>
     <a href="#proofs">Proofs</a>
-    <a href="#battles">Ali's Battles</a>
-    <a href="#timeline">Timeline</a>
     <a href="#stories">Stories</a>
-    <a href="#rulers">The Caliphs</a>
-    <a href="#masumin">14 Ma'sumin</a>
-    <a href="#lessons">Lessons</a>
-    <a href="#reading">Books</a>
+    <a href="#battles">Battles</a>
+    <a href="#haq">Fatima's Haq</a>
+    <a href="#karbala">Karbala</a>
+    <a href="#rulers">Caliphs</a>
+    <a href="#masumin">Ma'sumin</a>
+    <a href="#pearls">Pearls</a>
+    <a class="x" href="#path">Your progress</a>
+    <a class="x" href="#timeline">Timeline</a>
+    <a class="x" href="#lessons">Lessons of the Fourteen</a>
+    <a class="x" href="#companions">Companions</a>
+    <a class="x" href="#dates">Key dates</a>
+    <a class="x" href="#reading">Books</a>
   </nav>
+  <div class="nav-scrim" id="navScrim"></div>
   <div class="nav-actions">
     <button class="icon-btn" id="themeBtn" aria-label="Switch light or dark theme">
       <svg viewBox="0 0 24 24" class="i-moon"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -141,43 +148,27 @@
   </div>
 </section>
 
+<!-- ============ LEARN ============ -->
+<section class="section section-alt" id="learn">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="kicker">Learn & practise</p>
+      <h2>Everything a Shia Muslim needs, by category</h2>
+      <p>Beliefs, the Ma'sumin, Karbala, taharat, namaz with the Arabic, fasting, khums, taqlid, duas, the Shia year and daily life. Each lesson has a practice task and a short quiz.</p>
+    </div>
+    <div class="learn-grid" id="learnGrid"></div>
+  </div>
+</section>
+
 <!-- ============ PROOFS ============ -->
 <section class="section" id="proofs">
   <div class="wrap">
     <div class="section-head reveal">
       <p class="kicker">Why the Ahl al-Bayt?</p>
-      <h2>Twelve proofs that this is the Prophet's path</h2>
+      <h2><span id="proofCount">Fourteen</span> proofs that this is the Prophet's path</h2>
       <p>From the Qur'an, and from the most trusted books of hadith, including Sahih al-Bukhari and Sahih Muslim. Tap a proof to open it.</p>
     </div>
     <div class="p-grid" id="pGrid"></div>
-  </div>
-</section>
-
-<!-- ============ BATTLES ============ -->
-<section class="section battles" id="battles">
-  <div class="wrap">
-    <div class="b-hero">
-      <svg class="zulfiqar" viewBox="0 0 120 420" aria-hidden="true">
-        <path class="zf-blade" d="M48 300 L48 92 L36 18 L57 70 L63 70 L84 18 L72 92 L72 300 Z"/>
-        <path class="zf-line" d="M60 96 L60 296"/>
-        <path class="zf-guard" d="M18 300 L102 300 L96 314 L24 314 Z"/>
-        <path class="zf-grip" d="M52 314 L68 314 L68 378 L52 378 Z"/>
-        <circle class="zf-pommel" cx="60" cy="392" r="13"/>
-      </svg>
-      <div class="b-hero-text reveal">
-        <p class="kicker">Asadullah · the Lion of Allah</p>
-        <h2>The Battles of Amir al-Mu'minin</h2>
-        <p class="b-call" dir="rtl" lang="ar">لَا فَتَى إِلَّا عَلِيٌّ، لَا سَيْفَ إِلَّا ذُو الْفَقَارِ</p>
-        <p class="b-call-en">"There is no youth like Ali, and no sword like Dhul-Fiqar." Heard from the sky at Uhud</p>
-        <div class="b-stats">
-          <div><b>11</b><span>battles & stands</span></div>
-          <div><b>0</b><span>times he fled</span></div>
-          <div><b>1st</b><span>to every duel</span></div>
-        </div>
-        <p class="b-note">It is narrated that Ali's armour had no back plate, because he never once turned his back on an enemy.</p>
-      </div>
-    </div>
-    <ol class="b-list" id="bList"></ol>
   </div>
 </section>
 
@@ -220,6 +211,73 @@
   </div>
 </section>
 
+<!-- ============ BATTLES ============ -->
+<section class="section battles" id="battles">
+  <div class="wrap">
+    <div class="b-hero">
+      <div class="zf-wrap"><div class="zf-glow"></div><svg class="zulfiqar" viewBox="0 0 120 420" aria-hidden="true">
+        <path class="zf-blade" d="M48 300 L48 92 L36 18 L57 70 L63 70 L84 18 L72 92 L72 300 Z"/>
+        <path class="zf-line" d="M60 96 L60 296"/>
+        <path class="zf-guard" d="M18 300 L102 300 L96 314 L24 314 Z"/>
+        <path class="zf-grip" d="M52 314 L68 314 L68 378 L52 378 Z"/>
+        <circle class="zf-pommel" cx="60" cy="392" r="13"/>
+      </svg></div>
+      <div class="b-hero-text reveal">
+        <p class="kicker">Asadullah · the Lion of Allah</p>
+        <h2>The Battles of Amir al-Mu'minin</h2>
+        <p class="b-call" dir="rtl" lang="ar">لَا فَتَى إِلَّا عَلِيٌّ، لَا سَيْفَ إِلَّا ذُو الْفَقَارِ</p>
+        <p class="b-call-en">"There is no youth like Ali, and no sword like Dhul-Fiqar." Heard from the sky at Uhud</p>
+        <div class="b-stats">
+          <div><b>11</b><span>battles & stands</span></div>
+          <div><b>0</b><span>times he fled</span></div>
+          <div><b>1st</b><span>to every duel</span></div>
+        </div>
+        <a class="b-sword-link" href="#story/dhulfiqar">How Ali got Dhul-Fiqar →</a>
+        <p class="b-note">It is narrated that Ali's armour had no back plate, because he never once turned his back on an enemy.</p>
+      </div>
+    </div>
+    <ol class="b-list" id="bList"></ol>
+  </div>
+</section>
+
+
+<!-- ============ FATIMA'S HAQ ============ -->
+<section class="section haq" id="haq">
+  <div class="sec-banner" data-wiki="Al-Baqi_Cemetery"><div class="sb-in">
+    <p class="kicker">Lady Fatima al-Zahra</p>
+    <h2>Fatima's Haq</h2>
+    <p class="sb-ar" dir="rtl" lang="ar">فَاطِمَةُ بَضْعَةٌ مِنِّي، فَمَنْ أَغْضَبَهَا أَغْضَبَنِي</p>
+    <p class="sb-en">"Fatima is a part of me; whoever angers her angers me." Sahih al-Bukhari</p>
+  </div><p class="photo-credit"></p></div>
+  <div class="wrap">
+    <h3 class="sub-h reveal">Six rights that were taken from her</h3>
+    <div class="haq-grid" id="haqGrid"></div>
+    <h3 class="sub-h reveal">Her answer</h3>
+    <div class="haq-answer" id="haqAnswer"></div>
+    <h3 class="sub-h reveal">Fadak through the centuries</h3>
+    <ol class="fadak-tl" id="fadakTl"></ol>
+  </div>
+</section>
+
+<!-- ============ KARBALA ============ -->
+<section class="section karbala" id="karbala">
+  <div class="sec-banner" data-wiki="Al-Abbas_Shrine"><div class="sb-in">
+    <p class="kicker">61 AH · 680 CE</p>
+    <h2>Karbala</h2>
+    <p class="sb-ar" dir="rtl" lang="ar">السَّلَامُ عَلَى الْحُسَيْنِ، وَعَلَى عَلِيِّ بْنِ الْحُسَيْنِ، وَعَلَى أَوْلَادِ الْحُسَيْنِ، وَعَلَى أَصْحَابِ الْحُسَيْنِ</p>
+    <p class="sb-en">"Peace be upon Husayn, and upon Ali son of Husayn, and upon the children of Husayn, and upon the companions of Husayn." Ziyarat Ashura</p>
+  </div><p class="photo-credit"></p></div>
+  <div class="wrap">
+    <div class="tabs reveal" id="kTabs" role="tablist">
+      <button class="tab on" data-k="days">Day by day</button>
+      <button class="tab" data-k="martyrs">The martyrs</button>
+      <button class="tab" data-k="women">The women</button>
+      <button class="tab" data-k="after">After Karbala</button>
+    </div>
+    <div id="kBody"></div>
+  </div>
+</section>
+
 <!-- ============ RULERS ============ -->
 <section class="section section-alt" id="rulers">
   <div class="wrap">
@@ -255,6 +313,19 @@
     </div>
     <div class="l-pick reveal" id="lPick" role="tablist"></div>
     <div class="l-panel" id="lPanel" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- ============ PEARLS ============ -->
+<section class="section" id="pearls">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="kicker">Divine pearls</p>
+      <h2>Words of the Fourteen</h2>
+      <p>Sayings of the Prophet, Lady Fatima and the Imams, in their order, with their sources.</p>
+    </div>
+    <div class="pearl-feature reveal" id="pearlFeature"></div>
+    <div class="pearl-grid" id="pearlGrid"></div>
   </div>
 </section>
 
@@ -358,6 +429,7 @@
       <div class="r-body">
         <a class="r-back" id="rBack" href="#"></a>
         <div class="r-chapter" id="rChapter" hidden></div>
+        <div class="r-lesson" id="rLessonView" hidden></div>
         <div class="r-story" id="rStory">
         <p class="r-summary" id="rSummary"></p>
         <div class="r-content" id="rContent"></div>
@@ -377,7 +449,8 @@
 
 <div class="toast" id="toast"></div>
 
-<script src="js/data.js?v=5"></script>
-<script src="js/app.js?v=5"></script>
+<script src="js/data.js?v=6"></script>
+<script src="js/course.js?v=6"></script>
+<script src="js/app.js?v=6"></script>
 </body>
 </html>
