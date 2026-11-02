@@ -502,6 +502,36 @@ body::before {
 .ld small { color: var(--gold); font-size: .76rem; }
 .ld p { font-family: var(--serif); font-size: .93rem; color: var(--muted); margin-top: .3rem; }
 @media (max-width: 860px) { .nd-grid { grid-template-columns: 1fr; } }
+/* ---------- install app ---------- */
+.install-pill { display: inline-flex; align-items: center; gap: .35rem; height: 40px; padding: 0 .9rem; border-radius: 99px; background: linear-gradient(135deg, #f0d28c, #c9973b); color: #1b1407; font-weight: 700; font-size: .82rem; box-shadow: 0 6px 18px -8px rgba(212,169,79,.8); }
+.install-pill svg, .btn-app svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.btn-app { cursor: pointer; }
+.app-installed [data-install] { display: none !important; }
+.app-card { display: flex; align-items: center; gap: 1.2rem; text-align: left; max-width: 720px; margin: 0 auto 2.4rem; padding: 1.3rem 1.5rem; border-radius: 22px; border: 1px solid var(--gold); background: radial-gradient(ellipse at 0% 0%, color-mix(in srgb, var(--gold) 18%, transparent), transparent 70%), var(--card); color: var(--text); }
+.app-card img { border-radius: 18px; flex-shrink: 0; }
+.app-card b { font-family: var(--display); font-size: 1.4rem; display: block; }
+.app-card p { font-size: .9rem; color: var(--muted); }
+.app-card .btn { flex-shrink: 0; }
+.app-modal { position: fixed; inset: 0; z-index: 500; display: grid; place-items: end center; visibility: hidden; }
+.app-modal.open { visibility: visible; }
+.am-back { position: absolute; inset: 0; background: rgba(0,0,0,.7); opacity: 0; transition: opacity .35s; }
+.app-modal.open .am-back { opacity: 1; }
+.am-box { position: relative; width: min(460px, 100%); background: var(--ink); border: 1px solid var(--gold); border-bottom: 0; border-radius: 24px 24px 0 0; padding: 1.8rem 1.5rem 2rem; text-align: center; transform: translateY(100%); transition: transform .45s var(--ease); }
+.app-modal.open .am-box { transform: none; }
+.am-box img { border-radius: 20px; margin: 0 auto .8rem; }
+.am-box h3 { font-family: var(--display); font-size: 1.7rem; margin-bottom: .8rem; }
+.am-x { position: absolute; top: .7rem; right: .9rem; font-size: 1.8rem; color: var(--muted); }
+.am-steps { text-align: left; list-style: none; counter-reset: am; display: grid; gap: .7rem; }
+.am-steps li { counter-increment: am; position: relative; padding-left: 2.6rem; font-size: .96rem; line-height: 1.5; }
+.am-steps li::before { content: counter(am); position: absolute; left: 0; top: 0; width: 1.8rem; height: 1.8rem; border-radius: 50%; display: grid; place-items: center; background: var(--gold); color: #1b1407; font-weight: 700; font-size: .85rem; }
+.am-steps .kb { display: inline-block; padding: .05rem .45rem; border-radius: 6px; border: 1px solid var(--line); background: var(--card); font-weight: 600; }
+.am-note { margin-top: 1rem; font-size: .82rem; color: var(--muted); }
+@media (max-width: 600px) {
+  .app-card { flex-direction: column; text-align: center; }
+  .install-pill span { display: none; }
+  .install-pill { width: 40px; padding: 0; justify-content: center; }
+}
+@media (min-width: 900px) { .app-modal { place-items: center; } .am-box { border-radius: 24px; border-bottom: 1px solid var(--gold); } }
 /* ---------- abbas ---------- */
 .ab-in { display: grid; grid-template-columns: 110px 1fr; gap: 1.6rem; align-items: end; }
 .alam { width: 100px; height: 250px; overflow: visible; }

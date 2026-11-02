@@ -772,6 +772,34 @@
     observeReveals($("#abbas"));
   }
 
+  /* ---------- Download the App (PWA) ---------- */
+  let installEvt = null;
+  const standalone = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  if (standalone()) document.documentElement.classList.add("app-installed");
+  addEventListener("beforeinstallprompt", e => { e.preventDefault(); installEvt = e; });
+  addEventListener("appinstalled", () => { document.documentElement.classList.add("app-installed"); closeAppModal(); toast("App installed ✓ Open it from your home screen"); });
+  const modal = $("#appModal");
+  function closeAppModal() { modal.classList.remove("open"); modal.setAttribute("aria-hidden", "true"); }
+  function openAppModal(html) { $("#amSteps").innerHTML = html; modal.classList.add("open"); modal.setAttribute("aria-hidden", "false"); }
+  $$("[data-am-close]", modal).forEach(b => b.addEventListener("click", closeAppModal));
+  const ua = navigator.userAgent;
+  const isIOS = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const inApp = /FBAN|FBAV|Instagram|Line\/|Snapchat|WhatsApp/i.test(ua);
+  async function install() {
+    if (standalone()) { toast("You're already using the app ✓"); return; }
+    if (installEvt) {
+      installEvt.prompt();
+      const r = await installEvt.userChoice.catch(() => null);
+      installEvt = null;
+      if (r && r.outcome === "accepted") toast("Installing… ✓");
+      return;
+    }
+    if (inApp) return openAppModal(`<ol class="am-steps"><li>This page is open inside another app. Tap <span class="kb">⋮</span> or <span class="kb">…</span> and choose <b>Open in browser</b> (Chrome or Safari).</li><li>Then tap <b>Download the App</b> again.</li></ol>`);
+    if (isIOS) return openAppModal(`<ol class="am-steps"><li>Open this page in <b>Safari</b>.</li><li>Tap the <b>Share</b> button <span class="kb">⬆︎</span> at the bottom of the screen.</li><li>Scroll down and tap <b>Add to Home Screen</b> <span class="kb">＋</span>.</li><li>Tap <b>Add</b>. The Ahl al-Bayt icon appears on your home screen.</li></ol><p class="am-note">Opens full screen and works offline after your first visit.</p>`);
+    openAppModal(`<ol class="am-steps"><li>Tap the browser menu <span class="kb">⋮</span> at the top right.</li><li>Choose <b>Install app</b> or <b>Add to Home screen</b>.</li><li>Tap <b>Install</b>. The Ahl al-Bayt icon appears with your other apps.</li></ol><p class="am-note">If you don't see the option, open this page in Chrome. The app opens full screen and works offline after your first visit.</p>`);
+  }
+  $$("[data-install]").forEach(b => b.addEventListener("click", install));
+
   /* ---------- Namaz & Dua ---------- */
   function renderDuas() {
     $("#duaList").innerHTML = DUAS.map((d, i) => `<div class="dua reveal">

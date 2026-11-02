@@ -6,13 +6,19 @@
 <title>The Path of the Ahl al-Bayt · History & Stories for Learning Shia Islam</title>
 <meta name="description" content="The deep history behind Shia Islam told as stories: Ghadir, Saqifa, Fadak, Karbala, the Imams under the Umayyads and Abbasids, and the Occultation." />
 <meta name="theme-color" content="#0d1714" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Ahl al-Bayt" />
 <meta property="og:title" content="The Path of the Ahl al-Bayt" />
 <meta property="og:description" content="History and stories of the Prophet's family, from Ghadir to the Occultation." />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='%23d4a94f'%3E%3Crect x='22' y='22' width='56' height='56'/%3E%3Crect x='22' y='22' width='56' height='56' transform='rotate(45 50 50)'/%3E%3C/g%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=9" />
+<link rel="stylesheet" href="css/style.css?v=10" />
 </head>
 <body>
 
@@ -46,6 +52,7 @@
   </nav>
   <div class="nav-scrim" id="navScrim"></div>
   <div class="nav-actions">
+    <button class="install-pill" data-install aria-label="Download the app"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-5-5m5 5l5-5M5 21h14"/></svg><span>App</span></button>
     <button class="icon-btn" id="themeBtn" aria-label="Switch light or dark theme">
       <svg viewBox="0 0 24 24" class="i-moon"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
       <svg viewBox="0 0 24 24" class="i-sun"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1.5 12h3M19.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
@@ -83,6 +90,7 @@
     <div class="hero-cta reveal">
       <a class="btn btn-gold" href="#story/ghadir">Begin with Ghadir Khumm</a>
       <a class="btn btn-ghost" href="#timeline">See 330 years on a timeline</a>
+      <button class="btn btn-ghost btn-app" data-install><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-5-5m5 5l5-5M5 21h14"/></svg>Download the App</button>
     </div>
     <div class="stats reveal">
       <div><b data-count="14">0</b><span>Ma'sumin</span></div>
@@ -492,6 +500,11 @@
 
 <footer class="footer">
   <div class="wrap">
+    <div class="app-card">
+      <img src="icons/icon-192.png" alt="" width="72" height="72" />
+      <div><b>Take the Ahl al-Bayt with you</b><p>Install the app on your phone: it opens from your home screen, full screen, and works offline.</p></div>
+      <button class="btn btn-gold" data-install>Download the App</button>
+    </div>
     <p class="f-ayah" dir="rtl" lang="ar">اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَآلِ مُحَمَّدٍ</p>
     <p>Made with love for the Ahl al-Bayt (peace be upon them). Photos load from Wikipedia and Wikimedia Commons under their free licences; tap a photo credit to see the source. No faces of the Prophet or the Imams are shown.</p>
     <p class="small">Dates follow the most common Shia reports. Where dates differ, other reports exist.</p>
@@ -538,8 +551,19 @@
 
 <div class="toast" id="toast"></div>
 
-<script src="js/data.js?v=9"></script>
-<script src="js/course.js?v=9"></script>
-<script src="js/app.js?v=9"></script>
+<div class="app-modal" id="appModal" aria-hidden="true">
+  <div class="am-back" data-am-close></div>
+  <div class="am-box" role="dialog" aria-modal="true" aria-labelledby="amTitle">
+    <button class="am-x" data-am-close aria-label="Close">×</button>
+    <img src="icons/icon-192.png" alt="" width="84" height="84" />
+    <h3 id="amTitle">Install the app</h3>
+    <div id="amSteps"></div>
+  </div>
+</div>
+
+<script src="js/data.js?v=10"></script>
+<script src="js/course.js?v=10"></script>
+<script>if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));</script>
+<script src="js/app.js?v=10"></script>
 </body>
 </html>
