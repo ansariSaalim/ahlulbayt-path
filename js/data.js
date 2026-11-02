@@ -925,3 +925,215 @@ const PROOFS = [
     src: "Sunan al-Tirmidhi; al-Hakim, al-Mustadrak; al-Khatib, Tarikh Baghdad",
     why: "So in every dispute, at Saqifa, at Jamal, at Siffin, the side of Ali is the side of truth.", story: "siffin" }
 ];
+
+/* ---------------------------------------------------------
+   NEW STORIES: the battles of Amir al-Mu'minin
+   --------------------------------------------------------- */
+const BATTLE_STORIES = {
+before: [
+{
+  id: "badr", era: "prophet",
+  title: "Badr: The Lion of the First Battle",
+  arabic: "معركة بدر",
+  when: "17 Ramadan, 2 AH (624 CE)", where: "Wells of Badr, south-west of Medina",
+  summary: "313 Muslims against about a thousand. Ali, about twenty-five, stepped out for the first duel and killed one of the champions of Quraysh.",
+  body: `
+<p>The army of Quraysh came out of Mecca about a thousand strong, with horses and armour. The Muslims were 313, with two horses and seventy camels between them. The night before, the Prophet ﷺ stood in prayer until dawn, asking Allah for His promised help.</p>
+<p>As was the Arab custom, three champions of Quraysh stepped out to call for duels: <strong>Utba ibn Rabi'a, his brother Shayba, and his son al-Walid</strong>. Three men of the Ansar went out to meet them, but Utba shouted: "We want our equals from our own tribe!" So the Prophet sent out his own family: his elderly cousin <strong>Ubayda ibn al-Harith</strong>, his uncle <strong>Hamza</strong>, and the youngest, <strong>Ali</strong>.</p>
+<p>Ali faced al-Walid and killed him almost at once. Hamza killed Shayba. Ubayda and Utba struck each other down, and Ali and Hamza rushed in, finished Utba and carried the wounded Ubayda back to the Prophet. Ubayda's leg was cut, and he died on the way home: the first martyr of the Prophet's family.</p>
+<p>Then the armies clashed. Allah sent angels to help (Qur'an 8:9), and Quraysh broke and fled, leaving seventy dead, among them Abu Jahl. Shaykh al-Mufid lists thirty-six of them who fell to Ali's sword.</p>
+<p><strong>Remember these names.</strong> Utba was the father, Shayba the uncle and al-Walid the brother of <strong>Hind</strong>, the mother of Muawiya. Fifty-seven years later, with the head of Husayn in front of him, Yazid recited verses saying he had now taken revenge for his ancestors killed at Badr. That grudge began here.</p>`,
+  lesson: "Victory comes from Allah, not numbers. And the family of the Prophet were always the first to stand in front of danger, not behind it.",
+  sources: "Ibn Hisham, al-Sira; al-Waqidi, al-Maghazi; al-Tabari, Tarikh; Kitab al-Irshad",
+  proof: "The duel of Ali, Hamza and Ubayda is recorded in Sahih al-Bukhari, where Ali says the verse 'These are two opponents who disputed about their Lord' (22:19) was revealed about them."
+},
+{
+  id: "uhud", era: "prophet",
+  title: "Uhud: When Everyone Ran, Ali Stood",
+  arabic: "معركة أحد",
+  when: "Shawwal, 3 AH (625 CE)", where: "Mount Uhud, Medina",
+  summary: "One mistake turned victory into disaster. As most of the army fled, Ali stood in front of the Prophet, and a voice from the sky called out his name.",
+  body: `
+<p>Quraysh came back for revenge with three thousand men. The Prophet ﷺ placed fifty archers on a small hill and ordered them: <em>do not leave this place, whether we win or lose.</em></p>
+<p>The battle began with the standard-bearers of Quraysh. Ali killed <strong>Talha ibn Abi Talha</strong>, who carried their banner, and then the next who picked it up, and the next. Quraysh broke, and the Muslims were winning.</p>
+<p>Then most of the archers saw the enemy camp full of spoils and ran down the hill, despite their commander's orders. Khalid ibn al-Walid, still a polytheist, saw the gap, rode around the hill and attacked from behind. Someone shouted that Muhammad had been killed, and panic spread. The Qur'an describes it: <em>"when you were running up the hill, not turning to anyone, while the Messenger was calling you from behind"</em> (3:153).</p>
+<p>The Prophet was struck in the face, his tooth was broken, and he fell into a pit. Around him stood only a handful of people, and at their centre was Ali. Groups of Quraysh charged one after another. Each time the Prophet said, "Ali, drive them back," and Ali drove them back, until his body was covered with wounds.</p>
+<p>Al-Tabari records that a voice was heard from the sky that day: <strong>"There is no youth like Ali, and no sword like Dhul-Fiqar."</strong> (<em>La fata illa Ali, la sayfa illa Dhul-Fiqar.</em>) Shia narrations add that Jibra'il said to the Prophet, "This is true devotion," and the Prophet replied: "He is from me and I am from him."</p>
+<p>That day the Prophet's uncle <strong>Hamza</strong>, the Lion of Allah, was martyred by Wahshi's spear, and his body was mutilated by Hind, the mother of Muawiya.</p>`,
+  lesson: "One act of disobedience by a few turned victory into defeat. Steadfastness is shown when others run, not when everyone is winning.",
+  sources: "al-Tabari, Tarikh (the call 'La fata illa Ali'); Ibn Hisham, al-Sira; al-Waqidi, al-Maghazi; Kitab al-Irshad",
+  proof: "Al-Tabari, the great Sunni historian, records the heavenly call 'La fata illa Ali, la sayfa illa Dhul-Fiqar'. The Qur'an itself (3:153) records that the others ran."
+},
+{
+  id: "khandaq", era: "prophet",
+  title: "Khandaq: All of Faith against All of Disbelief",
+  arabic: "معركة الخندق وقتل عمرو بن عبد ود",
+  when: "Shawwal, 5 AH (627 CE)", where: "The trench around Medina",
+  summary: "Ten thousand enemies surrounded Medina. Their greatest champion leapt the trench and mocked the Muslims. Only Ali answered.",
+  body: `
+<p>The tribes of Arabia united against Medina: Quraysh, Ghatafan and their allies, about ten thousand men. They were called <em>al-Ahzab</em>, the Confederates. On the advice of <strong>Salman al-Farsi</strong>, the Muslims dug a deep trench along the open side of the city. For weeks the enemy camped on the other side, in the cold and hunger.</p>
+<p>Then <strong>Amr ibn Abd Wadd</strong>, the most feared warrior in Arabia, who was said to be worth a thousand horsemen, found a narrow place and jumped his horse across the trench. He rode up and down in front of the Muslims and shouted: "Is there no one to fight me? Where is the Paradise you say your dead go to?" The Qur'an describes that day: <em>"eyes swerved and hearts reached the throats"</em> (33:10).</p>
+<p>Nobody moved, except Ali, who stood up and said, "I will, O Messenger of Allah." The Prophet told him to sit: "It is Amr!" Amr called out a second time, and a third, mocking them. Each time, only Ali stood. The third time, Ali said: <strong>"Even if it is Amr."</strong></p>
+<p>The Prophet put his own turban on Ali's head, gave him his sword, and as Ali walked out he said: <strong>"All of faith has gone out to face all of disbelief."</strong></p>
+<p>Ali offered Amr three choices: accept Islam, take his men and go home, or fight. Amr laughed and said he did not want to kill the son of his old friend Abu Talib. Ali replied, "But I would love to kill you." Amr jumped from his horse in anger and cut its legs. Dust rose around them so no one could see. Then the cry <em>Allahu Akbar</em> came out of the dust, and the Muslims knew that Ali had won.</p>
+<p>It is narrated that when Ali had Amr on the ground, Amr spat in his face. Ali stood up, walked a few steps, then came back and finished the fight. When asked why, he said: <strong>"I did not want to kill him out of my own anger. I waited until it was only for Allah."</strong> He also refused to strip Amr's valuable armour, and Amr's own sister later praised him for it.</p>
+<p>The Prophet said: <strong>"Ali's strike on the day of Khandaq is better than the worship of both worlds (al-thaqalayn) until the Day of Judgement."</strong> Soon after, Allah sent a freezing wind, and the Confederates fled.</p>`,
+  lesson: "True courage is for Allah, never for ego. Ali controlled his anger even in a duel to the death.",
+  sources: "al-Hakim, al-Mustadrak (the 'strike' hadith); al-Waqidi, al-Maghazi; Ibn Hisham, al-Sira; Kitab al-Irshad; Rumi, Mathnawi (the spitting story)",
+  proof: "Al-Hakim al-Nishaburi, a Sunni hadith master, records the Prophet's words that Ali's strike at Khandaq outweighs the deeds of his whole Ummah."
+}
+],
+after: [
+{
+  id: "mecca-hunayn", era: "prophet",
+  title: "Mecca and Hunayn: Breaking the Idols, Holding the Line",
+  arabic: "فتح مكة وحنين",
+  when: "Ramadan and Shawwal, 8 AH (630 CE)", where: "Mecca and the valley of Hunayn",
+  summary: "Ali stood on the Prophet's shoulders to throw down the idols of the Ka'ba. Weeks later, when twelve thousand Muslims ran in an ambush, he was among the few who stayed.",
+  body: `
+<h4>The conquest of Mecca</h4>
+<p>Quraysh broke the treaty of Hudaybiyya, and the Prophet ﷺ marched on Mecca with ten thousand men. One commander, Sa'd ibn Ubada, rode in shouting, "Today is the day of slaughter!" The Prophet took the banner from him and gave it to Ali, and changed the call: <em>"Today is the day of mercy."</em></p>
+<p>Mecca surrendered almost without blood. The Prophet entered the Ka'ba, where 360 idols stood, and struck them with his staff, reciting: <em>"Truth has come and falsehood has vanished"</em> (17:81). The largest idol stood on the roof. Musnad Ahmad and al-Hakim record that the Prophet told Ali to climb on his shoulders. Ali stood on the shoulders of the Messenger of Allah, threw the idol down and smashed it.</p>
+<p>The Prophet forgave the people of Mecca who had fought him for twenty years, saying: <strong>"Go, you are free."</strong> They became known as <em>al-tulaqa'</em>, "the freed ones." Among them were Abu Sufyan and his son Muawiya.</p>
+<h4>Hunayn</h4>
+<p>Weeks later, the tribes of Hawazin gathered to fight. The Muslims marched out twelve thousand strong, the largest army they had ever had, and some said, "We will not be defeated today because of our numbers." At dawn, as they entered the narrow valley of Hunayn, Hawazin ambushed them with arrows from the hills. The army broke and ran.</p>
+<p>The Qur'an remembers it: <em>"on the day of Hunayn, when your great numbers pleased you, but they did not help you at all… then you turned back, fleeing"</em> (9:25). Around the Prophet stood only a few men of his family and close companions: Ali, al-Abbas, al-Fadl ibn Abbas, Abu Sufyan ibn al-Harith and a handful of others. Ali attacked and killed <strong>Abu Jarwal</strong>, the standard-bearer of Hawazin. Al-Abbas, who had a powerful voice, called the fleeing Muslims back, and the battle turned.</p>`,
+  lesson: "Pride in numbers loses battles. In the moment of fear, the people who stand by the Prophet show who they really are.",
+  sources: "Musnad Ahmad and al-Hakim, al-Mustadrak (breaking the idols); Ibn Hisham, al-Sira; al-Waqidi, al-Maghazi; Kitab al-Irshad",
+  proof: "Musnad Ahmad and al-Mustadrak record Ali standing on the Prophet's shoulders to break the idols. The Qur'an (9:25) records that the army fled at Hunayn."
+},
+{
+  id: "baraa", era: "prophet",
+  title: "Bara'a: \"Only Me, or a Man from Me\"",
+  arabic: "تبليغ سورة براءة",
+  when: "Dhul Hijja, 9 AH (631 CE)", where: "Mina, during Hajj",
+  summary: "The Prophet sent Abu Bakr to announce Surat al-Tawba at Hajj. Then Jibra'il came with an order: it must be Ali.",
+  body: `
+<p>In 9 AH, Allah revealed the opening verses of <strong>Surat al-Tawba</strong> (also called Bara'a, "Disavowal"): the polytheists had four months, after which no polytheist could approach the Sacred Mosque or walk around the Ka'ba naked, as some still did.</p>
+<p>The Prophet ﷺ sent <strong>Abu Bakr</strong> to lead the Hajj and read these verses to the crowds. He had already left when Jibra'il came down and said: <strong>"No one may convey this on your behalf except you, or a man who is from you."</strong></p>
+<p>The Prophet called Ali, gave him his own camel, al-Adba', and sent him after Abu Bakr to take the verses. Ali caught up and took them. Abu Bakr returned to the Prophet and asked if something had been revealed about him. The Prophet answered that he had been commanded that only he or a man of his family could convey it. Sunan al-Tirmidhi and Musnad Ahmad record the story.</p>
+<p>At Mina, Ali stood alone in front of the gathered tribes of Arabia. Many of them had lost fathers, sons and brothers to his sword at Badr, Uhud and Khandaq, and he announced to their faces that Allah and His Messenger were free of the polytheists.</p>
+<p>On another occasion, recorded by al-Tirmidhi, the Prophet said: <strong>"Ali is from me and I am from Ali, and no one conveys on my behalf except me or Ali."</strong></p>`,
+  lesson: "Allah Himself chose who could speak for the Prophet. If it was only Ali for a few verses, what about the whole religion after him?",
+  sources: "Sunan al-Tirmidhi; Musnad Ahmad; al-Nasa'i, Khasa'is Amir al-Mu'minin; Tafsir al-Tabari on 9:1",
+  proof: "Al-Tirmidhi and Ahmad, two of the great Sunni hadith collections, record the recall of the verses and the words 'no one conveys on my behalf except me or Ali'."
+}
+]};
+
+(function insertBattles() {
+  const k = STORIES.findIndex(s => s.id === "khaybar");
+  STORIES.splice(k, 0, ...BATTLE_STORIES.before);
+  const k2 = STORIES.findIndex(s => s.id === "khaybar");
+  STORIES.splice(k2 + 1, 0, ...BATTLE_STORIES.after);
+  Object.assign(STORY_IMAGES, { badr: "Medina", uhud: "Mount_Uhud", khandaq: "Medina", "mecca-hunayn": "Great_Mosque_of_Mecca", baraa: "Mina,_Saudi_Arabia" });
+  const t = TIMELINE.findIndex(x => x.s === "khaybar");
+  TIMELINE.splice(t, 0,
+    { y: "624 · 2 AH", era: "prophet", t: "Badr: Ali kills al-Walid in the first duel", s: "badr" },
+    { y: "625 · 3 AH", era: "prophet", t: "Uhud: 'There is no youth like Ali'", s: "uhud" },
+    { y: "627 · 5 AH", era: "prophet", t: "Khandaq: Ali kills Amr ibn Abd Wadd", s: "khandaq" });
+  const t2 = TIMELINE.findIndex(x => x.s === "khaybar");
+  TIMELINE.splice(t2 + 1, 0,
+    { y: "630 · 8 AH", era: "prophet", t: "Conquest of Mecca; Hunayn", s: "mecca-hunayn" },
+    { y: "631 · 9 AH", era: "prophet", t: "Ali conveys Surat Bara'a at Hajj", s: "baraa" });
+})();
+
+/* ---------------------------------------------------------
+   THE BATTLES OF AMIR AL-MU'MININ (overview)
+   --------------------------------------------------------- */
+const BATTLES = [
+  { name: "The Night of the Hijra", ar: "ليلة المبيت", year: "1 AH · 622", foe: "Forty assassins of Quraysh", story: "laylat-al-mabit",
+    brave: "Slept in the Prophet's bed knowing forty swords waited outside. His only question: 'Will you be safe?'",
+    learn: "Courage starts with putting the Prophet's life before your own." },
+  { name: "Badr", ar: "بدر", year: "2 AH · 624", foe: "Quraysh, about 1,000 men", story: "badr",
+    brave: "Won the first duel of Islam, killing al-Walid ibn Utba, then helped kill Utba. Dozens of Quraysh fell to his sword.",
+    learn: "Numbers don't decide victory. Allah's help comes to those who step forward first." },
+  { name: "Uhud", ar: "أحد", year: "3 AH · 625", foe: "Quraysh, 3,000 men", story: "uhud",
+    brave: "Killed the standard-bearers of Quraysh, then stayed beside the wounded Prophet when most of the army ran.",
+    learn: "Disobedience can turn victory into defeat. Real loyalty shows when others flee." },
+  { name: "Khandaq (the Trench)", ar: "الخندق", year: "5 AH · 627", foe: "The Confederates, 10,000 men; champion Amr ibn Abd Wadd", story: "khandaq",
+    brave: "The only one to answer Amr's challenge, three times. 'All of faith against all of disbelief.'",
+    learn: "Fight for Allah, never for your ego. Ali waited until his anger had passed before striking." },
+  { name: "Khaybar", ar: "خيبر", year: "7 AH · 628", foe: "The fortresses of Khaybar; champion Marhab", story: "khaybar",
+    brave: "Took the banner after others returned, killed Marhab, and tore off the fortress gate.",
+    learn: "Allah and His Messenger love the one who keeps going until the job is done." },
+  { name: "Conquest of Mecca", ar: "فتح مكة", year: "8 AH · 630", foe: "The idols of the Ka'ba", story: "mecca-hunayn",
+    brave: "Carried the banner into Mecca and climbed on the Prophet's shoulders to break the idols.",
+    learn: "Strength in victory means mercy: 'Today is the day of mercy.'" },
+  { name: "Hunayn", ar: "حنين", year: "8 AH · 630", foe: "Hawazin, in an ambush", story: "mecca-hunayn",
+    brave: "Stood firm with a handful of men when 12,000 ran, and killed Hawazin's standard-bearer.",
+    learn: "Never rely on numbers or pride. Rely on Allah." },
+  { name: "Tabuk: the battle he was told to stay behind", ar: "تبوك", year: "9 AH · 630", foe: "The Byzantine frontier", story: "brotherhood",
+    brave: "Obeyed the order to guard Medina, even when hypocrites mocked him for it.",
+    learn: "Obedience is also bravery. 'You are to me as Harun was to Musa.'" },
+  { name: "The Camel (Jamal)", ar: "الجمل", year: "36 AH · 656", foe: "Talha, al-Zubayr and their army", story: "jamal",
+    brave: "Rode out alone between the armies to remind al-Zubayr of the Prophet's words, and ended the war with mercy.",
+    learn: "Even against rebels: no chasing the fleeing, no looting, no harm to the wounded or women." },
+  { name: "Siffin", ar: "صفين", year: "37 AH · 657", foe: "Muawiya and the army of Syria", story: "siffin",
+    brave: "Fought through the Night of Harir, at nearly sixty, and gave water even to the enemy who had denied it to him.",
+    learn: "Never fight the way your enemy fights. Ammar's death showed the world which side was right." },
+  { name: "Nahrawan", ar: "النهروان", year: "38 AH · 658", foe: "The Khawarij", story: "nahrawan",
+    brave: "Debated them first and won many back, and fought only after they shed innocent blood.",
+    learn: "Extremism that calls Muslims disbelievers must be answered with knowledge first, and force only when it kills." }
+];
+
+/* ---------------------------------------------------------
+   WHAT WE LEARN FROM EACH OF THE FOURTEEN
+   --------------------------------------------------------- */
+const LESSONS = {
+  "Prophet Muhammad": { teach: "He said he was sent to perfect noble character.", items: [
+    ["Character before preaching", "Mecca called him al-Amin, the Trustworthy, before he received revelation. Even his enemies left their valuables with him."],
+    ["Mercy to enemies", "After twenty years of war, he told the people of Mecca: 'Go, you are free.'"],
+    ["Care about what comes after you", "At Ghadir and on his deathbed, his final concern was who would guide the Ummah after him."]] },
+  "Fatima al-Zahra": { teach: "Tasbih al-Zahra: 34 × Allahu Akbar, 33 × Alhamdulillah, 33 × Subhanallah. The Prophet gave it to her instead of a servant.", items: [
+    ["Speak the truth in public", "She stood in the mosque and defended her right with the Qur'an, when men stayed silent."],
+    ["Worship and hard work together", "She ground grain until her hands blistered, and still stood in prayer until her feet swelled."],
+    ["Your stance outlives you", "Her hidden grave is still a question to every Muslim: why?"]] },
+  "Ali ibn Abi Talib": { teach: "Do not be the slave of another, when Allah has made you free. (Nahj al-Balagha, letter 31)", items: [
+    ["Courage with self-control", "He would not strike Amr ibn Abd Wadd in anger, only for Allah."],
+    ["Justice without favourites", "The hot iron for his own brother Aqil; equal shares for Arab and non-Arab."],
+    ["Patience for the sake of Islam", "Twenty-five years of patience to protect a young Ummah from splitting."]] },
+  "al-Hasan ibn Ali": { teach: "Making peace when war would destroy the faithful can be the braver choice.", items: [
+    ["Wisdom over anger", "His treaty saved the last loyal Shia and exposed Muawiya to the world."],
+    ["Generosity", "Twice in his life he gave away everything he owned for Allah."],
+    ["Answer insults with kindness", "When a Syrian man cursed him in Medina, the Imam smiled, offered him a home and food, until the man said, 'Allah knows best where to place His message.'"]] },
+  "al-Husayn ibn Ali": { teach: "'Hayhat minna al-dhilla': humiliation is far from us. (Day of Ashura)", items: [
+    ["Never give your hand to injustice", "'Someone like me does not pledge allegiance to someone like him.'"],
+    ["Stand even if you are few", "Seventy-two against thousands. The truth does not depend on numbers."],
+    ["Pray even in the fire", "At noon on Ashura, under arrows, he led the prayer."]] },
+  "Ali Zayn al-Abidin": { teach: "Everything has a right over you: Allah, your body, your tongue, your parents, your neighbour, even your enemy. (Risalat al-Huquq)", items: [
+    ["Turn grief into worship", "After Karbala he taught the whole of Islam through du'a: al-Sahifa al-Sajjadiyya."],
+    ["Give in secret", "He carried bread at night to a hundred families, who only knew when he died."],
+    ["Truth in front of tyrants", "Even in chains in Yazid's court: 'Is Muhammad your grandfather or mine?'"]] },
+  "Muhammad al-Baqir": { teach: "Is it enough to say 'I love the Ahl al-Bayt'? Our Shia is only the one who fears Allah and obeys Him. (al-Kafi)", items: [
+    ["A Shia is known by deeds", "Love for the Ahl al-Bayt without obedience to Allah is only a claim."],
+    ["Spread knowledge", "He opened the doors of the school of the Ahl al-Bayt to everyone who came."],
+    ["Serve the Ummah, even your opponents", "He helped Abd al-Malik mint Islamic coins to protect the dignity of Islam."]] },
+  "Ja'far al-Sadiq": { teach: "Be an adornment for us, and do not be a disgrace to us.", items: [
+    ["Knowledge over thrones", "He burned the letter offering him power, and built a school that outlived the dynasty."],
+    ["Truthfulness is the real test", "Do not judge a man by long prayers, but by his honesty and returning trusts."],
+    ["Your manners are dawah", "People should see the Ahl al-Bayt in how their Shia live."]] },
+  "Musa al-Kazim": { teach: "Al-Kazim: 'those who swallow their anger' (Qur'an 3:134).", items: [
+    ["Control your anger", "He answered harm with patience so often that it became his name."],
+    ["A prison can be a prayer room", "He thanked Allah for the free time to worship in Harun's dungeon."],
+    ["Small words change lives", "One sentence from him at a party house turned Bishr al-Hafi into one of the great worshippers of Baghdad."]] },
+  "Ali al-Rida": { teach: "'La ilaha illallah' is Allah's fortress, with its conditions, and the Imam is one of its conditions. (Silsilat al-Dhahab)", items: [
+    ["Don't let power use you", "He accepted al-Ma'mun's title only under threat, and on condition of making no decisions."],
+    ["Debate with knowledge and respect", "He answered Christians, Jews and Zoroastrians from their own scriptures."],
+    ["Humility in high places", "As crown prince, he still ate at the same table as his servants."]] },
+  "Muhammad al-Jawad": { teach: "Knowledge from Allah does not depend on age.", items: [
+    ["Answer with knowledge, not anger", "At about eight, he answered the chief judge with a question that held thirty answers inside it."],
+    ["Generosity", "He is called al-Jawad, the Generous, and Bab al-Murad, the Door of Wishes."],
+    ["Trust in Allah's choice", "Allah gave Yahya wisdom as a child and 'Isa speech in the cradle. The Imam's age was no obstacle."]] },
+  "Ali al-Hadi": { teach: "He taught al-Ziyara al-Jami'a al-Kabira: a complete lesson on who the Imams are.", items: [
+    ["Stay steady under watch", "Twenty years of surveillance in a military town, and he never stopped guiding."],
+    ["Remind the powerful of death", "Brought drunk before al-Mutawakkil, he recited about palaces turned into graves until the caliph wept."],
+    ["Faith survives persecution", "They ploughed over Husayn's grave, but pilgrims kept coming."]] },
+  "Hasan al-Askari": { teach: "Worship is not only much fasting and prayer. It is much reflection on the affair of Allah.", items: [
+    ["Prepare for the future", "His network of trusted agents readied the Shia for the Occultation."],
+    ["Your worship can change your enemy", "The cruel guards set over him became worshippers themselves."],
+    ["Protect what matters most", "He hid his son from a whole empire."]] },
+  "Muhammad al-Mahdi": { teach: "In new events, refer to the narrators of our hadith: they are my proof over you. (Tawqi')", items: [
+    ["Waiting is action", "Intizar means becoming someone worthy to stand with him."],
+    ["Follow the maraji'", "Taqlid of a qualified jurist is the Imam's own instruction for his absence."],
+    ["Never lose hope", "He will fill the earth with justice, as it is filled with injustice."]] }
+};

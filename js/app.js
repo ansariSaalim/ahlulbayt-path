@@ -469,6 +469,57 @@
   }
 
   /* ===========================================================
+     BATTLES
+     =========================================================== */
+  function renderBattles() {
+    $("#bList").innerHTML = BATTLES.map((b, i) => `
+      <li class="b-card reveal">
+        <span class="b-wm" dir="rtl" lang="ar">${b.ar}</span>
+        <div>
+          <div class="b-num">${String(i + 1).padStart(2, "0")}</div>
+          <h3>${esc(b.name)}</h3>
+          <span class="b-year">${esc(b.year)}</span>
+          <p class="b-foe">Against: ${esc(b.foe)}</p>
+        </div>
+        <div class="b-body">
+          <div class="bv"><h4>⚔ His bravery</h4><p>${esc(b.brave)}</p></div>
+          <div class="ls"><h4>✦ What we learn</h4><p>${esc(b.learn)}</p></div>
+          <a href="#story/${b.story}">Read the full story: ${esc(storyById[b.story].title)} →</a>
+        </div>
+      </li>`).join("");
+    observeReveals($("#bList"));
+    const z = $(".zulfiqar");
+    new IntersectionObserver(([e], o) => { if (e.isIntersecting) { z.classList.add("in"); o.disconnect(); } }, { threshold: .3 }).observe(z);
+  }
+
+  /* ===========================================================
+     LESSONS
+     =========================================================== */
+  let lessonIdx = 2;
+  function renderLessonPicker() {
+    $("#lPick").innerHTML = MASUMIN.map((m, i) => `<button class="l-btn ${i === lessonIdx ? "on" : ""}" data-i="${i}" role="tab" aria-selected="${i === lessonIdx}">
+      <div class="medal">${starSVG}<b>${m.n}</b></div><span>${esc(m.name)}</span></button>`).join("");
+    $$("#lPick .l-btn").forEach(b => b.addEventListener("click", () => showLesson(+b.dataset.i, true)));
+  }
+  function showLesson(i, scrollPick) {
+    lessonIdx = (i + MASUMIN.length) % MASUMIN.length;
+    const m = MASUMIN[lessonIdx], L = LESSONS[m.name];
+    $$("#lPick .l-btn").forEach((b, j) => { b.classList.toggle("on", j === lessonIdx); b.setAttribute("aria-selected", j === lessonIdx); });
+    if (scrollPick) { const btn = $$("#lPick .l-btn")[lessonIdx]; btn.parentElement.scrollTo({ left: btn.offsetLeft - btn.parentElement.clientWidth / 2 + btn.clientWidth / 2, behavior: "smooth" }); }
+    $("#lPanel").innerHTML = `<div class="l-in">
+      <h3>${esc(m.name)} ${m.n === "ﷺ" ? "ﷺ" : "<span style='color:var(--gold);font-size:.7em'>(ع)</span>"}</h3>
+      <p class="l-title">${esc(m.title)}</p>
+      <p class="l-teach">${esc(L.teach)}</p>
+      <div class="l-grid">${L.items.map((it, k) => `<div class="l-item" style="animation-delay:${.1 + k * .12}s"><b><i>${k + 1}</i>${esc(it[0])}</b><p>${esc(it[1])}</p></div>`).join("")}</div>
+      <div class="l-foot">
+        <a class="btn btn-gold" href="#story/${m.story}">Read their story</a>
+        <div class="l-arrows"><button id="lPrev" aria-label="Previous">←</button><button id="lNext" aria-label="Next">→</button></div>
+      </div></div>`;
+    $("#lPrev").onclick = () => showLesson(lessonIdx - 1, true);
+    $("#lNext").onclick = () => showLesson(lessonIdx + 1, true);
+  }
+
+  /* ===========================================================
      COMPANIONS & DATES
      =========================================================== */
   function renderCompanions() {
@@ -487,11 +538,14 @@
      =========================================================== */
   renderEras();
   renderProofs();
+  renderBattles();
   renderTimeline();
   renderStoryChips();
   renderStories();
   renderRulers();
   renderMasumin();
+  renderLessonPicker();
+  showLesson(lessonIdx, false);
   renderCompanions();
   renderDates();
   observeReveals();

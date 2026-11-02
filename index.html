@@ -27,13 +27,13 @@
   <nav class="nav-links" id="navLinks">
     <a href="#path">Start</a>
     <a href="#proofs">Proofs</a>
+    <a href="#battles">Ali's Battles</a>
     <a href="#timeline">Timeline</a>
     <a href="#stories">Stories</a>
     <a href="#rulers">The Caliphs</a>
     <a href="#masumin">14 Ma'sumin</a>
-    <a href="#companions">Companions</a>
-    <a href="#dates">Dates</a>
-    <a href="#reading">Read more</a>
+    <a href="#lessons">Lessons</a>
+    <a href="#reading">Books</a>
   </nav>
   <div class="nav-actions">
     <button class="icon-btn" id="themeBtn" aria-label="Switch light or dark theme">
@@ -153,6 +153,34 @@
   </div>
 </section>
 
+<!-- ============ BATTLES ============ -->
+<section class="section battles" id="battles">
+  <div class="wrap">
+    <div class="b-hero">
+      <svg class="zulfiqar" viewBox="0 0 120 420" aria-hidden="true">
+        <path class="zf-blade" d="M48 300 L48 92 L36 18 L57 70 L63 70 L84 18 L72 92 L72 300 Z"/>
+        <path class="zf-line" d="M60 96 L60 296"/>
+        <path class="zf-guard" d="M18 300 L102 300 L96 314 L24 314 Z"/>
+        <path class="zf-grip" d="M52 314 L68 314 L68 378 L52 378 Z"/>
+        <circle class="zf-pommel" cx="60" cy="392" r="13"/>
+      </svg>
+      <div class="b-hero-text reveal">
+        <p class="kicker">Asadullah · the Lion of Allah</p>
+        <h2>The Battles of Amir al-Mu'minin</h2>
+        <p class="b-call" dir="rtl" lang="ar">لَا فَتَى إِلَّا عَلِيٌّ، لَا سَيْفَ إِلَّا ذُو الْفَقَارِ</p>
+        <p class="b-call-en">"There is no youth like Ali, and no sword like Dhul-Fiqar." Heard from the sky at Uhud</p>
+        <div class="b-stats">
+          <div><b>11</b><span>battles & stands</span></div>
+          <div><b>0</b><span>times he fled</span></div>
+          <div><b>1st</b><span>to every duel</span></div>
+        </div>
+        <p class="b-note">It is narrated that Ali's armour had no back plate, because he never once turned his back on an enemy.</p>
+      </div>
+    </div>
+    <ol class="b-list" id="bList"></ol>
+  </div>
+</section>
+
 <!-- ============ TIMELINE ============ -->
 <section class="section section-alt" id="timeline">
   <div class="wrap">
@@ -214,6 +242,19 @@
       <p>Tap a card to turn it over.</p>
     </div>
     <div class="m-grid" id="mGrid"></div>
+  </div>
+</section>
+
+<!-- ============ LESSONS ============ -->
+<section class="section section-alt" id="lessons">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="kicker">Live like them</p>
+      <h2>What we learn from each of the Fourteen</h2>
+      <p>Knowing their history is only the start. Pick one of the Ma'sumin to see the lessons of their life.</p>
+    </div>
+    <div class="l-pick reveal" id="lPick" role="tablist"></div>
+    <div class="l-panel" id="lPanel" aria-live="polite"></div>
   </div>
 </section>
 
