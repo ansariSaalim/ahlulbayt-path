@@ -1137,3 +1137,13 @@ const LESSONS = {
     ["Follow the maraji'", "Taqlid of a qualified jurist is the Imam's own instruction for his absence."],
     ["Never lose hope", "He will fill the earth with justice, as it is filled with injustice."]] }
 };
+
+/* Chapter introductions */
+const ERA_INTRO = {
+  prophet: "From the Ka'ba where Ali was born to the Prophet's last days: how the Prophet raised Ali, made him his brother, sent him first into every battle, and named him at Ghadir. Read this chapter first. Everything after it depends on it.",
+  after: "The Prophet's body was not yet buried when power was taken at Saqifa. Fadak, the door of Fatima's house, her hidden grave, and Ali's twenty-five years of patience.",
+  ali: "Five years in which Ali ruled as the Prophet would have: equal shares for all, no favours for family, and three wars forced on him by those who could not bear his justice.",
+  umayyad: "Muawiya and his son Yazid: a broken treaty, Ali cursed from the pulpits, Imam Hasan poisoned, and Karbala. Then Zaynab's voice, the penitents, and the Imams who rebuilt the faith with prayer and knowledge.",
+  abbasid: "The Abbasids rose in the name of the Prophet's family, then imprisoned and poisoned its Imams one by one: al-Sadiq, al-Kazim, al-Rida, al-Jawad, al-Hadi and al-Askari.",
+  ghayba: "The twelfth Imam, hidden from birth, his four deputies, and the Major Occultation that continues today, and what it asks of us while we wait."
+};

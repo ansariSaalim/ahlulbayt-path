@@ -536,6 +536,24 @@ body::before {
 .r-differ b { color: #3fae7e; }
 .r-sources { font-family: var(--sans); font-size: .82rem; color: var(--muted); margin: 1.2rem 0 1.8rem; }
 .r-sources b { color: var(--text); }
+.r-back { display: inline-block; font-family: var(--sans); font-size: .8rem; font-weight: 600; color: var(--c, var(--gold)); text-decoration: none; margin-top: .8rem; padding: .4rem .8rem; border-radius: 99px; border: 1px solid var(--line); }
+.r-back:hover { background: var(--card-hover); }
+.r-back[hidden] { display: none; }
+.ch-progress { display: flex; align-items: center; gap: .9rem; font-family: var(--sans); font-size: .82rem; color: var(--muted); margin: -.4rem 0 1.4rem; }
+.ch-progress .overall-bar { flex: 1; }
+.ch-start { margin-bottom: 1.8rem; font-family: var(--sans); white-space: normal; text-align: left; }
+.ch-list { list-style: none; display: grid; gap: .6rem; counter-reset: none; }
+.ch-list li { opacity: 0; animation: fadeUp .55s var(--ease) forwards; }
+.ch-list a { display: flex; align-items: center; gap: .9rem; padding: .9rem 1rem; border-radius: 14px; border: 1px solid var(--line); background: var(--card); text-decoration: none; transition: transform .25s var(--ease), border-color .25s, background .25s; }
+.ch-list a:hover { transform: translateX(5px); border-color: var(--c, var(--gold)); background: var(--card-hover); }
+.ch-n { flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-family: var(--sans); font-weight: 700; font-size: .85rem; border: 1.5px solid var(--c, var(--gold)); color: var(--c, var(--gold)); }
+.ch-list a.read .ch-n { background: var(--c, var(--gold)); color: #fff; }
+.ch-t { flex: 1; display: flex; flex-direction: column; }
+.ch-t b { font-family: var(--display); font-size: 1.2rem; line-height: 1.15; font-weight: 600; }
+.ch-t small { font-family: var(--sans); font-size: .74rem; color: var(--muted); margin-top: .15rem; }
+.ch-ar { font-family: var(--arabic); color: var(--gold); font-size: 1.05rem; white-space: nowrap; }
+.ch-next { display: block; margin-top: 1.6rem; text-decoration: none; text-align: right; }
+@media (max-width: 520px) { .ch-ar { display: none; } }
 .r-done.done { background: none; border: 1px solid var(--gold); color: var(--gold); box-shadow: none; }
 .r-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2.2rem; padding-top: 1.6rem; border-top: 1px solid var(--line); }
 .r-nav-btn { text-align: left; padding: 1rem 1.1rem; border-radius: 14px; border: 1px solid var(--line); transition: background .25s, border-color .25s; font-family: var(--display); font-size: 1.15rem; line-height: 1.2; }

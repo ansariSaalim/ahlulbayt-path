@@ -193,13 +193,14 @@
         <div class="era-count">${done} / ${total} stories read</div>
       </button>`;
     }).join("");
-    $$("#eras .era").forEach(b => b.addEventListener("click", () => { setStoryFilter(b.dataset.era); $("#stories").scrollIntoView(); }));
+    $$("#eras .era").forEach(b => b.addEventListener("click", () => { location.hash = "chapter/" + b.dataset.era; }));
     $$("#eras .era-img").forEach(el => { if (el.dataset.wiki) lazy(el); else el.classList.add("ph-fallback"); });
     observeReveals($("#eras"));
     const all = STORIES.length, read = STORIES.filter(s => readSet.has(s.id)).length;
     $("#overallFill").style.width = (read / all) * 100 + "%";
     $("#overallText").textContent = `${read} of ${all} stories read`;
   }
+  function refreshStats() { /* overall text handled in refreshEraBars */ }
   function refreshEraBars() {
     $$("#eras .era").forEach(b => {
       const id = b.dataset.era;
@@ -300,6 +301,10 @@
     const idx = STORIES.indexOf(s);
     if (!reader.classList.contains("open")) lastFocus = document.activeElement;
     currentId = id;
+    setMode("story");
+    const eraNo = String(ERAS.indexOf(e) + 1).padStart(2, "0");
+    const back = $("#rBack"); back.hidden = false;
+    back.href = "#chapter/" + e.id; back.textContent = `← Chapter ${eraNo}: ${e.name}`;
     reader.style.setProperty("--c", e.color);
     $("#rEra").textContent = e.name;
     $("#rArabic").textContent = s.arabic;
@@ -330,13 +335,53 @@
     document.title = s.title + " · The Path of the Ahl al-Bayt";
     setTimeout(() => $(".reader-close").focus({ preventScroll: true }), 50);
   }
+  function setMode(mode) {
+    $("#rChapter").hidden = mode !== "chapter";
+    $("#rStory").hidden = mode !== "story";
+  }
+  function openChapter(eraId) {
+    const e = eraById[eraId]; if (!e) return;
+    const i = ERAS.indexOf(e);
+    const list = STORIES.filter(s => s.era === eraId);
+    if (!reader.classList.contains("open")) lastFocus = document.activeElement;
+    currentId = null;
+    setMode("chapter");
+    reader.style.setProperty("--c", e.color);
+    $("#rEra").textContent = "Chapter " + String(i + 1).padStart(2, "0");
+    $("#rArabic").textContent = "";
+    $("#rTitle").textContent = e.name;
+    $("#rMeta").textContent = e.years + " · " + list.length + " stories";
+    const img = $("#rHeroImg"); img.style.backgroundImage = ""; img.classList.remove("ph-fallback");
+    $("#rCredit").textContent = "";
+    paint(img, ERA_IMAGES[eraId], $("#rCredit"));
+    const back = $("#rBack"); back.hidden = true;
+    const next = list.find(s => !readSet.has(s.id)) || list[0];
+    const done = list.filter(s => readSet.has(s.id)).length;
+    const nextEra = ERAS[i + 1];
+    $("#rChapter").innerHTML = `
+      <p class="r-summary">${esc(ERA_INTRO[eraId] || "")}</p>
+      <div class="ch-progress"><div class="overall-bar"><i style="width:${(done / list.length) * 100}%;background:${e.color}"></i></div><span>${done} / ${list.length} read</span></div>
+      <a class="btn btn-gold ch-start" href="#story/${next.id}">${done === 0 ? "Start reading" : done === list.length ? "Read again" : "Continue"}: ${esc(next.title)} →</a>
+      <ol class="ch-list">${list.map((s, k) => `
+        <li style="animation-delay:${.08 + k * .06}s"><a href="#story/${s.id}" class="${readSet.has(s.id) ? "read" : ""}">
+          <span class="ch-n">${readSet.has(s.id) ? "✓" : k + 1}</span>
+          <span class="ch-t"><b>${esc(s.title)}</b><small>${esc(s.when)}</small></span>
+          <span class="ch-ar" dir="rtl" lang="ar">${s.arabic}</span>
+        </a></li>`).join("")}</ol>
+      ${nextEra ? `<a class="r-nav-btn ch-next" href="#chapter/${nextEra.id}"><small>Next chapter</small><span>${String(i + 2).padStart(2, "0")} · ${esc(nextEra.name)}</span></a>` : ""}`;
+    const body = $(".r-body"); body.classList.remove("fade"); void body.offsetWidth; body.classList.add("fade");
+    rScroll.scrollTop = 0;
+    reader.classList.add("open"); reader.setAttribute("aria-hidden", "false");
+    document.body.classList.add("locked");
+    document.title = e.name + " · The Path of the Ahl al-Bayt";
+  }
   function closeStory(fromHash) {
     if (!reader.classList.contains("open")) return;
     reader.classList.remove("open"); reader.setAttribute("aria-hidden", "true");
     document.body.classList.remove("locked");
     document.title = "The Path of the Ahl al-Bayt · History & Stories for Learning Shia Islam";
     currentId = null;
-    if (!fromHash && location.hash.startsWith("#story/")) history.replaceState(null, "", location.pathname + location.search);
+    if (!fromHash && (location.hash.startsWith("#story/") || location.hash.startsWith("#chapter/"))) history.replaceState(null, "", location.pathname + location.search);
     if (lastFocus) lastFocus.focus({ preventScroll: true });
   }
   $$("[data-close]", reader).forEach(b => b.addEventListener("click", () => closeStory()));
@@ -354,7 +399,7 @@
   }
   function setRead(id, val) {
     if (val) readSet.add(id); else readSet.delete(id);
-    saveRead(); refreshEraBars();
+    saveRead(); refreshEraBars(); refreshStats();
     const card = $(`.s-card[data-id="${id}"]`); if (card) card.classList.toggle("read", val);
     if (id === currentId) updateDoneBtn();
   }
@@ -372,6 +417,7 @@
   function route() {
     const h = decodeURIComponent(location.hash);
     if (h.startsWith("#story/")) openStory(h.slice(7));
+    else if (h.startsWith("#chapter/")) openChapter(h.slice(9));
     else closeStory(true);
   }
   window.addEventListener("hashchange", route);
