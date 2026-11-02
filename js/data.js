@@ -1757,3 +1757,20 @@ PEARLS.push(
   const order = [...PROFILE.pearlWho, "al-Abbas ibn Ali"];
   PEARLS.sort((a, b) => order.indexOf(a.who) - order.indexOf(b.who));
 })();
+
+/* Gen Z love for Moula Abbas: every line is tied to a real moment */
+const ABBAS_GENZ = {
+  stats: [["Sips of water he took", "0"], ["Times he left Husayn", "0"], ["Times he called him 'brother' before his last breath", "0"], ["Loyalty", "∞"]],
+  cards: [
+    { e: "💚", h: "The ultimate green flag", p: "His 'alam is literally the green flag of Karbala. 1400 years later, still flying in every Muharram procession." },
+    { e: "🫡", h: "Loyalty? Unmatched. No cap.", p: "Shimr offered him and his brothers safety. He said: safety for us, and none for the son of the Prophet? Hard pass." },
+    { e: "💧", h: "Water in his hand. Didn't drink. That's the whole lore.", p: "Reached the river thirsty, picked up the water, remembered Husayn's thirst, and let it go." },
+    { e: "👑", h: "Main character energy", p: "But he made Husayn the main character his whole life. Always 'ya sayyidi', my master. Never 'my brother', until the very end." },
+    { e: "🌙", h: "Literally glowing", p: "Qamar Bani Hashim: the Moon of Banu Hashim. The name came from his face." },
+    { e: "🚩", h: "Held the flag. Held the line.", p: "Alamdar of Karbala. As long as the 'alam stood, the camp stood." },
+    { e: "📩", h: "Never leaves you on read", p: "Bab al-Hawa'ij, the door to needs. Millions ask Allah through him, and keep coming back with stories." },
+    { e: "🏆", h: "Brother goals, undefeated", p: "Imam al-Sajjad said Allah gave him two wings in Paradise, and a rank every martyr will envy." },
+    { e: "🤍", h: "Sakina's hero", p: "He promised her water. That promise is why we give out sabeel today." }
+  ],
+  tags: ["#YaAbbas", "#Alamdar", "#SaqqaeSakina", "#GreenFlagOfKarbala", "#LoyaltyGoals", "#QamarBaniHashim", "#BabulHawaij"]
+};

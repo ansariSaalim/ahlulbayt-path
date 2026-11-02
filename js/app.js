@@ -769,6 +769,31 @@
     $("#abTitles").innerHTML = ABBAS.titles.map((t, i) => `<span class="ab-t reveal" style="transition-delay:${i * 60}ms"><b>${esc(t[0])}</b>${esc(t[1])}</span>`).join("");
     $("#abFacts").innerHTML = ABBAS.facts.map(f => `<tr><td>${esc(f[0])}</td><td>${esc(f[1])}</td></tr>`).join("");
     $("#abMoments").innerHTML = ABBAS.moments.map(m => `<li class="reveal"><b>${esc(m[0])}</b><p>${esc(m[1])}</p></li>`).join("");
+    $("#gzStats").innerHTML = ABBAS_GENZ.stats.map(s => `<div class="gz-stat"><b>${s[1]}</b><span>${esc(s[0])}</span></div>`).join("");
+    $("#gzGrid").innerHTML = ABBAS_GENZ.cards.map(c => `<div class="gz-card"><span class="ge">${c.e}</span><h4>${esc(c.h)}</h4><p>${esc(c.p)}</p></div>`).join("");
+    $("#gzTags").innerHTML = ABBAS_GENZ.tags.map(t => `<span>${t}</span>`).join("");
+    let salams = store.get("abp-salam-abbas", 0);
+    const showCount = () => { $("#gzCount").textContent = salams ? `You've sent ${salams} salam${salams > 1 ? "s" : ""} to Moula Abbas 💚` : "Tap to send your salam"; };
+    showCount();
+    const bits = ["💚", "🤍", "🫡", "✨", "🌙", "💧"];
+    $("#gzBtn").addEventListener("click", () => {
+      salams++; store.set("abp-salam-abbas", salams); showCount();
+      if (navigator.vibrate) try { navigator.vibrate(15); } catch { /* ignore */ }
+      if (reduceMotion) return;
+      const box = $("#gzFloat");
+      const n = salams % 10 === 0 ? 10 : 4;
+      for (let k = 0; k < n; k++) {
+        const el = document.createElement("i");
+        const txt = k === 0 && (salams % 5 === 0);
+        el.className = txt ? "txt" : "";
+        el.textContent = txt ? "Ya Abbas 💚" : bits[Math.floor(Math.random() * bits.length)];
+        el.style.left = (40 + Math.random() * 20) + "%";
+        el.style.setProperty("--dx", ((Math.random() - .5) * 90) + "px");
+        el.style.animationDelay = (k * .08) + "s";
+        box.appendChild(el);
+        setTimeout(() => el.remove(), 2200);
+      }
+    });
     observeReveals($("#abbas"));
   }
 
