@@ -920,3 +920,59 @@ const LEARN_CATS = [
   { id: "history", icon: "⌛", name: "History after the Imams", desc: "The great scholars, the Buyids, the Safavids, Najaf and Qom, and Shia Islam in India.", lessons: ["history-beyond"] },
   { id: "living", icon: "❀", name: "Living Shia Islam", desc: "Family, marriage, charity, conduct, a daily routine, and your lifelong path with a final exam.", lessons: ["living", "your-path"] }
 ];
+
+/* =========================================================
+   DUA LIBRARY (short duas in full; long ones with guidance)
+   ========================================================= */
+const DUAS = [
+  { t: "Salawat", when: "Any time; after the Prophet's name; 100 times on Fridays",
+    ar: "اللّٰهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ وَآلِ مُحَمَّدٍ",
+    tr: "Allahumma salli 'ala Muhammadin wa Ali Muhammad",
+    en: "O Allah, send blessings upon Muhammad and the family of Muhammad." },
+  { t: "Tasbih of Lady Fatima", when: "After every prayer, and before sleeping",
+    ar: "اللّٰهُ أَكْبَرُ (٣٤) ۔ الْحَمْدُ لِلّٰهِ (٣٣) ۔ سُبْحَانَ اللّٰهِ (٣٣)",
+    tr: "Allahu Akbar ×34 · Alhamdulillah ×33 · Subhanallah ×33",
+    en: "Allah is the Greatest · All praise is for Allah · Glory be to Allah. Use the counter below.", counter: true },
+  { t: "Du'a al-Faraj", when: "In any hardship; for the reappearance of Imam al-Mahdi",
+    ar: "إِلٰهِي عَظُمَ الْبَلَاءُ، وَبَرِحَ الْخَفَاءُ، وَانْكَشَفَ الْغِطَاءُ، وَانْقَطَعَ الرَّجَاءُ، وَضَاقَتِ الْأَرْضُ، وَمُنِعَتِ السَّمَاءُ، وَأَنْتَ الْمُسْتَعَانُ، وَإِلَيْكَ الْمُشْتَكَىٰ، وَعَلَيْكَ الْمُعَوَّلُ فِي الشِّدَّةِ وَالرَّخَاءِ، اللّٰهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ وَآلِ مُحَمَّدٍ، أُولِي الْأَمْرِ الَّذِينَ فَرَضْتَ عَلَيْنَا طَاعَتَهُمْ، وَعَرَّفْتَنَا بِذٰلِكَ مَنْزِلَتَهُمْ، فَفَرِّجْ عَنَّا بِحَقِّهِمْ فَرَجًا عَاجِلًا قَرِيبًا كَلَمْحِ الْبَصَرِ أَوْ هُوَ أَقْرَبُ، يَا مُحَمَّدُ يَا عَلِيُّ، يَا عَلِيُّ يَا مُحَمَّدُ، اِكْفِيَانِي فَإِنَّكُمَا كَافِيَانِ، وَانْصُرَانِي فَإِنَّكُمَا نَاصِرَانِ، يَا مَوْلَانَا يَا صَاحِبَ الزَّمَانِ، الْغَوْثَ الْغَوْثَ الْغَوْثَ، أَدْرِكْنِي أَدْرِكْنِي أَدْرِكْنِي، السَّاعَةَ السَّاعَةَ السَّاعَةَ، الْعَجَلَ الْعَجَلَ الْعَجَلَ، يَا أَرْحَمَ الرَّاحِمِينَ، بِحَقِّ مُحَمَّدٍ وَآلِهِ الطَّاهِرِينَ",
+    tr: "Ilahi 'azumal-bala', wa barihal-khafa', wankashafal-ghita', wanqata'ar-raja', wa daqatil-ard, wa muni'atis-sama', wa antal-musta'an, wa ilaykal-mushtaka, wa 'alaykal-mu'awwalu fish-shiddati war-rakha'. Allahumma salli 'ala Muhammadin wa Ali Muhammad, ulil-amril-ladhina faradta 'alayna ta'atahum, wa 'arraftana bi-dhalika manzilatahum, fa-farrij 'anna bi-haqqihim farajan 'ajilan qariban ka-lamhil-basari aw huwa aqrab. Ya Muhammadu ya 'Ali, ya 'Aliyyu ya Muhammad, ikfiyani fa-innakuma kafiyan, wansurani fa-innakuma nasiran. Ya mawlana ya Sahibaz-zaman, al-ghawth al-ghawth al-ghawth, adrikni adrikni adrikni, as-sa'ata as-sa'ata as-sa'ah, al-'ajal al-'ajal al-'ajal, ya arhamar-rahimin, bi-haqqi Muhammadin wa alihit-tahirin.",
+    en: "My God, the trial has become great, the hidden has been revealed, the veil lifted, hope cut off, the earth has become narrow and the heavens withheld. You are the One whose help is sought and to You is the complaint… O Muhammad, O Ali, suffice me, for you two suffice; help me, for you two are helpers. O our master, O Master of the Time: help! Reach me! Now! Hurry! O Most Merciful of the merciful, by the right of Muhammad and his pure family." },
+  { t: "Du'a for Imam al-Zaman", when: "Daily, especially after prayers and on Friday",
+    ar: "اللّٰهُمَّ كُنْ لِوَلِيِّكَ الْحُجَّةِ بْنِ الْحَسَنِ، صَلَوَاتُكَ عَلَيْهِ وَعَلَىٰ آبَائِهِ، فِي هٰذِهِ السَّاعَةِ وَفِي كُلِّ سَاعَةٍ، وَلِيًّا وَحَافِظًا، وَقَائِدًا وَنَاصِرًا، وَدَلِيلًا وَعَيْنًا، حَتَّىٰ تُسْكِنَهُ أَرْضَكَ طَوْعًا، وَتُمَتِّعَهُ فِيهَا طَوِيلًا",
+    tr: "Allahumma kun li-waliyyikal-Hujjatibnil-Hasan, salawatuka 'alayhi wa 'ala aba'ih, fi hadhihis-sa'ati wa fi kulli sa'ah, waliyyan wa hafizan, wa qa'idan wa nasiran, wa dalilan wa 'ayna, hatta tuskinahu ardaka taw'an, wa tumatti'ahu fiha tawila.",
+    en: "O Allah, be for Your wali, the Proof, son of al-Hasan, Your blessings be upon him and his forefathers, in this hour and in every hour, a guardian and protector, a leader and helper, a guide and a watchful eye, until You settle him on Your earth willingly, and let him enjoy it for a long time." },
+  { t: "Ziyarat Ashura: the opening salaams", when: "Daily, especially in Muharram; full text in Mafatih al-Jinan",
+    ar: "السَّلَامُ عَلَيْكَ يَا أَبَا عَبْدِ اللّٰهِ، السَّلَامُ عَلَيْكَ يَا ابْنَ رَسُولِ اللّٰهِ، السَّلَامُ عَلَيْكَ يَا ابْنَ أَمِيرِ الْمُؤْمِنِينَ وَابْنَ سَيِّدِ الْوَصِيِّينَ، السَّلَامُ عَلَيْكَ يَا ابْنَ فَاطِمَةَ سَيِّدَةِ نِسَاءِ الْعَالَمِينَ",
+    tr: "As-salamu 'alayka ya Aba 'Abdillah. As-salamu 'alayka yabna Rasulillah. As-salamu 'alayka yabna Amiril-Mu'minin wabna sayyidil-wasiyyin. As-salamu 'alayka yabna Fatimata sayyidati nisa'il-'alamin.",
+    en: "Peace be upon you, O Aba Abdillah. Peace be upon you, O son of the Messenger of Allah. Peace be upon you, O son of the Commander of the Faithful and son of the master of the executors. Peace be upon you, O son of Fatima, the Lady of the Women of the Worlds." },
+  { t: "Short salam to Imam Husayn", when: "Whenever you drink water, remember his thirst",
+    ar: "السَّلَامُ عَلَيْكَ يَا أَبَا عَبْدِ اللّٰهِ، لَعَنَ اللّٰهُ قَاتِلِيكَ",
+    tr: "As-salamu 'alayka ya Aba 'Abdillah, la'anallahu qatilik.",
+    en: "Peace be upon you, O Aba Abdillah; may Allah distance from His mercy those who killed you." },
+  { t: "Ayat al-Kursi", when: "After every prayer, before sleeping and when leaving home (many recite up to verse 257)",
+    ar: "اللّٰهُ لَا إِلٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ",
+    tr: "Allahu la ilaha illa huwal-hayyul-qayyum. La ta'khudhuhu sinatun wa la nawm. Lahu ma fis-samawati wa ma fil-ard. Man dhal-ladhi yashfa'u 'indahu illa bi-idhnih. Ya'lamu ma bayna aydihim wa ma khalfahum, wa la yuhituna bi-shay'in min 'ilmihi illa bima sha'. Wasi'a kursiyyuhus-samawati wal-ard, wa la ya'uduhu hifzuhuma, wa huwal-'aliyyul-'azim.",
+    en: "Allah: there is no god but He, the Living, the Self-Subsisting. Neither drowsiness nor sleep overtakes Him… His Throne extends over the heavens and the earth, and guarding them does not tire Him. He is the Most High, the Most Great. (2:255)" },
+  { t: "Istighfar", when: "70 times a day; in the qunut of Witr",
+    ar: "أَسْتَغْفِرُ اللّٰهَ رَبِّي وَأَتُوبُ إِلَيْهِ",
+    tr: "Astaghfirullaha Rabbi wa atubu ilayh",
+    en: "I seek forgiveness from Allah, my Lord, and I turn to Him in repentance." },
+  { t: "When leaving home", when: "At the door",
+    ar: "بِسْمِ اللّٰهِ، تَوَكَّلْتُ عَلَى اللّٰهِ، لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللّٰهِ",
+    tr: "Bismillah, tawakkaltu 'alallah, la hawla wa la quwwata illa billah.",
+    en: "In the name of Allah. I rely on Allah. There is no power and no strength except through Allah." },
+  { t: "Before sleeping", when: "Lying on the right side, after Tasbih of Fatima",
+    ar: "بِاسْمِكَ اللّٰهُمَّ أَمُوتُ وَأَحْيَا",
+    tr: "Bismika Allahumma amutu wa ahya.",
+    en: "In Your name, O Allah, I die and I live." }
+];
+const LONG_DUAS = [
+  ["Du'a Kumayl", "Thursday night, and the 15th of Sha'ban", "Taught by Imam Ali to Kumayl ibn Ziyad. A long, moving conversation with Allah about sin, mercy and hope."],
+  ["Du'a Tawassul", "Tuesday night (or any time of need)", "Calls upon Allah by the right of each of the Fourteen Ma'sumin, one by one."],
+  ["Du'a al-Nudba", "Friday morning, and the two Eids", "A lament of longing for Imam al-Mahdi, recalling the history of the prophets and the Ahl al-Bayt."],
+  ["Du'a al-'Ahd", "Every morning for 40 days and beyond", "A renewal of your pledge to Imam al-Mahdi each day."],
+  ["Hadith al-Kisa", "Gatherings, and for any need", "Lady Fatima's narration of the Five under the Cloak, and the verse of purification."],
+  ["Ziyarat Ashura (full)", "Daily; on 10 Muharram", "The great visitation of Imam Husayn, with the 100 salaams and the sajda at the end."],
+  ["Du'a 'Arafa of Imam Husayn", "The Day of 'Arafa, 9 Dhul Hijja", "Recited by Imam Husayn on the plain of 'Arafa: one of the deepest prayers of knowing Allah."],
+  ["Du'a Abu Hamza al-Thumali", "Before dawn in Ramadan", "Taught by Imam Zayn al-Abidin; a long prayer of hope and repentance."]
+];

@@ -772,6 +772,41 @@
     observeReveals($("#abbas"));
   }
 
+  /* ---------- Namaz & Dua ---------- */
+  function renderDuas() {
+    $("#duaList").innerHTML = DUAS.map((d, i) => `<div class="dua reveal">
+      <button class="dua-h"><span><b>${esc(d.t)}</b><small>${esc(d.when)}</small></span><i class="chev"></i></button>
+      <div class="dua-body"><div><p class="dua-ar" dir="rtl" lang="ar">${d.ar}</p><p class="dua-tr">${esc(d.tr)}</p><p class="dua-en">${esc(d.en)}</p>
+      ${d.counter ? `<a href="#tasbih" class="dua-copy" style="text-decoration:none">Open the counter ↑</a>` : `<button class="dua-copy" data-i="${i}">Copy Arabic</button>`}</div></div></div>`).join("");
+    $$("#duaList .dua").forEach(d => $(".dua-h", d).addEventListener("click", () => d.classList.toggle("open")));
+    $$("#duaList .dua-copy[data-i]").forEach(b => b.addEventListener("click", () => {
+      const t = DUAS[+b.dataset.i].ar;
+      (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => toast("Copied ✓"), () => toast("Copy not available"));
+    }));
+    $("#longDuas").innerHTML = LONG_DUAS.map(l => `<div class="ld reveal"><b>${esc(l[0])}</b><small>${esc(l[1])}</small><p>${esc(l[2])}</p></div>`).join("");
+    observeReveals($("#namaz-dua"));
+    // tasbih counter
+    const phases = [["Allahu Akbar", "اللّٰهُ أَكْبَرُ", 34], ["Alhamdulillah", "الْحَمْدُ لِلّٰهِ", 33], ["Subhanallah", "سُبْحَانَ اللّٰهِ", 33]];
+    let ph = 0, n = 0;
+    const draw = () => {
+      $("#tsPhase").textContent = ph < 3 ? phases[ph][0] : "Complete · may Allah accept";
+      $("#tsAr").textContent = ph < 3 ? phases[ph][1] : "تَقَبَّلَ اللّٰهُ";
+      $("#tsCount").textContent = ph < 3 ? n : "✓";
+      $("#tsOf").textContent = ph < 3 ? "of " + phases[ph][2] : "100";
+      const total = phases.slice(0, Math.min(ph, 3)).reduce((a, p) => a + p[2], 0) + (ph < 3 ? n : 0);
+      $("#tsBar").style.width = total + "%";
+    };
+    $("#tsBtn").addEventListener("click", () => {
+      if (ph >= 3) { ph = 0; n = 0; draw(); return; }
+      n++;
+      if (navigator.vibrate) try { navigator.vibrate(n === phases[ph][2] ? 60 : 12); } catch { /* ignore */ }
+      if (n >= phases[ph][2]) { ph++; n = 0; }
+      draw();
+    });
+    $("#tsReset").addEventListener("click", () => { ph = 0; n = 0; draw(); });
+    draw();
+  }
+
   /* ---------- Imam profiles ---------- */
   function openImam(i) {
     const m = MASUMIN[i]; if (!m) return;
@@ -820,6 +855,7 @@
      =========================================================== */
   renderEras();
   renderLearn();
+  renderDuas();
   renderProofs();
   $("#proofCount").textContent = ["Twelve","Thirteen","Fourteen","Fifteen","Sixteen"][PROOFS.length - 12] || PROOFS.length;
   renderHaq();

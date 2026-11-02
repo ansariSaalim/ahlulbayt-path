@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=7" />
+<link rel="stylesheet" href="css/style.css?v=8" />
 </head>
 <body>
 
@@ -26,15 +26,16 @@
   </a>
   <nav class="nav-links" id="navLinks">
     <a href="#learn">Learn</a>
+    <a href="#namaz-dua">Namaz & Dua</a>
     <a href="#proofs">Proofs</a>
     <a href="#stories">Stories</a>
     <a href="#battles">Battles</a>
     <a href="#haq">Fatima's Haq</a>
     <a href="#karbala">Karbala</a>
     <a href="#abbas">Moula Abbas</a>
-    <a href="#rulers">Caliphs</a>
     <a href="#masumin">Ma'sumin</a>
     <a href="#pearls">Pearls</a>
+    <a class="x" href="#rulers">The caliphs</a>
     <a class="x" href="#wronged">Who wronged them</a>
     <a class="x" href="#path">Your progress</a>
     <a class="x" href="#timeline">Timeline</a>
@@ -159,6 +160,50 @@
       <p>Beliefs, the Ma'sumin, Karbala, taharat, namaz with the Arabic, fasting, khums, taqlid, duas, the Shia year and daily life. Each lesson has a practice task and a short quiz.</p>
     </div>
     <div class="learn-grid" id="learnGrid"></div>
+  </div>
+</section>
+
+<!-- ============ NAMAZ & DUA ============ -->
+<section class="section" id="namaz-dua">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="kicker">Namaz & Dua</p>
+      <h2>Pray and remember, every day</h2>
+      <p>The five prayers at a glance, the full step-by-step guide, and the duas Shia Muslims recite, in Arabic with pronunciation and meaning.</p>
+    </div>
+    <div class="nd-grid">
+      <div class="nd-prayers reveal">
+        <h3>The five daily prayers · 17 rak'at</h3>
+        <table class="facts">
+          <tr><td>Fajr</td><td>2 rak'at · dawn to sunrise</td></tr>
+          <tr><td>Zuhr</td><td>4 rak'at · from midday</td></tr>
+          <tr><td>Asr</td><td>4 rak'at · after Zuhr, until sunset</td></tr>
+          <tr><td>Maghrib</td><td>3 rak'at · after the eastern redness goes</td></tr>
+          <tr><td>Isha</td><td>4 rak'at · after Maghrib, until midnight</td></tr>
+        </table>
+        <div class="nd-links">
+          <a class="btn btn-gold" href="#lesson/namaz-steps">How to pray, step by step →</a>
+          <a class="nd-l" href="#lesson/wudu">💧 Wudu</a>
+          <a class="nd-l" href="#lesson/ghusl-tayammum">Ghusl & Tayammum</a>
+          <a class="nd-l" href="#lesson/namaz-times">Times & conditions</a>
+          <a class="nd-l" href="#lesson/adhan-jumua-nafila">Adhan, Jumu'a, Nafila, Salat al-Layl</a>
+          <a class="nd-l" href="#lesson/namaz-rules">Doubts, travel, Salat al-Ayat</a>
+        </div>
+      </div>
+      <div class="tasbih reveal" id="tasbih">
+        <h3>Tasbih of Lady Fatima</h3>
+        <p class="ts-phase" id="tsPhase">Allahu Akbar</p>
+        <p class="ts-ar" id="tsAr" dir="rtl" lang="ar">اللّٰهُ أَكْبَرُ</p>
+        <button class="ts-btn" id="tsBtn" aria-label="Count"><span id="tsCount">0</span><small id="tsOf">of 34</small></button>
+        <div class="ts-bar"><i id="tsBar"></i></div>
+        <button class="ts-reset" id="tsReset">Reset</button>
+      </div>
+    </div>
+    <h3 class="sub-h reveal">Du'a library</h3>
+    <div class="dua-list" id="duaList"></div>
+    <h3 class="sub-h reveal">The great duas</h3>
+    <div class="long-duas" id="longDuas"></div>
+    <p class="note-small reveal" style="margin-top:1.2rem">For the full text of the long duas, use <b>Mafatih al-Jinan</b> (a free app on every phone), <a href="https://www.duas.org" target="_blank" rel="noopener" style="color:var(--gold)">duas.org</a> or <a href="https://www.al-islam.org" target="_blank" rel="noopener" style="color:var(--gold)">al-islam.org</a>.</p>
   </div>
 </section>
 
@@ -493,8 +538,8 @@
 
 <div class="toast" id="toast"></div>
 
-<script src="js/data.js?v=7"></script>
-<script src="js/course.js?v=7"></script>
-<script src="js/app.js?v=7"></script>
+<script src="js/data.js?v=8"></script>
+<script src="js/course.js?v=8"></script>
+<script src="js/app.js?v=8"></script>
 </body>
 </html>
