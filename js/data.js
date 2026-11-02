@@ -1147,3 +1147,47 @@ const ERA_INTRO = {
   abbasid: "The Abbasids rose in the name of the Prophet's family, then imprisoned and poisoned its Imams one by one: al-Sadiq, al-Kazim, al-Rida, al-Jawad, al-Hadi and al-Askari.",
   ghayba: "The twelfth Imam, hidden from birth, his four deputies, and the Major Occultation that continues today, and what it asks of us while we wait."
 };
+
+/* ---------------------------------------------------------
+   The marriage of Ali and Fatima
+   --------------------------------------------------------- */
+(function addMarriage() {
+  const story = {
+    id: "marriage", era: "prophet",
+    title: "The Marriage of Ali and Fatima",
+    arabic: "زواج علي وفاطمة",
+    when: "1 Dhul Hijja, 2 AH (624 CE)", where: "Medina",
+    summary: "Rich and powerful men asked for her hand and were turned away. The Prophet gave his daughter to a poor young man whose only valuable was his armour.",
+    body: `
+<h4>The proposals</h4>
+<p>Fatima was the daughter of the Prophet ﷺ and the Lady of the Women of the Worlds. Many men asked to marry her, including senior companions and wealthy men who offered large dowries. Al-Nasa'i records that when Abu Bakr and then Umar asked, the Prophet turned them away. Shia narrations add his words: <strong>"I am waiting for the command of Allah about her."</strong></p>
+<p>Ali loved her, but he was poor. He owned almost nothing and was too shy to ask. His friends kept encouraging him: if the Prophet has refused the others, perhaps he is waiting for you.</p>
+<h4>Ali asks</h4>
+<p>One day Ali went to the Prophet's house, sat down, and could not say a word. The Prophet smiled and said: "It seems you have come for something?" Ali said yes, and finally asked for Fatima.</p>
+<p>The Prophet asked: "Do you have anything to give as mahr?" Ali listed everything he owned: <strong>his sword, his camel, and his armour.</strong> The Prophet said: your sword you need to defend Islam, your camel you need to earn your living and draw water. <strong>Sell the armour.</strong></p>
+<p>Then the Prophet went in to Fatima and told her that Ali had asked for her. She said nothing and lowered her head. The Prophet said: <strong>"Allahu Akbar! Her silence is her consent."</strong></p>
+<p>Shia narrations tell us more about this match. The Prophet said that Allah had married Fatima to Ali in the heavens before the marriage on earth, and that <strong>if Allah had not created Ali, there would have been no equal for Fatima</strong> among all people, from Adam onwards.</p>
+<h4>A dowry of one coat of armour</h4>
+<p>The armour was sold for about <strong>480 to 500 dirhams</strong>. This became the <strong>Mahr al-Sunna</strong>, the dowry of the Prophet's daughter. It is still the most blessed mahr in Shia Islam. Some narrations say Uthman bought the armour and then gave it back to Ali as a gift.</p>
+<p>The Prophet spent the money himself. He sent part for perfume, and the rest to buy the household of the leader of the women of Paradise: a mat, a leather pillow stuffed with palm fibre, a water skin, some clay pots and cups, a hand mill for grinding grain, and a simple bed. When he saw it, he prayed: <em>"O Allah, bless a people whose dishes are mostly made of clay."</em></p>
+<h4>The wedding</h4>
+<p>Ali gave a wedding feast (walima) of bread, dates and meat, and the Prophet invited the people of Medina. That night, the Prophet brought Fatima to Ali's house, called for water, made wudu, sprinkled them with it and prayed: <strong>"O Allah, these are my family. Bless them, and bless their children."</strong></p>
+<p>A famous narration says that on her wedding night a poor woman came to the door asking for an old garment. Fatima had an old dress and her new wedding dress. She remembered the verse <em>"You will never attain righteousness until you spend from what you love"</em> (3:92), and gave away the new one.</p>
+<p>The next morning the Prophet asked Ali, "How did you find your wife?" Ali answered: <strong>"The best helper in obeying Allah."</strong> He asked Fatima about Ali, and she said: <strong>"The best of husbands."</strong></p>
+<h4>Their home</h4>
+<p>Their life was hard and full of love. Ali drew water and worked in others' palm groves; Fatima ground grain until her hands blistered. When they asked the Prophet for a servant, he taught them something better: 34 Allahu Akbar, 33 Alhamdulillah and 33 Subhanallah before sleep. This is the <strong>Tasbih of Fatima</strong>, recorded in Sahih al-Bukhari.</p>
+<p>Once, Ali, Fatima, Hasan, Husayn and their helper Fidda fasted three days for a vow. Each evening, as they were about to break their fast, someone knocked: on the first night a poor man, on the second an orphan, on the third a captive. Each time they gave away all their bread and broke their fast with water. Allah revealed Surat al-Insan about them: <em>"They give food, out of love for Him, to the poor, the orphan and the captive. 'We feed you only for the sake of Allah. We want from you no reward and no thanks'"</em> (76:8–9).</p>
+<p>From this house of clay pots came Hasan, Husayn, Zaynab and Umm Kulthum, and through Husayn, nine more Imams.</p>`,
+    lesson: "The best marriage in history had the simplest dowry. Marriage in Islam is about faith and character, not wealth, so do not make it hard with heavy dowries and expensive weddings.",
+    sources: "al-Nasa'i, Sunan and Khasa'is (the refused proposals); Sahih al-Bukhari (Tasbih of Fatima); al-Zamakhshari, al-Kashshaf and al-Wahidi, Asbab al-Nuzul (Surat al-Insan); Shaykh al-Tusi, al-Amali; al-Kulayni, al-Kafi; Bihar al-Anwar",
+    proof: "Al-Nasa'i records that Abu Bakr and Umar asked for Fatima and were refused, and that she was then given to Ali. Sunni commentators such as al-Zamakhshari and al-Wahidi report that Surat al-Insan was revealed about Ali, Fatima, Hasan and Husayn."
+  };
+  const k = STORIES.findIndex(s => s.id === "badr");
+  STORIES.splice(k + 1, 0, story);
+  STORY_IMAGES.marriage = "Prophet's_Mosque";
+  const t = TIMELINE.findIndex(x => x.s === "badr");
+  TIMELINE.splice(t + 1, 0, { y: "624 · 2 AH", era: "prophet", t: "Ali marries Fatima; a dowry of one coat of armour", s: "marriage" });
+  const d = DATES.findIndex(x => x.name === "Eid al-Ghadir");
+  DATES.splice(d, 0, { month: "Dhul Hijja", day: "1", name: "Marriage of Imam Ali and Lady Fatima", story: "marriage" });
+  LESSONS["Fatima al-Zahra"].items.push(["A simple marriage", "The daughter of the Prophet married with a dowry of one coat of armour and a home of clay pots."]);
+})();
