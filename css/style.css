@@ -1356,3 +1356,25 @@ small, .fadak-tl b, .pw, .ps { unicode-bidi: isolate; }
 .fav-empty { text-align: center; padding: 2.5rem 1rem; }
 .fav-empty svg { width: 48px; height: 48px; fill: none; stroke: var(--gold); stroke-width: 1.4; margin-bottom: .6rem; }
 .dua-h > span { padding-right: 2.2rem; }
+/* ---- du'a library ---- */
+#duas .search { margin: .2rem 0 .9rem; }
+.lib-cats { display: grid; gap: .5rem; }
+.lib-cats[hidden] { display: none; }
+@media (min-width: 900px) { .lib-cats { grid-template-columns: 1fr 1fr; } }
+.lib-cat { display: flex; align-items: center; justify-content: space-between; gap: .8rem; padding: 1rem 1.1rem; border-radius: 16px; border: 1px solid var(--line); background: var(--card); text-decoration: none; color: var(--text); transition: border-color .2s; }
+.lib-cat:hover { border-color: var(--gold); }
+.lib-cat b { display: block; font-family: var(--display); font-size: 1.3rem; line-height: 1.2; }
+.lib-cat small { display: block; font-family: var(--sans); font-size: .76rem; color: var(--muted); margin-top: .15rem; }
+.lib-cat em { font-style: normal; flex-shrink: 0; min-width: 2.2rem; height: 2.2rem; padding: 0 .4rem; display: grid; place-items: center; border-radius: 99px; background: color-mix(in srgb, var(--gold) 15%, transparent); color: var(--gold); font-family: var(--sans); font-weight: 700; font-size: .85rem; }
+.lib-art { font-family: var(--arabic); font-size: 1.05em; }
+.lib-bar { display: flex; gap: .5rem; align-items: center; margin: .8rem 0 1rem; font-family: var(--sans); }
+.lib-btn { padding: .45rem .95rem; border-radius: 99px; border: 1px solid var(--line); color: var(--gold); font-weight: 700; font-size: .82rem; }
+.lib-bar .fav { border: 1px solid var(--line); }
+.lib-text { font-family: var(--arabic); font-size: calc(1.5rem * var(--ar, 1)); line-height: 2.3; color: var(--text); text-align: right; }
+.lib-text p { margin: 0 0 1.1rem; padding-bottom: 1.1rem; border-bottom: 1px solid color-mix(in srgb, var(--gold) 14%, transparent); }
+.lib-text p:last-child { border-bottom: 0; }
+.lib-src { margin-top: .4rem; }
+.pt-extra { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .8rem; font-family: var(--sans); }
+.pt-chip { font-size: .74rem; font-weight: 600; padding: .35rem .75rem; border-radius: 99px; background: color-mix(in srgb, #2fbf86 15%, transparent); color: #3fae7e; }
+.pt-chip::before { content: "● "; font-size: .6rem; vertical-align: 1px; }
+.pt-chip-b { font-size: .76rem; font-weight: 700; padding: .45rem .9rem; border-radius: 99px; border: 1px solid var(--gold); color: var(--gold); }

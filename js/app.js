@@ -403,7 +403,7 @@
     document.body.classList.remove("locked");
     document.title = "The Path of the Ahl al-Bayt · History & Stories for Learning Shia Islam";
     currentId = null;
-    if (!fromHash && /^#(story|chapter|learn|lesson|imam|quran)\//.test(location.hash)) history.replaceState(null, "", location.pathname + location.search + (screenHash || "#/home"));
+    if (!fromHash && /^#(story|chapter|learn|lesson|imam|quran|lib)\//.test(location.hash)) history.replaceState(null, "", location.pathname + location.search + (screenHash || "#/home"));
     if (typeof stopQuran === "function") stopQuran();
     reader.classList.remove("is-quran"); $("#qPlayer").hidden = true; $("#qSheet").hidden = true;
     if (!fromHash && screenHash) setTimeout(() => shellRoute(screenHash), 0);
@@ -441,7 +441,7 @@
 
   function route() {
     const h = decodeURIComponent(location.hash);
-    const overlay = /^#(story|chapter|learn|lesson|imam|quran)\//.test(h);
+    const overlay = /^#(story|chapter|learn|lesson|imam|quran|lib)\//.test(h);
     if (overlay && !screenHash) showScreen("home");
     if (h.startsWith("#quran/")) openSurah(h.slice(7));
     else if (h.startsWith("#story/")) openStory(h.slice(7));
@@ -449,6 +449,7 @@
     else if (h.startsWith("#learn/")) openCategory(h.slice(7));
     else if (h.startsWith("#lesson/")) openLesson(h.slice(8));
     else if (h.startsWith("#imam/")) openImam(+h.slice(6));
+    else if (h.startsWith("#lib/")) { const [c, id] = h.slice(5).split("/"); id ? openLibItem(c, id) : openLib(c); }
     else { closeStory(true); shellRoute(h); }
   }
   window.addEventListener("hashchange", route);
@@ -1003,6 +1004,7 @@
     if (sub === "namaz-guide" && window.NamazGuide) NamazGuide.render();
     if (sub === "qa") renderQA();
     if (sub === "favs") renderFavs();
+    if (tab === "duas" && !sub) renderLibHome();
     if (sub === "timeline") tlProgress();
   }
 
@@ -1036,6 +1038,76 @@
   const ico = k => `<svg viewBox="0 0 24 24">${IC[k]}</svg>`;
   const tile = (href, icon, label, cls = "") => `<a class="tile ${cls}" href="${href}"><i>${ico(icon)}</i><span>${label}</span></a>`;
 
+
+  /* ===========================================================
+     DU'A & ZIYARAT LIBRARY (full Arabic texts, loaded on demand)
+     =========================================================== */
+  const libCache = {};
+  const libCat = id => typeof LIB !== "undefined" && LIB.find(c => c.id === id);
+  const libMins = n => Math.max(1, Math.round(n / 900));
+  async function libData(cid) {
+    if (libCache[cid]) return libCache[cid];
+    const r = await fetch(`data/lib/${cid}.json?v=1`); if (!r.ok) throw new Error("load");
+    return (libCache[cid] = await r.json());
+  }
+  function renderLibHome() {
+    if (typeof LIB === "undefined" || !$("#libCats")) return;
+    $("#libCats").innerHTML = LIB.map(c => `<a class="lib-cat" href="#lib/${c.id}"><span><b>${esc(c.name)}</b><small>${esc(c.desc)}</small></span><em>${c.items.length}</em></a>`).join("");
+  }
+  function libSearch(q) {
+    q = q.trim().toLowerCase();
+    if (!q) { $("#libResults").innerHTML = ""; $("#libCats").hidden = false; return; }
+    const hits = [];
+    LIB.forEach(c => c.items.forEach(it => { if ((it[1] + " " + it[2] + " " + c.name).toLowerCase().includes(q)) hits.push([c, it]); }));
+    $("#libCats").hidden = true;
+    $("#libResults").innerHTML = hits.length ? hits.slice(0, 40).map(([c, it]) => `<a class="lib-cat" href="#lib/${c.id}/${it[0]}"><span><b>${esc(it[1])}</b><small>${esc(c.name)}${c.arTitle ? " · " + esc(it[2]) : " · " + esc(it[2])}</small></span></a>`).join("") : `<p class="q-err">Nothing found. Try "Kumayl", "Ashura", "Friday" or "Sahifa".</p>`;
+  }
+  if ($("#libSearch")) $("#libSearch").addEventListener("input", e => libSearch(e.target.value));
+  function openLib(cid) {
+    const c = libCat(cid); if (!c) return;
+    if (!reader.classList.contains("open")) lastFocus = document.activeElement;
+    currentId = null; setMode("chapter");
+    reader.style.setProperty("--c", "#1d6b4f");
+    $("#rEra").textContent = "Du'a & Ziyarat";
+    $("#rArabic").textContent = "";
+    $("#rTitle").textContent = c.name;
+    $("#rMeta").textContent = c.items.length + " texts · full Arabic";
+    const img = $("#rHeroImg"); img.style.backgroundImage = ""; img.classList.add("ph-fallback"); $("#rCredit").textContent = "";
+    $("#rBack").hidden = false; $("#rBack").href = "#/duas"; $("#rBack").textContent = "← Du'a library";
+    $("#rChapter").innerHTML = `<p class="r-summary">${esc(c.desc)}</p>
+      <ol class="ch-list lib-list">${c.items.map((it, k) => `<li style="animation-delay:${Math.min(k, 12) * .04}s"><a href="#lib/${c.id}/${it[0]}"><span class="ch-n">${k + 1}</span><span class="ch-t"><b>${esc(it[1])}</b><small>${c.arTitle ? `<span dir="rtl" lang="ar" class="lib-art">${esc(it[2])}</span>` : esc(it[2])} · ${libMins(it[3])} min</small></span></a></li>`).join("")}</ol>`;
+    showReader(c.name);
+  }
+  async function openLibItem(cid, id) {
+    const c = libCat(cid); if (!c) return;
+    const k = c.items.findIndex(x => x[0] === id); if (k < 0) return;
+    const it = c.items[k], prev = c.items[k - 1], next = c.items[k + 1];
+    if (!reader.classList.contains("open")) lastFocus = document.activeElement;
+    currentId = null; setMode("lesson");
+    reader.style.setProperty("--c", "#1d6b4f");
+    $("#rEra").textContent = c.name;
+    $("#rArabic").textContent = c.arTitle ? it[2] : "";
+    $("#rTitle").textContent = it[1];
+    $("#rMeta").textContent = c.arTitle ? "Imam Zayn al-Abidin (AS)" : it[2];
+    const img = $("#rHeroImg"); img.style.backgroundImage = ""; img.classList.add("ph-fallback"); $("#rCredit").textContent = "";
+    $("#rBack").hidden = false; $("#rBack").href = "#lib/" + cid; $("#rBack").textContent = "← " + c.name;
+    $("#rLessonView").innerHTML = `<p class="q-err">Loading…</p>`;
+    showReader(it[1]);
+    setLast(`#lib/${cid}/${id}`, "Du'a", it[1]);
+    let data;
+    try { data = await libData(cid); } catch { $("#rLessonView").innerHTML = `<p class="q-err">Could not load this text. Check your internet connection and try again. Once opened, it stays available offline.</p>`; return; }
+    const x = data.items.find(y => y.id === id); if (!x) return;
+    $("#rLessonView").innerHTML = `<div class="lib-bar"><button class="lib-btn" id="libSize">Aa</button><button class="lib-btn" id="libCopy">Copy</button>${favBtn("l:" + cid + "/" + id)}</div>
+      <div class="lib-text" dir="rtl" lang="ar">${x.p.map(t => `<p>${esc(t)}</p>`).join("")}</div>
+      <p class="note-small lib-src">Arabic text: ${esc(data.src)}.</p>
+      <nav class="r-nav">
+        <button class="r-nav-btn" ${prev ? "" : "disabled"} onclick="location.hash='lib/${cid}/${prev ? prev[0] : ""}'"><small>Previous</small><span>${prev ? esc(prev[1]) : ""}</span></button>
+        <button class="r-nav-btn" ${next ? "" : "disabled"} onclick="location.hash='lib/${cid}/${next ? next[0] : ""}'"><small>Next</small><span>${next ? esc(next[1]) : ""}</span></button>
+      </nav>`;
+    $("#libSize").onclick = () => { const steps = [90, 100, 115, 130, 150], cur = store.get("abp-ar", 100), nx = steps[(steps.findIndex(v => v >= cur) + 1) % steps.length]; store.set("abp-ar", nx); applyArScale(); toast(`Arabic size ${nx}%`); };
+    $("#libCopy").onclick = () => (navigator.clipboard ? navigator.clipboard.writeText(it[1] + "\n\n" + x.p.join("\n\n")) : Promise.reject()).then(() => toast("Copied"), () => toast("Copy not available"));
+  }
+
   /* ---------- favourites ---------- */
   var STAR = '<svg viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.7 6.3.9-4.6 4.4 1.1 6.2L12 17l-5.6 3 1.1-6.2-4.6-4.4 6.3-.9z"/></svg>';
   function favs() { return store.get("abp-favs", []); }
@@ -1054,8 +1126,10 @@
     const f = favs();
     const P = f.filter(k => k.startsWith("p:")).map(k => PEARLS[+k.slice(2)]).filter(Boolean);
     const D = f.filter(k => k.startsWith("d:")).map(k => [+k.slice(2), DUAS[+k.slice(2)]]).filter(x => x[1]);
+    const LI = typeof LIB !== "undefined" ? f.filter(k => k.startsWith("l:")).map(k => { const [cid, id] = k.slice(2).split("/"), c = libCat(cid), it = c && c.items.find(x => x[0] === id); return it ? [c, it] : null; }).filter(Boolean) : [];
     const Q = typeof QA !== "undefined" ? f.filter(k => k.startsWith("q:")).map(k => QA.find(x => x.id === k.slice(2))).filter(Boolean) : [];
     $("#favBody").innerHTML = !f.length ? `<div class="fav-empty">${STAR}<p>Nothing saved yet.</p><p class="muted">Tap the star on any pearl, du'a or Q&A answer to keep it here.</p></div>` :
+      (LI.length ? `<h3 class="sub-h">From the library</h3>${LI.map(([c, it]) => `<a class="lib-cat" href="#lib/${c.id}/${it[0]}"><span><b>${esc(it[1])}</b><small>${esc(c.name)}</small></span></a>`).join("")}` : "") +
       (D.length ? `<h3 class="sub-h">Du'as</h3>${D.map(([i, d]) => `<div class="dua open">${favBtn("d:" + i)}<div class="dua-h"><span><b>${esc(d.t)}</b><small>${esc(d.when)}</small></span></div><div class="dua-body" style="max-height:none"><div><p class="dua-ar" dir="rtl" lang="ar">${d.ar}</p><p class="dua-tr">${esc(d.tr)}</p><p class="dua-en">${esc(d.en)}</p></div></div></div>`).join("")}` : "") +
       (P.length ? `<h3 class="sub-h">Pearls</h3><div class="pearl-grid">${P.map(pearlCard).join("").replace(/ reveal/g, "")}</div>` : "") +
       (Q.length ? `<h3 class="sub-h">Questions & answers</h3><div class="qa-list">${Q.map(x => qaItem(x, false)).join("")}</div>` : "");
@@ -1238,6 +1312,10 @@
       ${ptOff !== 0 ? `<button class="pt-today" id="ptToday">Back to today</button>` : ""}
       <ul class="pt-list"><li class="minor imsak"><b>Imsak (Sehar)<small>stop eating</small></b><span>${fmtH(imsak)}</span></li>${PNAMES.map(([k, n, c]) => `<li class="${c === "minor" ? "minor" : c === "main" ? "main" : ""} ${nx && nx.k === k && nx.ts === t.ts[k] ? "next" : ""}"><b>${n}${c === "fadila" ? "<small>preferred time</small>" : ""}</b><span>${fmtH(t.hours[k])}</span></li>`).join("")}</ul>
       <p class="pt-foot">${nx ? `Next: <b style="color:var(--gold)">${nx.name}</b> ${countdown(nx.ts - Date.now())}. ` : ""}Ja'fari method (Fajr 16°, Maghrib 4°, Isha 14°). Imsak is ${IMSAK_MIN} minutes before Fajr: when fasting, stop eating a little before Fajr to be sure (Sayyid al-Sistani, Islamic Laws). Zuhr–Asr and Maghrib–Isha may be combined. Check against your marja's local timetable.</p>`;
+    const notifOn = store.get("abp-notify", false) && "Notification" in window && Notification.permission === "granted";
+    box.insertAdjacentHTML("beforeend", `<div class="pt-extra">${loc.auto ? `<span class="pt-chip">Following your location</span>` : `<button class="pt-chip-b" id="ptUseGeo">Use my location instead</button>`}${"Notification" in window ? (notifOn ? `<span class="pt-chip">Reminders on</span>` : `<button class="pt-chip-b" id="ptNotify">Turn on prayer reminders</button>`) : ""}</div>`);
+    if ($("#ptUseGeo")) $("#ptUseGeo").onclick = useGeo;
+    if ($("#ptNotify")) $("#ptNotify").onclick = enableReminders;
     $("#ptPrev").onclick = () => { ptOff--; renderPrayer(); };
     $("#ptNext").onclick = () => { ptOff++; renderPrayer(); };
     if ($("#ptToday")) $("#ptToday").onclick = () => { ptOff = 0; renderPrayer(); };
@@ -1246,14 +1324,34 @@
 
   /* ---------- location ---------- */
   function setLoc(loc) { store.set("abp-loc", loc); renderPrayer(); renderHome(); if ($("#setLocNow")) $("#setLocNow").textContent = "Current: " + loc.name; scheduleReminders(); }
+  const distKm = (a, b, c, d) => { const R = 6371, dLa = (c - a) * D2R, dLo = (d - b) * D2R, x = Math.sin(dLa / 2) ** 2 + Math.cos(a * D2R) * Math.cos(c * D2R) * Math.sin(dLo / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(x)); };
+  function placeName(lat, lng) {
+    let best = null, bd = 1e9;
+    CITIES.forEach(c => { const d = distKm(lat, lng, c[1], c[2]); if (d < bd) { bd = d; best = c; } });
+    return bd < 8 ? best[0] : bd < 60 ? "Near " + best[0] : "My location";
+  }
+  function geoLoc(p) { const lat = +p.coords.latitude.toFixed(4), lng = +p.coords.longitude.toFixed(4); return { name: placeName(lat, lng), lat, lng, tz: null, auto: true }; }
   function useGeo() {
     if (!navigator.geolocation) { toast("Location is not available on this device"); return; }
     toast("Finding your location…");
     navigator.geolocation.getCurrentPosition(p => {
-      setLoc({ name: "My location", lat: +p.coords.latitude.toFixed(4), lng: +p.coords.longitude.toFixed(4), tz: null });
-      toast("Location set ✓");
+      const l = geoLoc(p); setLoc(l);
+      toast(`Location set: ${l.name}. It will update by itself when you travel.`);
     }, () => toast("Location permission denied. Choose a city in Settings."), { timeout: 12000, maximumAge: 6e5 });
   }
+  /* when the user chose "Use my location", quietly follow them when they travel (no new permission prompt) */
+  let lastAuto = 0;
+  async function autoLocate(force) {
+    const loc = getLoc();
+    if (!loc || !loc.auto || !navigator.geolocation || (!force && Date.now() - lastAuto < 20 * 60e3)) return;
+    lastAuto = Date.now();
+    try { if (navigator.permissions) { const st = await navigator.permissions.query({ name: "geolocation" }); if (st.state !== "granted") return; } } catch { return; }
+    navigator.geolocation.getCurrentPosition(p => {
+      const l = geoLoc(p), cur = getLoc();
+      if (cur && cur.auto && distKm(cur.lat, cur.lng, l.lat, l.lng) > 10) { setLoc(l); toast(`You are now in ${l.name.replace("Near ", "near ")}. Prayer times and Qibla updated.`); }
+    }, () => {}, { timeout: 15000, maximumAge: 15 * 60e3 });
+  }
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") autoLocate(); });
 
   /* ---------- qibla ---------- */
   const KAABA = [21.4225, 39.8262];
@@ -1535,6 +1633,15 @@
   $("#setAr").addEventListener("input", e => { store.set("abp-ar", +e.target.value); $("#setArVal").textContent = e.target.value + "%"; applyArScale(); });
   $("#setTheme").addEventListener("change", e => { root.dataset.theme = e.target.value; store.set("abp-theme", e.target.value); });
   $("#setHijri").addEventListener("change", e => { store.set("abp-hadj", +e.target.value); renderSettings(); toast("Hijri date adjusted ✓"); });
+  async function enableReminders() {
+    if (!("Notification" in window)) { toast("Notifications are not supported on this browser"); return false; }
+    const p = await Notification.requestPermission();
+    if (p !== "granted") { toast("Notifications were blocked. Allow them in your phone's settings for this app."); return false; }
+    store.set("abp-notify", true); scheduleReminders(); renderPrayer();
+    toast("Prayer reminders on");
+    if (!getLoc()) toast("Now set your location");
+    return true;
+  }
   $("#setNotify").addEventListener("change", async e => {
     if (e.target.checked) {
       if (!("Notification" in window)) { toast("Notifications not supported here"); e.target.checked = false; return; }
@@ -1579,6 +1686,7 @@
   observeReveals();
   onScroll();
   route();
+  setTimeout(() => autoLocate(true), 1500);
 
   /* ===========================================================
      HONORIFICS: (AS) after every Imam, (SA) after the Ladies.
