@@ -828,10 +828,15 @@
 
   /* ---------- Download the App (Android APK + PWA) ---------- */
   const APK_URL = "https://github.com/ansariSaalim/ahlulbayt-path/releases/download/android-latest/ahlulbayt-path.apk";
-  const CAP = window.Capacitor;
-  const NATIVE = !!(CAP && (typeof CAP.isNativePlatform === "function" ? CAP.isNativePlatform() : (CAP.getPlatform && CAP.getPlatform() !== "web")));
+  const CX = window.capacitorExports || null;
+  const CAP = (CX && CX.Capacitor) || window.Capacitor;
+  const NATIVE = !!(CAP && ((typeof CAP.isNativePlatform === "function" && CAP.isNativePlatform()) || (typeof CAP.getPlatform === "function" && CAP.getPlatform() !== "web") || window.androidBridge));
   if (NATIVE) document.documentElement.classList.add("is-app", "app-installed");
-  const LN = NATIVE ? ((CAP.Plugins && CAP.Plugins.LocalNotifications) || (CAP.registerPlugin ? CAP.registerPlugin("LocalNotifications") : null)) : null;
+  let LN = null;
+  if (NATIVE) {
+    try { LN = (CX && CX.registerPlugin && CX.registerPlugin("LocalNotifications")) || (CAP.registerPlugin && CAP.registerPlugin("LocalNotifications")) || null; } catch { LN = null; }
+    if (!LN && CAP.Plugins) LN = CAP.Plugins.LocalNotifications || null;
+  }
   let installEvt = null;
   const standalone = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
   if (standalone()) document.documentElement.classList.add("app-installed");
