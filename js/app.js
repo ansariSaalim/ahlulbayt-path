@@ -757,7 +757,7 @@
     observeReveals($("#pearlGrid"));
   }
   function killersHTML() {
-    return `<div class="kl-grid">${KILLERS.map(k => `<div class="kl reveal"><h4>${esc(k.n)}</h4><p>${esc(k.d)}</p><p class="kf"><b>Their end</b>${esc(k.f)}</p></div>`).join("")}</div>`;
+    return `<div class="kl-grid">${KILLERS.map(k => `<div class="kl reveal"><h4>${esc(k.n)}</h4>${k.ln ? `<span class="ln-tag" dir="rtl" lang="ar">لَعْنَةُ اللّٰهِ عَلَيْهِ</span>` : ""}<p>${esc(k.d)}</p><p class="kf"><b>Their end</b>${esc(k.f)}</p></div>`).join("")}</div>`;
   }
   function renderWronged() {
     $("#wrList").innerHTML = WRONGED.map(w => `<div class="wr reveal"><b>${esc(w.who)}</b><p>${esc(w.by)}</p><a href="#story/${w.s}">Read →</a></div>`).join("");
@@ -770,26 +770,25 @@
     $("#abFacts").innerHTML = ABBAS.facts.map(f => `<tr><td>${esc(f[0])}</td><td>${esc(f[1])}</td></tr>`).join("");
     $("#abMoments").innerHTML = ABBAS.moments.map(m => `<li class="reveal"><b>${esc(m[0])}</b><p>${esc(m[1])}</p></li>`).join("");
     $("#gzStats").innerHTML = ABBAS_GENZ.stats.map(s => `<div class="gz-stat"><b>${s[1]}</b><span>${esc(s[0])}</span></div>`).join("");
-    $("#gzGrid").innerHTML = ABBAS_GENZ.cards.map(c => `<div class="gz-card"><span class="ge">${c.e}</span><h4>${esc(c.h)}</h4><p>${esc(c.p)}</p></div>`).join("");
+    $("#gzGrid").innerHTML = ABBAS_GENZ.cards.map((c, i) => `<div class="gz-card"><span class="gn">${String(i + 1).padStart(2, "0")}</span><h4>${esc(c.h)}</h4><p>${esc(c.p)}</p></div>`).join("");
     $("#gzTags").innerHTML = ABBAS_GENZ.tags.map(t => `<span>${t}</span>`).join("");
     let salams = store.get("abp-salam-abbas", 0);
-    const showCount = () => { $("#gzCount").textContent = salams ? `You've sent ${salams} salam${salams > 1 ? "s" : ""} to Moula Abbas 💚` : "Tap to send your salam"; };
+    const showCount = () => { $("#gzCount").textContent = salams ? `You've sent ${salams} salam${salams > 1 ? "s" : ""} to Moula Abbas` : "Tap to send your salam"; };
     showCount();
-    const bits = ["💚", "🤍", "🫡", "✨", "🌙", "💧"];
     $("#gzBtn").addEventListener("click", () => {
       salams++; store.set("abp-salam-abbas", salams); showCount();
       if (navigator.vibrate) try { navigator.vibrate(15); } catch { /* ignore */ }
       if (reduceMotion) return;
       const box = $("#gzFloat");
-      const n = salams % 10 === 0 ? 10 : 4;
+      const n = salams % 10 === 0 ? 9 : 4;
       for (let k = 0; k < n; k++) {
         const el = document.createElement("i");
-        const txt = k === 0 && (salams % 5 === 0);
-        el.className = txt ? "txt" : "";
-        el.textContent = txt ? "Ya Abbas 💚" : bits[Math.floor(Math.random() * bits.length)];
-        el.style.left = (40 + Math.random() * 20) + "%";
-        el.style.setProperty("--dx", ((Math.random() - .5) * 90) + "px");
-        el.style.animationDelay = (k * .08) + "s";
+        const txt = k === 0;
+        el.className = txt ? "txt" : "dot";
+        if (txt) el.textContent = salams % 10 === 0 ? "Ya Abul Fadl al-Abbas" : "Ya Abbas";
+        el.style.left = (txt ? 50 : 30 + Math.random() * 40) + "%";
+        el.style.setProperty("--dx", (txt ? 0 : (Math.random() - .5) * 110) + "px");
+        el.style.animationDelay = (k * .07) + "s";
         box.appendChild(el);
         setTimeout(() => el.remove(), 2200);
       }

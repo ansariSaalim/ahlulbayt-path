@@ -1675,15 +1675,15 @@ const WRONGED = [
   { who: "Imam al-Mahdi", by: "Hunted from birth by the Abbasids under al-Mu'tamid; betrayed to the caliph by his own uncle Ja'far.", s: "mahdi-birth" }
 ];
 const KILLERS = [
-  { n: "Yazid ibn Muawiya", d: "Demanded Husayn's pledge or his head, and struck his lips with a cane in Damascus.", f: "Died in 64 AH, aged about 38, after three and a half years of rule. His own son, Muawiya II, gave up the throne within weeks; it is reported he said his father and grandfather had taken what was not theirs." },
-  { n: "Ubaydullah ibn Ziyad", d: "Governor of Kufa. Killed Muslim ibn Aqil and Hani, ordered the water cut and the attack.", f: "Killed by Ibrahim, son of Malik al-Ashtar, at the river Khazir in 67 AH; his head was sent to Mukhtar." },
-  { n: "Umar ibn Sa'd", d: "Commander of the army, for the promise of governing Rayy. Ordered the horses over Husayn's body.", f: "Never got Rayy. Killed by Mukhtar's men in Kufa, together with his son Hafs." },
-  { n: "Shimr ibn Dhil-Jawshan", d: "Brought the order to attack; beheaded Imam Husayn; tried to kill Imam Zayn al-Abidin.", f: "Hunted down and killed by Mukhtar's men as he fled from Kufa." },
-  { n: "Harmala ibn Kahil al-Asadi", d: "Shot the arrow that killed the six-month-old Ali al-Asghar in his father's arms.", f: "Captured and executed by Mukhtar." },
-  { n: "Khawli ibn Yazid al-Asbahi", d: "Carried the head of Imam Husayn to Kufa and kept it in his house overnight.", f: "Found hiding in his house and killed by Mukhtar's men." },
-  { n: "Hakim ibn al-Tufayl", d: "Struck off the left hand of al-Abbas and stripped his body.", f: "Captured and killed by Mukhtar's men." },
-  { n: "Zayd ibn Warqa' al-Juhani", d: "Struck off the right hand of al-Abbas.", f: "Hunted by Mukhtar's men and killed." },
-  { n: "Shabath ibn Rib'i & Hajjar ibn Abjar", d: "Wrote letters inviting Husayn to Kufa, then stood in the army against him.", f: "Remembered forever as the men who invited their Imam and then fought him." }
+  { ln: true, n: "Yazid ibn Muawiya", d: "Demanded Husayn's pledge or his head, and struck his lips with a cane in Damascus.", f: "Died in 64 AH, aged about 38, after three and a half years of rule. His own son, Muawiya II, gave up the throne within weeks; it is reported he said his father and grandfather had taken what was not theirs." },
+  { ln: true, n: "Ubaydullah ibn Ziyad", d: "Governor of Kufa. Killed Muslim ibn Aqil and Hani, ordered the water cut and the attack.", f: "Killed by Ibrahim, son of Malik al-Ashtar, at the river Khazir in 67 AH; his head was sent to Mukhtar." },
+  { ln: true, n: "Umar ibn Sa'd", d: "Commander of the army, for the promise of governing Rayy. Ordered the horses over Husayn's body.", f: "Never got Rayy. Killed by Mukhtar's men in Kufa, together with his son Hafs." },
+  { ln: true, n: "Shimr ibn Dhil-Jawshan", d: "Brought the order to attack; beheaded Imam Husayn; tried to kill Imam Zayn al-Abidin.", f: "Hunted down and killed by Mukhtar's men as he fled from Kufa." },
+  { ln: true, n: "Harmala ibn Kahil al-Asadi", d: "Shot the arrow that killed the six-month-old Ali al-Asghar in his father's arms.", f: "Captured and executed by Mukhtar." },
+  { ln: true, n: "Khawli ibn Yazid al-Asbahi", d: "Carried the head of Imam Husayn to Kufa and kept it in his house overnight.", f: "Found hiding in his house and killed by Mukhtar's men." },
+  { ln: true, n: "Hakim ibn al-Tufayl", d: "Struck off the left hand of al-Abbas and stripped his body.", f: "Captured and killed by Mukhtar's men." },
+  { ln: true, n: "Zayd ibn Warqa' al-Juhani", d: "Struck off the right hand of al-Abbas.", f: "Hunted by Mukhtar's men and killed." },
+  { ln: true, n: "Shabath ibn Rib'i & Hajjar ibn Abjar", d: "Wrote letters inviting Husayn to Kufa, then stood in the army against him.", f: "Remembered forever as the men who invited their Imam and then fought him." }
 ];
 
 /* Profiles: related stories for each of the Fourteen, in MASUMIN order */
@@ -1762,15 +1762,15 @@ PEARLS.push(
 const ABBAS_GENZ = {
   stats: [["Sips of water he took", "0"], ["Times he left Husayn", "0"], ["Times he called him 'brother' before his last breath", "0"], ["Loyalty", "∞"]],
   cards: [
-    { e: "💚", h: "The ultimate green flag", p: "His 'alam is literally the green flag of Karbala. 1400 years later, still flying in every Muharram procession." },
-    { e: "🫡", h: "Loyalty? Unmatched. No cap.", p: "Shimr offered him and his brothers safety. He said: safety for us, and none for the son of the Prophet? Hard pass." },
-    { e: "💧", h: "Water in his hand. Didn't drink. That's the whole lore.", p: "Reached the river thirsty, picked up the water, remembered Husayn's thirst, and let it go." },
-    { e: "👑", h: "Main character energy", p: "But he made Husayn the main character his whole life. Always 'ya sayyidi', my master. Never 'my brother', until the very end." },
-    { e: "🌙", h: "Literally glowing", p: "Qamar Bani Hashim: the Moon of Banu Hashim. The name came from his face." },
-    { e: "🚩", h: "Held the flag. Held the line.", p: "Alamdar of Karbala. As long as the 'alam stood, the camp stood." },
-    { e: "📩", h: "Never leaves you on read", p: "Bab al-Hawa'ij, the door to needs. Millions ask Allah through him, and keep coming back with stories." },
-    { e: "🏆", h: "Brother goals, undefeated", p: "Imam al-Sajjad said Allah gave him two wings in Paradise, and a rank every martyr will envy." },
-    { e: "🤍", h: "Sakina's hero", p: "He promised her water. That promise is why we give out sabeel today." }
+    { h: "The ultimate green flag", p: "His 'alam is literally the green flag of Karbala. 1400 years later, still flying in every Muharram procession." },
+    { h: "Loyalty? Unmatched. No cap.", p: "Shimr offered him and his brothers safety. He said: safety for us, and none for the son of the Prophet? Hard pass." },
+    { h: "Water in his hand. Didn't drink. That's the whole lore.", p: "Reached the river thirsty, picked up the water, remembered Husayn's thirst, and let it go." },
+    { h: "Main character energy", p: "But he made Husayn the main character his whole life. Always 'ya sayyidi', my master. Never 'my brother', until the very end." },
+    { h: "Literally glowing", p: "Qamar Bani Hashim: the Moon of Banu Hashim. The name came from his face." },
+    { h: "Held the flag. Held the line.", p: "Alamdar of Karbala. As long as the 'alam stood, the camp stood." },
+    { h: "Never leaves you on read", p: "Bab al-Hawa'ij, the door to needs. Millions ask Allah through him, and keep coming back with stories." },
+    { h: "Brother goals, undefeated", p: "Imam al-Sajjad said Allah gave him two wings in Paradise, and a rank every martyr will envy." },
+    { h: "Sakina's hero", p: "He promised her water. That promise is why we give out sabeel today." }
   ],
   tags: ["#YaAbbas", "#Alamdar", "#SaqqaeSakina", "#GreenFlagOfKarbala", "#LoyaltyGoals", "#QamarBaniHashim", "#BabulHawaij"]
 };
