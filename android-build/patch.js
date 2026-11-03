@@ -3,6 +3,8 @@ const fs = require("fs"), path = require("path");
 const ROOT = path.resolve(__dirname, "..");
 const APP = path.join(ROOT, "app");
 const run = process.env.RUN_NUMBER || "1";
+// version marker the running app reads to detect when a newer build exists
+fs.writeFileSync(path.join(APP, "www", "build.json"), JSON.stringify({ build: Number(run) }));
 // 1. load Capacitor's runtime before our scripts
 const idx = path.join(APP, "www", "index.html");
 let html = fs.readFileSync(idx, "utf8");

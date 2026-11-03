@@ -870,6 +870,24 @@
   }
   $$("[data-install]").forEach(b => b.addEventListener("click", install));
 
+  /* ---------- "update available" notice (app only) ---------- */
+  function showUpdateBanner(v) {
+    if ($("#updBanner")) return;
+    const a = document.createElement("a");
+    a.id = "updBanner"; a.href = APK_URL; a.target = "_blank"; a.rel = "noopener";
+    a.innerHTML = `<span>Update available (1.${v}) — tap to get the newest app</span><i aria-label="Dismiss">×</i>`;
+    $("i", a).addEventListener("click", e => { e.preventDefault(); e.stopPropagation(); a.remove(); });
+    document.body.appendChild(a);
+  }
+  if (NATIVE) (async () => {
+    try {
+      const mine = await fetch("build.json", { cache: "no-store" }).then(r => r.json()).then(b => +b.build).catch(() => 0);
+      const j = await fetch("https://api.github.com/repos/ansariSaalim/ahlulbayt-path/releases/latest", { headers: { Accept: "application/vnd.github+json" } }).then(r => r.json());
+      const m = (j.name || "").match(/1\.(\d+)/);
+      if (m && +m[1] > mine) showUpdateBanner(+m[1]);
+    } catch { /* offline or rate-limited; ignore */ }
+  })();
+
   /* ---------- Namaz & Dua ---------- */
   function renderDuas() {
     $("#duaList").innerHTML = DUAS.map((d, i) => `<div class="dua reveal">
