@@ -18,51 +18,40 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=12" />
+<link rel="stylesheet" href="css/style.css?v=13" />
 </head>
 <body>
 
 <div class="progress" id="progress"></div>
 
 <!-- ============ NAV ============ -->
-<header class="nav" id="nav">
-  <a href="#top" class="brand">
+<header class="nav appbar" id="nav">
+  <button class="ab-back" id="abBack" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <a href="#/home" class="brand" id="abBrand">
     <svg class="brand-star" viewBox="0 0 100 100" aria-hidden="true"><g><rect x="22" y="22" width="56" height="56"/><rect x="22" y="22" width="56" height="56" transform="rotate(45 50 50)"/></g><circle cx="50" cy="50" r="12"/></svg>
     <span><span class="bp">The Path of the </span><em>Ahl al-Bayt</em></span>
   </a>
-  <nav class="nav-links" id="navLinks">
-    <a href="#learn">Learn</a>
-    <a href="#namaz-dua">Namaz & Dua</a>
-    <a href="#proofs">Proofs</a>
-    <a href="#stories">Stories</a>
-    <a href="#battles">Battles</a>
-    <a href="#haq">Fatima's Haq</a>
-    <a href="#karbala">Karbala</a>
-    <a href="#abbas">Moula Abbas</a>
-    <a href="#masumin">Ma'sumin</a>
-    <a href="#pearls">Pearls</a>
-    <a class="x" href="#rulers">The caliphs</a>
-    <a class="x" href="#wronged">Who wronged them</a>
-    <a class="x" href="#path">Your progress</a>
-    <a class="x" href="#timeline">Timeline</a>
-    <a class="x" href="#lessons">Lessons of the Fourteen</a>
-    <a class="x" href="#companions">Companions</a>
-    <a class="x" href="#dates">Key dates</a>
-    <a class="x" href="#reading">Books</a>
-  </nav>
-  <div class="nav-scrim" id="navScrim"></div>
+  <h1 class="ab-title" id="abTitle"></h1>
   <div class="nav-actions">
     <button class="install-pill" data-install aria-label="Download the app"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-5-5m5 5l5-5M5 21h14"/></svg><span>App</span></button>
     <button class="icon-btn" id="themeBtn" aria-label="Switch light or dark theme">
       <svg viewBox="0 0 24 24" class="i-moon"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
       <svg viewBox="0 0 24 24" class="i-sun"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1.5 12h3M19.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
     </button>
-    <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+    <a class="icon-btn" href="#/s/settings" aria-label="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></a>
   </div>
 </header>
 
+<nav class="tabbar" id="tabbar" aria-label="Main">
+  <a href="#/home" data-tab="home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></a>
+  <a href="#/prayer" data-tab="prayer"><svg viewBox="0 0 24 24"><path d="M12 3c3 3 5 5.5 5 8.5V20H7v-8.5C7 8.5 9 6 12 3z"/><path d="M4 20h16M12 13v4"/></svg><span>Prayer</span></a>
+  <a href="#/quran" data-tab="quran"><svg viewBox="0 0 24 24"><path d="M4 5c3-1.5 5.5-1.5 8 0v15c-2.5-1.5-5-1.5-8 0z"/><path d="M20 5c-3-1.5-5.5-1.5-8 0v15c2.5-1.5 5-1.5 8 0z"/></svg><span>Quran</span></a>
+  <a href="#/duas" data-tab="duas"><svg viewBox="0 0 24 24"><path d="M7 11V6a2 2 0 0 1 4 0v4M11 10V5a2 2 0 0 1 4 0v6M15 11V8a2 2 0 0 1 4 0v5a7 7 0 0 1-7 7h-1a6 6 0 0 1-6-6v-2a2 2 0 0 1 4 0"/></svg><span>Duas</span></a>
+  <a href="#/learn" data-tab="learn"><svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/></svg><span>Learn</span></a>
+</nav>
+
 <!-- ============ HERO ============ -->
-<section class="hero" id="top">
+<section data-screen="home" class="hero" id="top">
   <div class="hero-bg" id="heroBg"></div>
   <canvas id="motes" aria-hidden="true"></canvas>
   <svg class="hero-star" viewBox="0 0 400 400" aria-hidden="true">
@@ -103,8 +92,19 @@
   <p class="photo-credit" id="heroCredit"></p>
 </section>
 
+<!-- ============ HOME DASHBOARD ============ -->
+<section class="section home-dash" id="home-dash" data-screen="home">
+  <div class="wrap">
+    <div class="hd-today" id="hdToday"></div>
+    <div class="hd-next" id="hdNext"></div>
+    <div class="hd-tiles" id="hdTiles"></div>
+    <div class="hd-continue" id="hdContinue"></div>
+    <div class="hd-pearl" id="hdPearl"></div>
+  </div>
+</section>
+
 <!-- ============ LEARNING PATH ============ -->
-<section class="section" id="path">
+<section data-screen="home" class="section" id="path">
   <div class="wrap">
     <div class="section-head reveal">
       <p class="kicker">Your learning path</p>
@@ -160,24 +160,49 @@
 </section>
 
 <!-- ============ LEARN ============ -->
-<section class="section section-alt" id="learn">
+<section data-screen="learn" class="section section-alt" id="learn">
   <div class="wrap">
     <div class="section-head reveal">
       <p class="kicker">Learn & practise</p>
       <h2>Everything a Shia Muslim needs, by category</h2>
       <p>Beliefs, the Ma'sumin, Karbala, taharat, namaz with the Arabic, fasting, khums, taqlid, duas, the Shia year and daily life. Each lesson has a practice task and a short quiz.</p>
     </div>
+    <h3 class="sub-h" style="margin-top:0">Explore</h3>
+    <div class="hd-tiles lt-tiles" id="learnTiles"></div>
+    <h3 class="sub-h">Learn & practise, by category</h3>
     <div class="learn-grid" id="learnGrid"></div>
   </div>
 </section>
 
+<!-- ============ PRAYER TOOLS ============ -->
+<section class="section prayer-tools" id="prayer-tools" data-screen="prayer">
+  <div class="wrap">
+    <div class="pt-card" id="ptTimes"></div>
+    <div class="pt-row">
+      <div class="pt-card qibla" id="qibla">
+        <h3>Qibla</h3>
+        <div class="qb-dial" id="qbDial"><div class="qb-rose" id="qbRose"><span class="qn">N</span><span class="qe">E</span><span class="qs">S</span><span class="qw">W</span><div class="qb-needle" id="qbNeedle"><svg viewBox="0 0 40 120"><path d="M20 4 L30 60 L20 52 L10 60 Z"/><rect x="12" y="6" width="16" height="16" rx="2" class="kaaba"/></svg></div></div></div>
+        <p class="qb-info" id="qbInfo">Set your location to find the Qibla.</p>
+        <button class="btn btn-gold qb-start" id="qbStart">Start compass</button>
+      </div>
+      <div class="pt-card rakat" id="rakat">
+        <h3>Rak'at & sajda counter</h3>
+        <div class="rk-pick" id="rkPick"><button data-r="2">Fajr · 2</button><button data-r="3">Maghrib · 3</button><button data-r="4" class="on">4 rak'at</button></div>
+        <button class="rk-tap" id="rkTap"><b id="rkRakat">1</b><span id="rkSub">Rak'at 1 · tap after each sajda</span></button>
+        <p class="rk-hint" id="rkHint">Place your phone beside your sajdagah and tap the screen after every sajda.</p>
+        <div class="rk-ctl"><button id="rkUndo">Undo</button><button id="rkReset">Reset</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ NAMAZ & DUA ============ -->
-<section class="section" id="namaz-dua">
+<section data-screen="prayer" class="section" id="namaz-dua">
   <div class="wrap">
     <div class="section-head reveal">
-      <p class="kicker">Namaz & Dua</p>
-      <h2>Pray and remember, every day</h2>
-      <p>The five prayers at a glance, the full step-by-step guide, and the duas Shia Muslims recite, in Arabic with pronunciation and meaning.</p>
+      <p class="kicker">Namaz</p>
+      <h2>How to pray</h2>
+      <p>The three prayer times, the full step-by-step guide with Arabic, and the Tasbih of Lady Fatima.</p>
     </div>
     <div class="nd-grid">
       <div class="nd-prayers reveal">
@@ -207,6 +232,32 @@
         <button class="ts-reset" id="tsReset">Reset</button>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ============ QURAN ============ -->
+<section class="section quran" id="quran" data-screen="quran">
+  <div class="wrap">
+    <div class="qr-head">
+      <p class="sb-ar" dir="rtl" lang="ar" style="color:var(--gold)">إِنِّي تَارِكٌ فِيكُمُ الثَّقَلَيْنِ: كِتَابَ اللَّهِ وَعِتْرَتِي</p>
+      <h2>The Holy Qur'an</h2>
+      <p class="muted">All 114 suras in Arabic, with translation and recitation. Your last-read place is saved.</p>
+    </div>
+    <div class="qr-continue" id="qrContinue"></div>
+    <div class="qr-quick" id="qrQuick"></div>
+    <label class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="qrSearch" type="search" placeholder="Search sura: Yasin, 36, Rahman…" /></label>
+    <ol class="qr-list" id="qrList"><li class="qr-loading">Loading suras…</li></ol>
+  </div>
+</section>
+
+<!-- ============ DUAS ============ -->
+<section class="section duas" id="duas" data-screen="duas">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Duas & Ziyarat</p>
+      <h2>Remember Allah with the Ahl al-Bayt</h2>
+      <p>Short duas in full Arabic with pronunciation and meaning, and the great duas and ziyarat with when to recite them.</p>
+    </div>
     <h3 class="sub-h reveal">Du'a library</h3>
     <div class="dua-list" id="duaList"></div>
     <h3 class="sub-h reveal">The great duas</h3>
@@ -215,8 +266,52 @@
   </div>
 </section>
 
+<!-- ============ CALENDAR ============ -->
+<section class="section calendar" id="calendar" data-screen="sub">
+  <div class="wrap">
+    <div class="cal-today" id="calToday"></div>
+    <div class="chips" id="calChips"></div>
+    <ol class="cal-list" id="calList"></ol>
+    <p class="note-small">Hijri dates depend on the moon sighting in your country. If your community's date is different, adjust it in <a href="#/s/settings" style="color:var(--gold)">Settings</a>.</p>
+  </div>
+</section>
+
+<!-- ============ SETTINGS ============ -->
+<section class="section settings" id="settings" data-screen="sub">
+  <div class="wrap">
+    <div class="set-group">
+      <h3>Location for prayer times & Qibla</h3>
+      <p class="muted" id="setLocNow"></p>
+      <button class="btn btn-gold" id="setGeo">Use my current location</button>
+      <label class="set-row">Or choose a city <select id="setCity"></select></label>
+    </div>
+    <div class="set-group">
+      <h3>Reading</h3>
+      <label class="set-row">Arabic text size <input type="range" id="setAr" min="80" max="170" step="5" /><b id="setArVal"></b></label>
+      <p class="set-preview" dir="rtl" lang="ar">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيمِ</p>
+      <label class="set-row">Qur'an translation <select id="setTr"><option value="en.qarai">English · Ali Quli Qarai</option><option value="en.sahih">English · Saheeh International</option><option value="ur.jalandhry">Urdu · Jalandhry</option><option value="en.transliteration">Transliteration only</option></select></label>
+      <label class="set-row">Theme <select id="setTheme"><option value="dark">Dark</option><option value="light">Light</option></select></label>
+    </div>
+    <div class="set-group">
+      <h3>Hijri date</h3>
+      <label class="set-row">Adjust days <select id="setHijri"><option value="-2">−2</option><option value="-1">−1</option><option value="0">0</option><option value="1">+1</option><option value="2">+2</option></select></label>
+      <p class="muted" id="setHijriNow"></p>
+    </div>
+    <div class="set-group">
+      <h3>Prayer reminders</h3>
+      <label class="set-row">Remind me at Fajr, Zuhr and Maghrib <input type="checkbox" id="setNotify" /></label>
+      <p class="muted">Reminders work while the app is open or recently used. For guaranteed adhan alarms, set your phone's alarm to the times shown.</p>
+    </div>
+    <div class="set-group">
+      <h3>App</h3>
+      <button class="btn btn-gold" data-install>Download the App</button>
+      <button class="btn btn-ghost set-reset" id="setReset">Reset my reading progress</button>
+    </div>
+  </div>
+</section>
+
 <!-- ============ PROOFS ============ -->
-<section class="section" id="proofs">
+<section data-screen="sub" class="section" id="proofs">
   <div class="wrap">
     <div class="section-head reveal">
       <p class="kicker">Why the Ahl al-Bayt?</p>
@@ -228,7 +323,7 @@
 </section>
 
 <!-- ============ TIMELINE ============ -->
-<section class="section section-alt" id="timeline">
+<section data-screen="sub" class="section section-alt" id="timeline">
   <div class="wrap">
     <div class="section-head reveal">
       <p class="kicker">Timeline</p>
@@ -244,7 +339,7 @@
 </section>
 
 <!-- ============ STORIES ============ -->
-<section class="section" id="stories">
+<section data-screen="sub" class="section" id="stories">
   <div class="wrap">
     <div class="section-head reveal">
       <p class="kicker">The stories</p>
@@ -267,7 +362,7 @@
 </section>
 
 <!-- ============ BATTLES ============ -->
-<section class="section battles" id="battles">
+<section data-screen="sub" class="section battles" id="battles">
   <div class="wrap">
     <div class="b-hero">
       <div class="zf-wrap"><div class="zf-glow"></div><svg class="zulfiqar" viewBox="0 0 120 420" aria-hidden="true">
@@ -297,7 +392,7 @@
 
 
 <!-- ============ FATIMA'S HAQ ============ -->
-<section class="section haq" id="haq">
+<section data-screen="sub" class="section haq" id="haq">
   <div class="sec-banner" data-wiki="Al-Baqi_Cemetery"><div class="sb-in">
     <p class="kicker">Lady Fatima al-Zahra</p>
     <h2>Fatima's Haq</h2>
@@ -315,7 +410,7 @@
 </section>
 
 <!-- ============ KARBALA ============ -->
-<section class="section karbala" id="karbala">
+<section data-screen="sub" class="section karbala" id="karbala">
   <div class="sec-banner" data-wiki="Karbala"><div class="sb-in">
     <p class="kicker">61 AH · 680 CE</p>
     <h2>Karbala</h2>
@@ -335,7 +430,7 @@
 </section>
 
 <!-- ============ ABBAS ============ -->
-<section class="section abbas" id="abbas">
+<section data-screen="sub" class="section abbas" id="abbas">
   <div class="sec-banner" data-wiki="Al-Abbas_Shrine"><div class="sb-in ab-in">
     <svg class="alam" viewBox="0 0 120 300" aria-hidden="true">
       <line x1="22" y1="40" x2="22" y2="295" class="al-pole"/>
@@ -376,7 +471,7 @@
 </section>
 
 <!-- ============ RULERS ============ -->
-<section class="section section-alt" id="rulers">
+<section data-screen="sub" class="section section-alt" id="rulers">
   <div class="wrap">
     <div class="section-head reveal">
       <p class="kicker">The caliphs & the Ahl al-Bayt</p>
@@ -389,7 +484,7 @@
 </section>
 
 <!-- ============ WRONGED ============ -->
-<section class="section section-alt" id="wronged">
+<section data-screen="sub" class="section section-alt" id="wronged">
   <div class="wrap">
     <div class="section-head reveal">
       <p class="kicker">So that history is not forgotten</p>
@@ -410,7 +505,7 @@
 </section>
 
 <!-- ============ MASUMIN ============ -->
-<section class="section" id="masumin">
+<section data-screen="sub" class="section" id="masumin">
   <div class="wrap">
     <div class="section-head reveal">
       <p class="kicker">The Fourteen Infallibles</p>
@@ -422,7 +517,7 @@
 </section>
 
 <!-- ============ LESSONS ============ -->
-<section class="section section-alt" id="lessons">
+<section data-screen="sub" class="section section-alt" id="lessons">
   <div class="wrap">
     <div class="section-head reveal">
       <p class="kicker">Live like them</p>
@@ -435,7 +530,7 @@
 </section>
 
 <!-- ============ PEARLS ============ -->
-<section class="section" id="pearls">
+<section data-screen="sub" class="section" id="pearls">
   <div class="wrap">
     <div class="section-head reveal">
       <p class="kicker">Divine pearls</p>
@@ -449,7 +544,7 @@
 </section>
 
 <!-- ============ COMPANIONS ============ -->
-<section class="section section-alt" id="companions">
+<section data-screen="sub" class="section section-alt" id="companions">
   <div class="wrap">
     <div class="section-head reveal">
       <p class="kicker">They stood firm</p>
@@ -460,7 +555,7 @@
 </section>
 
 <!-- ============ DATES ============ -->
-<section class="section" id="dates">
+<section data-screen="sub" class="section" id="dates">
   <div class="wrap">
     <div class="section-head reveal">
       <p class="kicker">The Shia year</p>
@@ -472,7 +567,7 @@
 </section>
 
 <!-- ============ READING ============ -->
-<section class="section section-alt" id="reading">
+<section data-screen="sub" class="section section-alt" id="reading">
   <div class="wrap">
     <div class="section-head reveal">
       <p class="kicker">Keep learning</p>
@@ -520,7 +615,7 @@
   </div>
 </section>
 
-<footer class="footer">
+<footer class="footer" data-screen="home">
   <div class="wrap">
     <div class="app-card">
       <img src="icons/icon-192.png" alt="" width="72" height="72" />
@@ -583,9 +678,9 @@
   </div>
 </div>
 
-<script src="js/data.js?v=12"></script>
-<script src="js/course.js?v=12"></script>
+<script src="js/data.js?v=13"></script>
+<script src="js/course.js?v=13"></script>
 <script>if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));</script>
-<script src="js/app.js?v=12"></script>
+<script src="js/app.js?v=13"></script>
 </body>
 </html>

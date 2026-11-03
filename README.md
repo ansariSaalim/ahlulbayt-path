@@ -6,4 +6,6 @@ The true history of Islam through the Ahl al-Bayt: 46 clear stories, 12 proofs, 
 - Photos of the shrines and holy places load live from Wikipedia / Wikimedia Commons (free licences, credited on the page). No faces of the Prophet or the Imams are shown.
 - Reading progress is saved in the browser.
 
-Plain HTML, CSS and JavaScript — no build step. Content lives in `js/data.js`.
+Works as an installable app (PWA) with tabs: Home, Prayer (Ja'fari prayer times, Qibla, rak'at counter), Qur'an (alquran.cloud text, translation and audio), Duas and Learn.
+
+Plain HTML, CSS and JavaScript — no build step. Content lives in `js/data.js` and `js/course.js`.

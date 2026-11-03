@@ -1,6 +1,6 @@
 /* The Path of the Ahl al-Bayt: offline support */
-const VERSION = "abp-v12";
-const CORE = ["./", "index.html", "css/style.css?v=12", "js/data.js?v=12", "js/course.js?v=12", "js/app.js?v=12",
+const VERSION = "abp-v13";
+const CORE = ["./", "index.html", "css/style.css?v=13", "js/data.js?v=13", "js/course.js?v=13", "js/app.js?v=13",
   "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png"];
 const RUNTIME = "abp-runtime";
 
@@ -37,7 +37,7 @@ self.addEventListener("fetch", e => {
     return;
   }
   // Fonts, Wikipedia data and photos: use cache, refresh in the background
-  if (/fonts\.(googleapis|gstatic)\.com|wikipedia\.org|wikimedia\.org/.test(url.hostname)) {
+  if (/fonts\.(googleapis|gstatic)\.com|wikipedia\.org|wikimedia\.org|api\.alquran\.cloud/.test(url.hostname)) {
     e.respondWith(caches.open(RUNTIME).then(async c => {
       const hit = await c.match(req);
       const net = fetch(req).then(res => { if (res && (res.ok || res.type === "opaque")) { c.put(req, res.clone()); trim(c, 220); } return res; }).catch(() => hit);

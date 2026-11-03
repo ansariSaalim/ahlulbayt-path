@@ -26,14 +26,6 @@
     store.set("abp-theme", root.dataset.theme);
   });
 
-  /* ---------- menu ---------- */
-  const menuBtn = $("#menuBtn"), navLinks = $("#navLinks");
-  const scrim = $("#navScrim");
-  const setMenu = open => { menuBtn.classList.toggle("open", open); navLinks.classList.toggle("open", open); scrim.classList.toggle("open", open); document.documentElement.style.overflow = open ? "hidden" : ""; };
-  menuBtn.addEventListener("click", () => setMenu(!navLinks.classList.contains("open")));
-  scrim.addEventListener("click", () => setMenu(false));
-  $$("a", navLinks).forEach(a => a.addEventListener("click", () => setMenu(false)));
-
   /* ---------- toast ---------- */
   let toastT;
   function toast(msg) {
@@ -191,7 +183,7 @@
     bar.style.width = (H > 0 ? (y / H) * 100 : 0) + "%";
     let cur = "";
     for (const [id, top] of secTops) if (top - 120 <= y) cur = id;
-    if (cur !== lastActive) { lastActive = cur; $$("a", navLinks).forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + cur)); }
+    lastActive = cur;
     tlProgress();
   }
   window.addEventListener("scroll", onScroll, { passive: true });
@@ -334,7 +326,8 @@
     $("#rLesson").innerHTML = `<b>Lesson</b>${esc(s.lesson)}`;
     const proof = $("#rDiffer");
     if (s.proof) { proof.hidden = false; proof.innerHTML = `<b>The proof, even from their own books</b>${esc(s.proof)}`; } else proof.hidden = true;
-    $("#rSources").innerHTML = `<b>Sources:</b> ${esc(s.sources)}`;
+    $("#rSources").innerHTML = `<b>Sources:</b> ${esc(s.sources)}<br><button class="share-btn" id="rShare">Share this story</button>`;
+    $("#rShare").onclick = () => shareText(s.title, s.title + ": " + s.summary);
     const img = $("#rHeroImg"); img.style.backgroundImage = ""; img.classList.remove("ph-fallback");
     img.style.setProperty("--c", e.color);
     $("#rCredit").textContent = "";
@@ -352,6 +345,7 @@
     reader.classList.add("open"); reader.setAttribute("aria-hidden", "false");
     document.body.classList.add("locked");
     document.title = s.title + " · The Path of the Ahl al-Bayt";
+    setLast("#story/" + id, "Story", s.title);
     setTimeout(() => $(".reader-close").focus({ preventScroll: true }), 50);
   }
   function setMode(mode) {
@@ -408,7 +402,9 @@
     document.body.classList.remove("locked");
     document.title = "The Path of the Ahl al-Bayt · History & Stories for Learning Shia Islam";
     currentId = null;
-    if (!fromHash && /^#(story|chapter|learn|lesson|imam)\//.test(location.hash)) history.replaceState(null, "", location.pathname + location.search);
+    if (!fromHash && /^#(story|chapter|learn|lesson|imam|quran)\//.test(location.hash)) history.replaceState(null, "", location.pathname + location.search + (screenHash || "#/home"));
+    if (typeof stopQuran === "function") stopQuran();
+    if (!fromHash && screenHash) setTimeout(() => shellRoute(screenHash), 0);
     if (lastFocus) lastFocus.focus({ preventScroll: true });
   }
   $$("[data-close]", reader).forEach(b => b.addEventListener("click", () => closeStory()));
@@ -443,12 +439,15 @@
 
   function route() {
     const h = decodeURIComponent(location.hash);
-    if (h.startsWith("#story/")) openStory(h.slice(7));
+    const overlay = /^#(story|chapter|learn|lesson|imam|quran)\//.test(h);
+    if (overlay && !screenHash) showScreen("home");
+    if (h.startsWith("#quran/")) openSurah(h.slice(7));
+    else if (h.startsWith("#story/")) openStory(h.slice(7));
     else if (h.startsWith("#chapter/")) openChapter(h.slice(9));
     else if (h.startsWith("#learn/")) openCategory(h.slice(7));
     else if (h.startsWith("#lesson/")) openLesson(h.slice(8));
     else if (h.startsWith("#imam/")) openImam(+h.slice(6));
-    else closeStory(true);
+    else { closeStory(true); shellRoute(h); }
   }
   window.addEventListener("hashchange", route);
 
@@ -677,7 +676,7 @@
         <button class="r-nav-btn" ${prev ? "" : "disabled"} onclick="location.hash='lesson/${prev || ""}'"><small>Previous</small><span>${prev ? esc(LESSONS_LIB[prev].title) : ""}</span></button>
         <button class="r-nav-btn" ${next ? "" : "disabled"} onclick="location.hash='lesson/${next || ""}'"><small>Next</small><span>${next ? esc(LESSONS_LIB[next].title) : ""}</span></button>
       </nav>`;
-    $$("#rLessonView .l-rel a[data-sec]").forEach(a => a.addEventListener("click", e => { e.preventDefault(); closeStory(); setTimeout(() => $("#" + a.dataset.sec).scrollIntoView(), 80); }));
+    $$("#rLessonView .l-rel a[data-sec]").forEach(a => { a.href = "#/s/" + a.dataset.sec; });
     $("#lDone").onclick = () => {
       const on = !doneLessons.has(id); if (on) doneLessons.add(id); else doneLessons.delete(id);
       store.set("abp-lessons", [...doneLessons]);
@@ -685,6 +684,7 @@
       renderLearn(); if (on) toast("Lesson complete ✓");
     };
     if (quizHTML) setupQuiz(L.quiz, id);
+    setLast("#lesson/" + id, "Lesson", L.title);
     showReader(L.title);
   }
   function setupQuiz(quiz, id) {
@@ -902,11 +902,460 @@
     });
   }
 
+
+  /* ===========================================================
+     APP SHELL: tabs, screens, back
+     =========================================================== */
+  const TAB_TITLES = { home: "Home", prayer: "Prayer", quran: "The Holy Qur'an", duas: "Duas & Ziyarat", learn: "Learn" };
+  const SUB_TITLES = { proofs: "The Proofs", timeline: "Timeline", stories: "Stories", battles: "Battles of Imam Ali", haq: "Fatima's Haq", karbala: "Karbala", abbas: "Moula Abbas", rulers: "The Caliphs", wronged: "Who Wronged Them", masumin: "The 14 Ma'sumin", lessons: "Lessons of the Fourteen", pearls: "Divine Pearls", companions: "Companions", dates: "Key Dates", reading: "Books", calendar: "Shia Calendar", settings: "Settings" };
+  const PARENT = { calendar: "home", settings: "home" };
+  const allSections = $$("section[data-screen]");
+  const footerEl = $(".footer");
+  let screenHash = "", appNav = 0;
+  const scrollMem = {};
+  function showScreen(tab, sub) {
+    const nextHash = sub ? "#/s/" + sub : "#/" + tab;
+    if (screenHash) scrollMem[screenHash] = window.scrollY;
+    const changed = nextHash !== screenHash;
+    screenHash = nextHash;
+    allSections.forEach(sec => {
+      const vis = sub ? sec.id === sub : sec.dataset.screen === tab;
+      sec.hidden = !vis;
+      if (vis && changed) { sec.classList.remove("screen-in"); void sec.offsetWidth; sec.classList.add("screen-in"); }
+    });
+    if (footerEl) footerEl.hidden = !!sub || tab !== "home";
+    document.body.classList.toggle("scr-sub", !!sub);
+    document.body.classList.toggle("scr-tab", !sub && tab !== "home");
+    $("#abTitle").textContent = sub ? (SUB_TITLES[sub] || "") : TAB_TITLES[tab];
+    const activeTab = sub ? (PARENT[sub] || "learn") : tab;
+    $$("#tabbar a").forEach(a => a.classList.toggle("on", a.dataset.tab === activeTab));
+    if (changed) window.scrollTo(0, scrollMem[screenHash] || 0);
+    document.title = (sub ? SUB_TITLES[sub] : TAB_TITLES[tab]) + " · The Path of the Ahl al-Bayt";
+    onScreen(tab, sub);
+    setTimeout(measure, 50);
+  }
+  function shellRoute(h) {
+    if (!h || h === "#" || h === "#/" || h === "#top") { history.replaceState(null, "", location.pathname + location.search + "#/home"); return showScreen("home"); }
+    if (h.startsWith("#/s/")) { const id = h.slice(4); if ($("#" + id)) return showScreen(PARENT[id] || "learn", id); return showScreen("home"); }
+    if (h.startsWith("#/")) { const t = h.slice(2); return showScreen(TAB_TITLES[t] ? t : "home"); }
+    const el = document.getElementById(h.slice(1));
+    if (!el) return showScreen("home");
+    const sec = el.closest("section[data-screen]");
+    if (!sec) return showScreen("home");
+    const canon = sec.dataset.screen === "sub" ? "#/s/" + sec.id : "#/" + sec.dataset.screen;
+    history.replaceState(null, "", location.pathname + location.search + canon);
+    if (sec.dataset.screen === "sub") showScreen(PARENT[sec.id] || "learn", sec.id); else showScreen(sec.dataset.screen);
+    if (el !== sec) setTimeout(() => el.scrollIntoView({ block: "start" }), 60);
+  }
+  addEventListener("hashchange", () => { appNav++; });
+  $("#abBack").addEventListener("click", () => {
+    if (appNav > 0 && history.length > 1) history.back();
+    else { const sub = screenHash.startsWith("#/s/") ? screenHash.slice(4) : null; location.hash = "#/" + (PARENT[sub] || "learn"); }
+  });
+  const screenInit = {};
+  function onScreen(tab, sub) {
+    if (tab === "home" && !sub) renderHome();
+    if (tab === "prayer" && !sub) renderPrayer();
+    if (tab === "quran" && !sub) loadSurahList();
+    if (sub === "calendar") renderCalendar();
+    if (sub === "settings") renderSettings();
+    if (sub === "timeline") tlProgress();
+  }
+
+  /* ---------- icons ---------- */
+  const IC = {
+    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    compass: '<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
+    book: '<path d="M4 5c3-1.5 5.5-1.5 8 0v15c-2.5-1.5-5-1.5-8 0zM20 5c-3-1.5-5.5-1.5-8 0v15c2.5-1.5 5-1.5 8 0z"/>',
+    hands: '<path d="M7 11V6a2 2 0 0 1 4 0v4M11 10V5a2 2 0 0 1 4 0v6M15 11V8a2 2 0 0 1 4 0v5a7 7 0 0 1-7 7h-1a6 6 0 0 1-6-6v-2a2 2 0 0 1 4 0"/>',
+    beads: '<circle cx="12" cy="5" r="2"/><circle cx="6.5" cy="9" r="2"/><circle cx="17.5" cy="9" r="2"/><circle cx="8" cy="15.5" r="2"/><circle cx="16" cy="15.5" r="2"/><path d="M12 17.5v4"/>',
+    cal: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+    scroll: '<path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 0 2 2H8a2 2 0 0 1-2-2z"/><path d="M6 4a2 2 0 0 0-2 2v2h2M10 9h6M10 13h6"/>',
+    cap: '<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/>',
+    flag: '<path d="M5 21V4M5 4c4-2 7 2 11 0v8c-4 2-7-2-11 0"/>',
+    star: '<path d="M12 2l2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7L6.8 18l1-5.8L3.6 8.1l5.8-.8z"/>',
+    shield: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
+    gem: '<path d="M6 3h12l3 6-9 12L3 9z"/><path d="M3 9h18M9 3l3 18 3-18"/>',
+    sword: '<path d="M14 4l6 0 0 6-9 9-3-3z"/><path d="M5 16l3 3M4 20l2-2"/>',
+    scale: '<path d="M12 3v18M5 7h14M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0zM8 21h8"/>',
+    line: '<path d="M4 12h16M7 8v8M12 6v12M17 9v6"/>',
+    users: '<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 20c0-2 1-4 4-4 2 0 3 1.5 3 4"/>',
+    crown: '<path d="M3 8l4 4 5-7 5 7 4-4-2 11H5z"/>',
+    alert: '<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.5"/>',
+    lamp: '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z"/>',
+    books: '<path d="M4 4h4v16H4zM10 4h4v16h-4zM16 5l3.5-1 3 15-3.5 1z"/>',
+    count: '<rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M9 13h2M13 13h2M9 17h2M13 17h2"/>',
+    heart: '<path d="M12 21s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6-8 11-8 11z"/>'
+  };
+  const ico = k => `<svg viewBox="0 0 24 24">${IC[k]}</svg>`;
+  const tile = (href, icon, label, cls = "") => `<a class="tile ${cls}" href="${href}"><i>${ico(icon)}</i><span>${label}</span></a>`;
+
+  /* ---------- share ---------- */
+  function shareText(title, text) {
+    const url = location.href.split("#")[0] + (location.hash || "");
+    if (navigator.share) navigator.share({ title, text, url }).catch(() => {});
+    else if (navigator.clipboard) navigator.clipboard.writeText(text + "\n" + url).then(() => toast("Copied ✓"), () => {});
+  }
+
+  /* ===========================================================
+     HIJRI DATE & SHIA CALENDAR
+     =========================================================== */
+  const HM = ["Muharram", "Safar", "Rabi al-Awwal", "Rabi al-Thani", "Jumada al-Ula", "Jumada al-Thani", "Rajab", "Sha'ban", "Ramadan", "Shawwal", "Dhul Qa'da", "Dhul Hijja"];
+  const HM_AR = ["مُحَرَّم", "صَفَر", "رَبِيع الأَوَّل", "رَبِيع الثَّانِي", "جُمَادَى الأُولَى", "جُمَادَى الثَّانِيَة", "رَجَب", "شَعْبَان", "رَمَضَان", "شَوَّال", "ذُو القَعْدَة", "ذُو الحِجَّة"];
+  const defaultAdj = /Kolkata|Calcutta|Karachi|Dhaka/.test(Intl.DateTimeFormat().resolvedOptions().timeZone || "") ? -1 : 0;
+  const hijriAdj = () => +store.get("abp-hadj", defaultAdj);
+  let HF = null;
+  try { HF = new Intl.DateTimeFormat("en-u-ca-islamic-umalqura-nu-latn", { day: "numeric", month: "numeric", year: "numeric", timeZone: "UTC" }); if (!/islamic/.test(HF.resolvedOptions().calendar)) HF = null; } catch { HF = null; }
+  if (!HF) try { HF = new Intl.DateTimeFormat("en-u-ca-islamic-nu-latn", { day: "numeric", month: "numeric", year: "numeric", timeZone: "UTC" }); } catch { HF = null; }
+  function hijri(date) {
+    if (!HF) return null;
+    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) + hijriAdj() * 864e5);
+    const p = HF.formatToParts(d), g = t => parseInt((p.find(x => x.type === t) || {}).value, 10);
+    return { d: g("day"), m: g("month"), y: g("year") || g("relatedYear") };
+  }
+  const SHIA_EVENTS = [
+    [1, 1, "Islamic New Year; Muharram mourning begins", "grief", "husayn-departure"], [1, 2, "Imam Husayn arrives at Karbala", "grief", "hurr-karbala"], [1, 7, "Water of the Euphrates cut off", "grief", "hurr-karbala"],
+    [1, 9, "Tasu'a: day of al-Abbas", "grief", "abbas"], [1, 10, "Ashura: martyrdom of Imam Husayn", "grief", "ashura"], [1, 25, "Martyrdom of Imam Zayn al-Abidin", "grief", "sajjad"],
+    [2, 7, "Martyrdom of Imam Hasan (one report); birth of Imam al-Kazim", "grief", "hasan-poison"], [2, 20, "Arba'in", "grief", "arbain"], [2, 28, "Passing of the Prophet ﷺ and martyrdom of Imam Hasan", "grief", "usama"], [2, 29, "Martyrdom of Imam al-Rida (end of Safar)", "grief", "rida"],
+    [3, 8, "Martyrdom of Imam al-Askari", "grief", "askari"], [3, 9, "Imamate of Imam al-Mahdi begins", "joy", "mahdi-birth"], [3, 17, "Birth of the Prophet ﷺ and Imam al-Sadiq", "joy", "sadiq"],
+    [4, 8, "Birth of Imam al-Askari", "joy", "askari"],
+    [5, 5, "Birth of Lady Zaynab", "joy", "zaynab"], [5, 13, "Martyrdom of Lady Fatima (75-day report)", "grief", "fatima-burial"],
+    [6, 3, "Martyrdom of Lady Fatima (95-day report)", "grief", "fatima-burial"], [6, 20, "Birth of Lady Fatima al-Zahra", "joy", "marriage"],
+    [7, 1, "Birth of Imam al-Baqir", "joy", "baqir"], [7, 3, "Martyrdom of Imam al-Hadi", "grief", "hadi-samarra"], [7, 10, "Birth of Imam al-Jawad", "joy", "jawad"], [7, 13, "Birth of Imam Ali, in the Ka'ba", "joy", "kaaba-birth"],
+    [7, 25, "Martyrdom of Imam al-Kazim", "grief", "kazim"], [7, 27, "Mab'ath: the Prophet's mission begins", "joy", "dhul-ashira"],
+    [8, 3, "Birth of Imam Husayn", "joy", "husayn-prophet"], [8, 4, "Birth of al-Abbas", "joy", "abbas"], [8, 5, "Birth of Imam Zayn al-Abidin", "joy", "sajjad"], [8, 15, "Birth of Imam al-Mahdi", "joy", "mahdi-birth"],
+    [9, 1, "Ramadan begins", "worship", null], [9, 15, "Birth of Imam Hasan", "joy", "hasan-treaty"], [9, 19, "Imam Ali struck; first Night of Qadr", "grief", "ali-martyrdom"], [9, 21, "Martyrdom of Imam Ali", "grief", "ali-martyrdom"], [9, 23, "Night of Qadr", "worship", null],
+    [10, 1, "Eid al-Fitr", "joy", null], [10, 8, "Demolition of al-Baqi (1926)", "grief", "fatima-burial"], [10, 25, "Martyrdom of Imam al-Sadiq", "grief", "sadiq"],
+    [11, 11, "Birth of Imam al-Rida", "joy", "rida"], [11, 29, "Martyrdom of Imam al-Jawad", "grief", "jawad"],
+    [12, 1, "Marriage of Imam Ali and Lady Fatima", "joy", "marriage"], [12, 7, "Martyrdom of Imam al-Baqir", "grief", "baqir"], [12, 9, "Day of 'Arafa", "worship", null], [12, 10, "Eid al-Adha", "joy", null],
+    [12, 15, "Birth of Imam al-Hadi", "joy", "hadi-samarra"], [12, 18, "Eid al-Ghadir", "joy", "ghadir"], [12, 24, "Eid al-Mubahala", "joy", "mubahala"], [12, 25, "Revelation of Surat al-Insan", "joy", "marriage"]
+  ];
+  function upcomingEvents(days = 370) {
+    const out = [], seen = new Set(), today = new Date(); today.setHours(0, 0, 0, 0);
+    for (let i = 0; i < days; i++) {
+      const dt = new Date(today.getTime() + i * 864e5), h = hijri(dt);
+      if (!h) break;
+      SHIA_EVENTS.forEach((e, k) => { if (e[0] === h.m && e[1] === h.d && !seen.has(k)) { seen.add(k); out.push({ e, dt, i, h }); } });
+    }
+    return out;
+  }
+  const inDays = i => i === 0 ? "Today" : i === 1 ? "Tomorrow" : `In ${i} days`;
+  const gdate = d => d.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" });
+  let calFilter = "all";
+  function renderCalendar() {
+    const h = hijri(new Date());
+    $("#calToday").innerHTML = h ? `<p class="ct-ar" dir="rtl" lang="ar">${h.d} ${HM_AR[h.m - 1]} ${h.y}</p><p class="ct-h">${h.d} ${HM[h.m - 1]} ${h.y} AH</p><p class="ct-g">${new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</p>` : `<p class="ct-h">Hijri calendar not supported on this browser</p>`;
+    $("#calChips").innerHTML = [["all", "All"], ["joy", "Celebrations"], ["grief", "Mourning"], ["worship", "Worship"]].map(c => `<button class="chip ${calFilter === c[0] ? "on" : ""}" data-f="${c[0]}">${c[1]}</button>`).join("");
+    $$("#calChips .chip").forEach(c => c.onclick = () => { calFilter = c.dataset.f; renderCalendar(); });
+    const ev = upcomingEvents().filter(x => calFilter === "all" || x.e[3] === calFilter);
+    $("#calList").innerHTML = ev.map(x => `<li><a class="cal-ev ${x.e[3]} ${x.i === 0 ? "today" : ""}" href="${x.e[4] ? "#story/" + x.e[4] : "#/s/calendar"}">
+      <span class="cd"><b>${x.e[1]}</b><small>${HM[x.e[0] - 1]}</small></span>
+      <span class="ct"><b>${esc(x.e[2])}</b><small>${gdate(x.dt)}</small></span>
+      <span class="cin">${inDays(x.i)}</span></a></li>`).join("");
+  }
+
+  /* ===========================================================
+     PRAYER TIMES (Ja'fari: Fajr 16°, Maghrib 4°, Isha 14°)
+     =========================================================== */
+  const CITIES = [
+    ["Mumbai", 19.076, 72.8777, 5.5], ["Delhi", 28.6139, 77.209, 5.5], ["Lucknow", 26.8467, 80.9462, 5.5], ["Hyderabad", 17.385, 78.4867, 5.5], ["Kolkata", 22.5726, 88.3639, 5.5],
+    ["Bengaluru", 12.9716, 77.5946, 5.5], ["Chennai", 13.0827, 80.2707, 5.5], ["Pune", 18.5204, 73.8567, 5.5], ["Ahmedabad", 23.0225, 72.5714, 5.5], ["Jaipur", 26.9124, 75.7873, 5.5],
+    ["Bhopal", 23.2599, 77.4126, 5.5], ["Nagpur", 21.1458, 79.0882, 5.5], ["Patna", 25.5941, 85.1376, 5.5], ["Srinagar", 34.0837, 74.7973, 5.5], ["Kargil", 34.5539, 76.1349, 5.5],
+    ["Karachi", 24.8607, 67.0011, 5], ["Lahore", 31.5204, 74.3587, 5], ["Dhaka", 23.8103, 90.4125, 6], ["Dubai", 25.2048, 55.2708, 4], ["Muscat", 23.588, 58.3829, 4],
+    ["Najaf", 32.0, 44.3392, 3], ["Karbala", 32.616, 44.0249, 3], ["Baghdad", 33.3152, 44.3661, 3], ["Kuwait City", 29.3759, 47.9774, 3], ["Medina", 24.4672, 39.6111, 3], ["Mecca", 21.3891, 39.8579, 3],
+    ["Qom", 34.6399, 50.8759, 3.5], ["Mashhad", 36.2605, 59.6168, 3.5], ["Tehran", 35.6892, 51.389, 3.5]
+  ];
+  const D2R = Math.PI / 180;
+  const sinD = d => Math.sin(d * D2R), cosD = d => Math.cos(d * D2R), tanD = d => Math.tan(d * D2R);
+  const asinD = x => Math.asin(x) / D2R, acosD = x => Math.acos(x) / D2R, atan2D = (y, x) => Math.atan2(y, x) / D2R, acotD = x => Math.atan(1 / x) / D2R;
+  const fixN = (a, b) => { a = a - b * Math.floor(a / b); return a < 0 ? a + b : a; };
+  function julian(y, m, d) { if (m <= 2) { y -= 1; m += 12; } const A = Math.floor(y / 100), B = 2 - A + Math.floor(A / 4); return Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + d + B - 1524.5; }
+  function sunPos(jd) {
+    const D = jd - 2451545, g = fixN(357.529 + 0.98560028 * D, 360), q = fixN(280.459 + 0.98564736 * D, 360);
+    const L = fixN(q + 1.915 * sinD(g) + 0.02 * sinD(2 * g), 360), e = 23.439 - 0.00000036 * D;
+    const RA = atan2D(cosD(e) * sinD(L), cosD(L)) / 15;
+    return { decl: asinD(sinD(e) * sinD(L)), eqt: q / 15 - fixN(RA, 24) };
+  }
+  function prayerHours(y, m, d, lat, lng, tz) {
+    const jd = julian(y, m, d) - lng / (15 * 24);
+    const mid = t => fixN(12 - sunPos(jd + t).eqt, 24);
+    const ang = (a, t, ccw) => { const dc = sunPos(jd + t).decl, noon = mid(t); const T = acosD((-sinD(a) - sinD(dc) * sinD(lat)) / (cosD(dc) * cosD(lat))) / 15; return noon + (ccw ? -T : T); };
+    const asr = t => { const dc = sunPos(jd + t).decl; return ang(-acotD(1 + tanD(Math.abs(lat - dc))), t); };
+    let t = { fajr: 5, sunrise: 6, dhuhr: 12, asr: 13, sunset: 18, maghrib: 18, isha: 18 };
+    for (let i = 0; i < 2; i++) {
+      const p = {}; for (const k in t) p[k] = t[k] / 24;
+      t = { fajr: ang(16, p.fajr, true), sunrise: ang(0.833, p.sunrise, true), dhuhr: mid(p.dhuhr), asr: asr(p.asr), sunset: ang(0.833, p.sunset), maghrib: ang(4, p.maghrib), isha: ang(14, p.isha) };
+    }
+    for (const k in t) t[k] += tz - lng / 15;
+    t.midnight = t.sunset + fixN(t.fajr - t.sunset, 24) / 2;
+    return t;
+  }
+  const getLoc = () => store.get("abp-loc", null);
+  function locTz(loc) { return loc && loc.tz != null ? loc.tz : -new Date().getTimezoneOffset() / 60; }
+  function dayTimes(loc, offsetDays = 0) {
+    const tz = locTz(loc);
+    const local = new Date(Date.now() + tz * 3600e3 + offsetDays * 864e5);
+    const y = local.getUTCFullYear(), m = local.getUTCMonth() + 1, d = local.getUTCDate();
+    const h = prayerHours(y, m, d, loc.lat, loc.lng, tz);
+    const base = Date.UTC(y, m - 1, d);
+    const ts = {}; for (const k in h) ts[k] = base + (h[k] - tz) * 3600e3;
+    return { hours: h, ts };
+  }
+  const fmtH = hrs => { if (!isFinite(hrs)) return "—"; hrs = fixN(hrs + 0.5 / 60, 24); const H = Math.floor(hrs), M = Math.floor((hrs - H) * 60); const h12 = ((H + 11) % 12) + 1; return `${h12}:${String(M).padStart(2, "0")} ${H < 12 ? "am" : "pm"}`; };
+  const PNAMES = [["fajr", "Fajr", "main"], ["sunrise", "Sunrise", "minor"], ["dhuhr", "Zuhr", "main"], ["asr", "Asr", "fadila"], ["sunset", "Sunset", "minor"], ["maghrib", "Maghrib", "main"], ["isha", "Isha", "fadila"], ["midnight", "Islamic midnight", "minor"]];
+  function nextPrayer(loc) {
+    const now = Date.now(), order = ["fajr", "sunrise", "dhuhr", "maghrib", "midnight"], label = { fajr: "Fajr", sunrise: "Sunrise (Fajr ends)", dhuhr: "Zuhr & Asr", maghrib: "Maghrib & Isha", midnight: "Midnight (Isha ends)" };
+    for (const off of [0, 1]) { const t = dayTimes(loc, off); for (const k of order) if (t.ts[k] > now) return { k, name: label[k], ts: t.ts[k], h: t.hours[k] }; }
+    return null;
+  }
+  const countdown = ms => { const m = Math.round(ms / 60000), h = Math.floor(m / 60); return h ? `in ${h} h ${m % 60} min` : `in ${m} min`; };
+  function renderPrayer() {
+    const loc = getLoc(), box = $("#ptTimes");
+    if (!loc) {
+      box.innerHTML = `<h3>Prayer times</h3><p class="muted">Set your location to see today's prayer times and the Qibla (Ja'fari method).</p><div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.8rem"><button class="btn btn-gold" id="ptGeo">Use my location</button><a class="btn btn-ghost" href="#/s/settings" style="color:var(--gold);border-color:var(--gold)">Choose a city</a></div>`;
+      $("#ptGeo").onclick = useGeo; $("#qbInfo").textContent = "Set your location to find the Qibla."; return;
+    }
+    const t = dayTimes(loc), nx = nextPrayer(loc), h = hijri(new Date());
+    box.innerHTML = `<div class="pt-top"><div><h3 style="margin:0">Prayer times</h3><small>${new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" })}${h ? " · " + h.d + " " + HM[h.m - 1] + " " + h.y : ""}</small></div><a class="pt-loc" href="#/s/settings">${esc(loc.name)} ›</a></div>
+      <ul class="pt-list">${PNAMES.map(([k, n, c]) => `<li class="${c === "minor" ? "minor" : c === "main" ? "main" : ""} ${nx && nx.k === k && nx.ts === t.ts[k] ? "next" : ""}"><b>${n}${c === "fadila" ? "<small>preferred time</small>" : ""}</b><span>${fmtH(t.hours[k])}</span></li>`).join("")}</ul>
+      <p class="pt-foot">${nx ? `Next: <b style="color:var(--gold)">${nx.name}</b> ${countdown(nx.ts - Date.now())}. ` : ""}Ja'fari method (Fajr 16°, Maghrib 4°, Isha 14°). Zuhr–Asr and Maghrib–Isha may be combined. Check against your marja's local timetable.</p>`;
+    updateQibla();
+  }
+
+  /* ---------- location ---------- */
+  function setLoc(loc) { store.set("abp-loc", loc); renderPrayer(); renderHome(); if ($("#setLocNow")) $("#setLocNow").textContent = "Current: " + loc.name; scheduleReminders(); }
+  function useGeo() {
+    if (!navigator.geolocation) { toast("Location is not available on this device"); return; }
+    toast("Finding your location…");
+    navigator.geolocation.getCurrentPosition(p => {
+      setLoc({ name: "My location", lat: +p.coords.latitude.toFixed(4), lng: +p.coords.longitude.toFixed(4), tz: null });
+      toast("Location set ✓");
+    }, () => toast("Location permission denied. Choose a city in Settings."), { timeout: 12000, maximumAge: 6e5 });
+  }
+
+  /* ---------- qibla ---------- */
+  const KAABA = [21.4225, 39.8262];
+  function qiblaBearing(lat, lng) {
+    const p1 = lat * D2R, p2 = KAABA[0] * D2R, dl = (KAABA[1] - lng) * D2R;
+    return (Math.atan2(Math.sin(dl), Math.cos(p1) * Math.tan(p2) - Math.sin(p1) * Math.cos(dl)) / D2R + 360) % 360;
+  }
+  let heading = null, compassOn = false;
+  function updateQibla() {
+    const loc = getLoc(); if (!loc) return;
+    const b = qiblaBearing(loc.lat, loc.lng);
+    const rose = $("#qbRose"), needle = $("#qbNeedle");
+    if (heading == null) { rose.style.transform = "rotate(0deg)"; needle.style.transform = `rotate(${b}deg)`; $("#qbInfo").innerHTML = `Qibla is <b>${b.toFixed(0)}°</b> from North (clockwise) at ${esc(loc.name)}.`; }
+    else {
+      rose.style.transform = `rotate(${-heading}deg)`; needle.style.transform = `rotate(${b - heading}deg)`;
+      const diff = Math.abs(((b - heading + 540) % 360) - 180);
+      $("#qbInfo").innerHTML = diff < 5 ? `<b>You are facing the Qibla</b>` : `Turn until the Ka'ba points straight up · ${diff.toFixed(0)}° away`;
+      $("#qbDial").style.borderColor = diff < 5 ? "#2fbf86" : "";
+    }
+  }
+  function onOrient(e) {
+    let hd = null;
+    if (typeof e.webkitCompassHeading === "number") hd = e.webkitCompassHeading;
+    else if (e.absolute && e.alpha != null) hd = 360 - e.alpha;
+    if (hd == null) return;
+    heading = hd; updateQibla();
+  }
+  $("#qbStart").addEventListener("click", async () => {
+    if (!getLoc()) { useGeo(); return; }
+    try { if (typeof DeviceOrientationEvent !== "undefined" && DeviceOrientationEvent.requestPermission) { const r = await DeviceOrientationEvent.requestPermission(); if (r !== "granted") { toast("Compass permission denied"); return; } } } catch { /* ignore */ }
+    if (!compassOn) { addEventListener("deviceorientationabsolute", onOrient); addEventListener("deviceorientation", onOrient); compassOn = true; }
+    $("#qbStart").textContent = "Compass on · hold phone flat";
+    setTimeout(() => { if (heading == null) $("#qbInfo").innerHTML += "<br><small>No compass found on this device; use the degrees shown.</small>"; }, 2500);
+  });
+
+  /* ---------- rak'at counter ---------- */
+  let rkTotal = 4, rkS = 0; const rkHist = [];
+  function rkDraw() {
+    const done = rkS >= rkTotal * 2, k = Math.floor(rkS / 2), odd = rkS % 2 === 1;
+    $("#rkRakat").textContent = done ? "✓" : String(k + 1);
+    let sub = `Rak'at ${k + 1} · `, hint = "";
+    if (done) { sub = "Prayer complete"; hint = "Recite the tashahhud and salam, then the Tasbih of Fatima."; }
+    else if (odd) { sub += "now the second sajda"; hint = "Tap again after your second sajda."; }
+    else if (rkS === 0) { sub += "tap after each sajda"; hint = "Place your phone beside your sajdagah and tap after every sajda."; }
+    else if (k === 1) { sub += "stand for rak'at 2"; hint = rkTotal === 2 ? "" : ""; hint = rkTotal === 2 ? "" : ""; hint = "Stand up. Recite al-Fatiha and a sura, then qunut before ruku'."; }
+    else if (k === 2) { sub = "Tashahhud, then rak'at 3"; hint = "Sit for tashahhud (no salam), then stand. Recite Tasbihat al-Arba'a."; }
+    else if (k === 3) { sub = "Stand for rak'at 4"; hint = "Recite Tasbihat al-Arba'a. After this rak'at: tashahhud and salam."; }
+    if (!done && k === 1 && rkTotal === 2 && !odd) { sub = "Rak'at 2"; }
+    $("#rkSub").textContent = sub; $("#rkHint").textContent = hint;
+    $("#rkTap").classList.toggle("alert", done || (!odd && rkS > 0 && k === 2));
+  }
+  $("#rkTap").addEventListener("click", () => { if (rkS >= rkTotal * 2) return; rkHist.push(rkS); rkS++; if (navigator.vibrate) try { navigator.vibrate(rkS % 2 ? 15 : 45); } catch { /* ignore */ } rkDraw(); });
+  $("#rkUndo").addEventListener("click", () => { if (rkHist.length) rkS = rkHist.pop(); rkDraw(); });
+  $("#rkReset").addEventListener("click", () => { rkS = 0; rkHist.length = 0; rkDraw(); });
+  $$("#rkPick button").forEach(b => b.addEventListener("click", () => { $$("#rkPick button").forEach(x => x.classList.toggle("on", x === b)); rkTotal = +b.dataset.r; rkS = 0; rkHist.length = 0; rkDraw(); }));
+  rkDraw();
+
+  /* ---------- reminders ---------- */
+  let remTimers = [];
+  function scheduleReminders() {
+    remTimers.forEach(clearTimeout); remTimers = [];
+    const loc = getLoc();
+    if (!loc || !store.get("abp-notify", false) || !("Notification" in window) || Notification.permission !== "granted") return;
+    const now = Date.now();
+    [0, 1].forEach(off => { const t = dayTimes(loc, off); [["fajr", "Fajr"], ["dhuhr", "Zuhr"], ["maghrib", "Maghrib"]].forEach(([k, n]) => {
+      const ms = t.ts[k] - now;
+      if (ms > 0 && ms < 864e5) remTimers.push(setTimeout(() => {
+        const body = `It is time for ${n} in ${loc.name}.`;
+        navigator.serviceWorker && navigator.serviceWorker.ready.then(r => r.showNotification(n + " · Ahl al-Bayt", { body, icon: "icons/icon-192.png", badge: "icons/icon-192.png", tag: "prayer-" + k })).catch(() => new Notification(n, { body }));
+      }, ms));
+    }); });
+  }
+
+  /* ===========================================================
+     HOME DASHBOARD
+     =========================================================== */
+  const setLast = (h, k, t) => store.set("abp-last", { h, k, t });
+  let homeTimer = null;
+  function renderHome() {
+    const h = hijri(new Date()), ev = upcomingEvents(60)[0];
+    $("#hdToday").outerHTML = `<a class="hd-today" id="hdToday" href="#/s/calendar"><div>${h ? `<p class="ht-h" dir="rtl" lang="ar">${h.d} ${HM_AR[h.m - 1]} ${h.y}</p><p class="ht-g">${h.d} ${HM[h.m - 1]} ${h.y} · ${new Date().toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" })}</p>` : `<p class="ht-g">${new Date().toDateString()}</p>`}</div>
+      ${ev ? `<div class="ht-ev"><small>${inDays(ev.i)}</small><b>${esc(ev.e[2])}</b></div>` : ""}</a>`;
+    const loc = getLoc();
+    if (loc) {
+      const nx = nextPrayer(loc);
+      $("#hdNext").innerHTML = nx ? `<a class="np" href="#/prayer"><div class="np-l"><small>Next · ${esc(loc.name)}</small><b>${nx.name}</b></div><div><div class="np-t">${fmtH(nx.h)}</div><div class="np-in">${countdown(nx.ts - Date.now())}</div></div></a>` : "";
+    } else $("#hdNext").innerHTML = `<a class="np-set" href="#/prayer">Set your location for prayer times & Qibla →</a>`;
+    $("#hdTiles").innerHTML = [
+      tile("#/prayer", "clock", "Prayer times", "green"), tile("#qibla", "compass", "Qibla", "green"), tile("#/quran", "book", "Qur'an"), tile("#/duas", "hands", "Duas"),
+      tile("#tasbih", "beads", "Tasbih"), tile("#rakat", "count", "Rak'at counter", "green"), tile("#/s/calendar", "cal", "Calendar"), tile("#/learn", "cap", "Learn"),
+      tile("#/s/stories", "scroll", "Stories"), tile("#/s/karbala", "flag", "Karbala", "red"), tile("#/s/abbas", "flag", "Moula Abbas", "green"), tile("#/s/haq", "scale", "Fatima's Haq"),
+      tile("#/s/masumin", "star", "14 Ma'sumin"), tile("#/s/proofs", "shield", "Proofs"), tile("#/s/pearls", "gem", "Pearls"), tile("#/s/battles", "sword", "Battles")
+    ].join("");
+    const last = store.get("abp-last", null);
+    $("#hdContinue").innerHTML = last ? `<a class="cont" href="${last.h}"><div><small>Continue · ${esc(last.k)}</small><b>${esc(last.t)}</b></div><span class="ca">›</span></a>` : "";
+    const p = PEARLS[new Date().getDate() % PEARLS.length];
+    $("#hdPearl").innerHTML = `<div class="pearl-feature"><p class="pf-label">Pearl of the day</p><blockquote>“${esc(p.q)}”</blockquote><cite>${esc(p.who)} · ${esc(p.src)}</cite><br><a href="#/s/pearls" style="display:inline-block;margin-top:.8rem;font-size:.82rem;color:var(--gold)">More pearls ›</a></div>`;
+    clearInterval(homeTimer); homeTimer = setInterval(() => { if (screenHash === "#/home" && getLoc()) { const nx = nextPrayer(getLoc()); const el = $("#hdNext .np-in"); if (nx && el) el.textContent = countdown(nx.ts - Date.now()); } }, 30000);
+  }
+  function renderLearnTiles() {
+    $("#learnTiles").innerHTML = [
+      tile("#/s/stories", "scroll", "Stories"), tile("#/s/timeline", "line", "Timeline"), tile("#/s/proofs", "shield", "Proofs"), tile("#/s/battles", "sword", "Battles"),
+      tile("#/s/haq", "scale", "Fatima's Haq"), tile("#/s/karbala", "flag", "Karbala", "red"), tile("#/s/abbas", "flag", "Moula Abbas", "green"), tile("#/s/masumin", "star", "14 Ma'sumin"),
+      tile("#/s/lessons", "lamp", "Lessons"), tile("#/s/pearls", "gem", "Pearls"), tile("#/s/rulers", "crown", "Caliphs"), tile("#/s/wronged", "alert", "Who wronged", "red"),
+      tile("#/s/companions", "users", "Companions"), tile("#/s/dates", "cal", "Key dates"), tile("#/s/calendar", "cal", "Calendar"), tile("#/s/reading", "books", "Books")
+    ].join("");
+  }
+
+  /* ===========================================================
+     QUR'AN READER (alquran.cloud)
+     =========================================================== */
+  const QAPI = "https://api.alquran.cloud/v1";
+  let surahs = store.get("abp-surahs", null);
+  async function loadSurahList() {
+    const last = store.get("abp-qlast", null);
+    $("#qrContinue").innerHTML = last ? `<a class="cont" href="#quran/${last.n}:${last.a}"><div><small>Continue reading</small><b>${esc(last.name)} · ayah ${last.a}</b></div><span class="ca">›</span></a>` : "";
+    $("#qrQuick").innerHTML = [["Yasin", "36"], ["Ayat al-Kursi", "2:255"], ["al-Rahman", "55"], ["al-Waqi'a", "56"], ["al-Mulk", "67"], ["al-Kahf", "18"], ["al-Insan", "76"], ["al-Qadr", "97"], ["al-Fatiha", "1"]].map(q => `<a href="#quran/${q[1]}">${q[0]}</a>`).join("");
+    if (!surahs) {
+      try { const r = await fetch(QAPI + "/surah"); const j = await r.json(); surahs = j.data.map(s => [s.number, s.englishName, s.name, s.englishNameTranslation, s.numberOfAyahs, s.revelationType]); store.set("abp-surahs", surahs); }
+      catch { $("#qrList").innerHTML = `<li class="q-err">Connect to the internet once to load the Qur'an. After that, the suras you open are saved for offline reading.</li>`; return; }
+    }
+    drawSurahs();
+  }
+  function drawSurahs() {
+    const q = ($("#qrSearch").value || "").toLowerCase().replace(/[-' ]/g, "");
+    $("#qrList").innerHTML = surahs.filter(s => !q || String(s[0]) === q || (s[1] + s[3]).toLowerCase().replace(/[-' ]/g, "").includes(q)).map(s => `<li><a href="#quran/${s[0]}"><span class="qr-n">${s[0]}</span><span class="qr-t"><b>${esc(s[1])}</b><small>${esc(s[3])} · ${s[4]} ayat · ${s[5]}</small></span><span class="qr-ar">${s[2].replace("سُورَةُ ", "")}</span></a></li>`).join("") || `<li class="q-err">No sura found.</li>`;
+  }
+  $("#qrSearch").addEventListener("input", () => surahs && drawSurahs());
+  const qAudio = new Audio(); let qAyat = [], qPlayAll = false, qIdx = -1, qSurah = null;
+  const arNum = n => String(n).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
+  function stopQuran() { qAudio.pause(); qPlayAll = false; $$(".q-ayah.playing").forEach(e => e.classList.remove("playing")); const b = $("#qPlay"); if (b) { b.textContent = "▶ Play all"; b.classList.remove("on"); } }
+  function playAyah(i) {
+    if (!qAyat[i] || !qAyat[i].audio) { stopQuran(); return; }
+    qIdx = i; $$(".q-ayah.playing").forEach(e => e.classList.remove("playing"));
+    const el = $(`.q-ayah[data-i="${i}"]`); if (el) { el.classList.add("playing"); el.scrollIntoView({ block: "center", behavior: "smooth" }); }
+    qAudio.src = qAyat[i].audio; qAudio.play().catch(() => toast("Tap play again to start audio"));
+  }
+  qAudio.addEventListener("ended", () => { if (qPlayAll && qIdx + 1 < qAyat.length) playAyah(qIdx + 1); else stopQuran(); });
+  async function openSurah(ref) {
+    const [n, a] = ref.split(":").map(Number);
+    if (!n || n < 1 || n > 114) return;
+    if (!reader.classList.contains("open")) lastFocus = document.activeElement;
+    currentId = null; setMode("lesson"); stopQuran();
+    reader.style.setProperty("--c", "#1d6b4f");
+    const meta = surahs && surahs.find(s => s[0] === n);
+    $("#rEra").textContent = "Sura " + n;
+    $("#rArabic").textContent = meta ? meta[2] : "";
+    $("#rTitle").textContent = meta ? meta[1] : "Sura " + n;
+    $("#rMeta").textContent = meta ? `${meta[3]} · ${meta[4]} ayat · ${meta[5]}` : "";
+    const img = $("#rHeroImg"); img.style.backgroundImage = ""; img.classList.add("ph-fallback"); $("#rCredit").textContent = "";
+    $("#rBack").hidden = false; $("#rBack").href = "#/quran"; $("#rBack").textContent = "← All suras";
+    $("#rLessonView").innerHTML = `<p class="q-err">Loading sura…</p>`;
+    showReader(meta ? meta[1] : "Qur'an");
+    const tr = store.get("abp-tr", "en.qarai");
+    let data = null;
+    for (const t of [tr, "en.sahih"]) {
+      try { const r = await fetch(`${QAPI}/surah/${n}/editions/quran-uthmani,${t},ar.alafasy`); const j = await r.json(); if (j.code === 200 && j.data && j.data.length === 3) { data = { ar: j.data[0], tr: j.data[1], au: j.data[2], trId: t }; break; } } catch { /* try next */ }
+    }
+    if (!data) { $("#rLessonView").innerHTML = `<p class="q-err">Could not load this sura. Check your internet connection and try again.</p>`; return; }
+    const urdu = data.trId.startsWith("ur");
+    qSurah = { n, name: data.ar.englishName };
+    qAyat = data.ar.ayahs.map((x, i) => ({ ar: x.text, tr: data.tr.ayahs[i] && data.tr.ayahs[i].text, audio: data.au.ayahs[i] && data.au.ayahs[i].audio, num: x.numberInSurah }));
+    if (n !== 1 && n !== 9 && qAyat[0]) { const w = qAyat[0].ar.split(" "); if (w[0] && w[0].startsWith("بِسْمِ") && w.length > 4) qAyat[0].ar = w.slice(4).join(" "); }
+    $("#rLessonView").innerHTML = `<div class="q-bar"><button id="qPlay">▶ Play all</button><button id="qStop">■ Stop</button><button id="qShare">Share</button></div>
+      ${n !== 1 && n !== 9 ? `<p class="q-bism" dir="rtl" lang="ar">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيمِ</p>` : ""}
+      ${qAyat.map((x, i) => `<div class="q-ayah" data-i="${i}" id="qa-${x.num}"><p class="q-ar" lang="ar">${x.ar} <span class="q-num">${arNum(x.num)}</span></p>${x.tr ? `<p class="q-tr ${urdu ? "ur" : ""}">${urdu ? "" : `<b style="color:var(--gold)">${x.num}.</b> `}${esc(x.tr)}</p>` : ""}<div class="q-act"><button data-p="${i}">▶ Play</button><button data-c="${i}">Copy</button></div></div>`).join("")}
+      <p class="note-small" style="margin-top:1rem">Text and audio (Mishary Alafasy) from alquran.cloud. Translation: ${esc(data.tr.englishName || data.trId)}.</p>`;
+    $("#qPlay").onclick = () => { qPlayAll = true; $("#qPlay").textContent = "▶ Playing…"; $("#qPlay").classList.add("on"); playAyah(qIdx >= 0 && qIdx < qAyat.length - 1 ? qIdx : 0); };
+    $("#qStop").onclick = stopQuran;
+    $("#qShare").onclick = () => shareText(data.ar.englishName, `Sura ${data.ar.englishName} (${n})`);
+    $$("#rLessonView [data-p]").forEach(b => b.onclick = () => { qPlayAll = false; playAyah(+b.dataset.p); });
+    $$("#rLessonView [data-c]").forEach(b => b.onclick = () => { const x = qAyat[+b.dataset.c]; const t = `${x.ar}\n\n${x.tr || ""}\n(Qur'an ${n}:${x.num})`; (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => toast("Copied ✓"), () => {}); });
+    setLast(`#quran/${n}`, "Qur'an", data.ar.englishName);
+    const save = num => store.set("abp-qlast", { n, a: num, name: data.ar.englishName });
+    save(a || 1);
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) save(+e.target.id.slice(3)); }), { root: rScroll, threshold: .6 });
+    $$("#rLessonView .q-ayah").forEach(e => io.observe(e));
+    if (a) setTimeout(() => { const el = $("#qa-" + a); if (el) { el.scrollIntoView({ block: "start" }); el.classList.add("playing"); setTimeout(() => el.classList.remove("playing"), 2500); } }, 80);
+  }
+
+  /* ===========================================================
+     SETTINGS
+     =========================================================== */
+  function applyArScale() { document.documentElement.style.setProperty("--ar", store.get("abp-ar", 100) / 100); }
+  applyArScale();
+  function renderSettings() {
+    const loc = getLoc();
+    $("#setLocNow").textContent = loc ? "Current: " + loc.name : "No location set yet.";
+    $("#setCity").innerHTML = `<option value="">Choose…</option>` + CITIES.map((c, i) => `<option value="${i}" ${loc && loc.name === c[0] ? "selected" : ""}>${c[0]}</option>`).join("");
+    $("#setAr").value = store.get("abp-ar", 100); $("#setArVal").textContent = store.get("abp-ar", 100) + "%";
+    $("#setTr").value = store.get("abp-tr", "en.qarai");
+    $("#setTheme").value = root.dataset.theme;
+    $("#setHijri").value = String(hijriAdj());
+    const h = hijri(new Date()); $("#setHijriNow").textContent = h ? `Today: ${h.d} ${HM[h.m - 1]} ${h.y} AH` : "";
+    $("#setNotify").checked = !!store.get("abp-notify", false);
+  }
+  $("#setGeo").addEventListener("click", useGeo);
+  $("#setCity").addEventListener("change", e => { const c = CITIES[+e.target.value]; if (c) { setLoc({ name: c[0], lat: c[1], lng: c[2], tz: c[3] }); toast(c[0] + " set ✓"); } });
+  $("#setAr").addEventListener("input", e => { store.set("abp-ar", +e.target.value); $("#setArVal").textContent = e.target.value + "%"; applyArScale(); });
+  $("#setTr").addEventListener("change", e => { store.set("abp-tr", e.target.value); toast("Translation saved ✓"); });
+  $("#setTheme").addEventListener("change", e => { root.dataset.theme = e.target.value; store.set("abp-theme", e.target.value); });
+  $("#setHijri").addEventListener("change", e => { store.set("abp-hadj", +e.target.value); renderSettings(); toast("Hijri date adjusted ✓"); });
+  $("#setNotify").addEventListener("change", async e => {
+    if (e.target.checked) {
+      if (!("Notification" in window)) { toast("Notifications not supported here"); e.target.checked = false; return; }
+      const p = await Notification.requestPermission();
+      if (p !== "granted") { toast("Notifications were blocked"); e.target.checked = false; return; }
+      if (!getLoc()) toast("Now set your location");
+    }
+    store.set("abp-notify", e.target.checked); scheduleReminders();
+  });
+  $("#setReset").addEventListener("click", () => {
+    if (!confirm("Reset all reading progress, lessons and quiz marks?")) return;
+    ["abp-read", "abp-lessons", "abp-last", "abp-qlast"].forEach(k => { try { localStorage.removeItem(k); } catch { /* ignore */ } });
+    readSet = new Set(); doneLessons = new Set(); refreshEraBars(); renderLearn(); renderStories(); toast("Progress reset");
+  });
+  scheduleReminders();
+
   /* ===========================================================
      INIT
      =========================================================== */
   renderEras();
   renderLearn();
+  renderLearnTiles();
   renderDuas();
   renderProofs();
   $("#proofCount").textContent = ["Twelve","Thirteen","Fourteen","Fifteen","Sixteen"][PROOFS.length - 12] || PROOFS.length;
