@@ -965,8 +965,8 @@
      APP SHELL: tabs, screens, back
      =========================================================== */
   const TAB_TITLES = { home: "Home", prayer: "Prayer", quran: "The Holy Qur'an", duas: "Duas & Ziyarat", learn: "Learn" };
-  const SUB_TITLES = { proofs: "The Proofs", timeline: "Timeline", stories: "Stories", battles: "Battles of Imam Ali", haq: "Fatima's Haq", karbala: "Karbala", abbas: "Moula Abbas", rulers: "The Caliphs", wronged: "Who Wronged Them", masumin: "The 14 Ma'sumin", lessons: "Lessons of the Fourteen", pearls: "Divine Pearls", companions: "Companions", dates: "Key Dates", reading: "Books", calendar: "Shia Calendar", settings: "Settings", "namaz-guide": "How to Pray", qa: "Q & A", favs: "Favourites" };
-  const PARENT = { calendar: "home", settings: "home", "namaz-guide": "prayer", favs: "home" };
+  const SUB_TITLES = { proofs: "The Proofs", timeline: "Timeline", stories: "Stories", battles: "Battles of Imam Ali", haq: "Fatima's Haq", karbala: "Karbala", abbas: "Moula Abbas", rulers: "The Caliphs", wronged: "Who Wronged Them", masumin: "The 14 Ma'sumin", lessons: "Lessons of the Fourteen", pearls: "Divine Pearls", companions: "Companions", dates: "Key Dates", reading: "Books", calendar: "Shia Calendar", settings: "Settings", "namaz-guide": "How to Pray", qa: "Q & A", favs: "Favourites", today: "Today" };
+  const PARENT = { calendar: "home", settings: "home", "namaz-guide": "prayer", favs: "home", today: "home" };
   const allSections = $$("section[data-screen]");
   const footerEl = $(".footer");
   let screenHash = "", appNav = 0;
@@ -1020,6 +1020,7 @@
     if (sub === "namaz-guide" && window.NamazGuide) NamazGuide.render();
     if (sub === "qa") renderQA();
     if (sub === "favs") renderFavs();
+    if (sub === "today") renderToday();
     if (tab === "duas" && !sub) renderLibHome();
     if (sub === "timeline") tlProgress();
   }
@@ -1473,6 +1474,38 @@
     }); });
   }
 
+  /* ===========================================================
+     TODAY: hadith, du'a, event and a story to learn, for any date
+     =========================================================== */
+  const dayNo = d => Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 864e5);
+  function dailyPearl(d) {
+    const n = dayNo(d), others = PEARLS.filter(p => !p.nb), nahj = PEARLS.filter(p => p.nb);
+    const pool = n % 2 && nahj.length ? nahj : others;   // alternate: the Fourteen, then Nahj al-Balagha
+    return pool[(Math.floor(n / 2) * 37) % pool.length];
+  }
+  function dailyDua(d) {
+    if (typeof LIB === "undefined") return null;
+    const pool = [];
+    ["munajat", "duas", "sahifa"].forEach(cid => { const c = LIB.find(x => x.id === cid); if (c) c.items.forEach(it => { if (cid !== "sahifa" || it[0] !== "s0") pool.push([c, it]); }); });
+    const [c, it] = pool[dayNo(d) % pool.length];
+    return { c, it, route: `#lib/${c.id}/${it[0]}` };
+  }
+  function dailyStory(d) { return STORIES[(dayNo(d) * 11) % STORIES.length]; }
+  function dailyEvents(d) { const h = hijri(d); return h ? SHIA_EVENTS.filter(e => e[0] === h.m && e[1] === h.d) : []; }
+  function renderToday() {
+    const d = new Date(), h = hijri(d), ev = dailyEvents(d), p = dailyPearl(d), du = dailyDua(d), st = dailyStory(d), wd = d.getDay();
+    const next = ev.length ? null : upcomingEvents(60)[0];
+    const wdName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][wd];
+    $("#todayBody").innerHTML = `
+      <div class="td-date">${h ? `<p class="td-ar" dir="rtl" lang="ar">${h.d} ${HM_AR[h.m - 1]} ${h.y}</p>` : ""}<h2>${d.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" })}</h2>${h ? `<p class="td-h">${h.d} ${HM[h.m - 1]} ${h.y} AH</p>` : ""}</div>
+      <div class="td-card ${ev.length ? "ev-" + evKind(ev[0]) : ""}"><p class="td-k">${ev.length ? (ev[0][3] === "grief" ? "Today we remember" : "Today we celebrate") : "Coming up"}</p>
+        ${ev.length ? ev.map(e => `<h3>${esc(e[2])}</h3>${e[4] && storyById[e[4]] ? `<p>${esc(storyById[e[4]].summary)}</p><a class="td-a" href="#story/${e[4]}">Read the story →</a>` : ""}`).join("") : next ? `<h3>${esc(next.e[2])}</h3><p>${inDays(next.i)} · ${HM[next.e[0] - 1]} ${next.e[1]}</p><a class="td-a" href="#/s/calendar">Open the calendar →</a>` : `<p>No special occasion today.</p>`}</div>
+      <div class="td-card"><p class="td-k">Hadith of the day</p>${p.ar ? `<p class="td-har" dir="rtl" lang="ar">${esc(p.ar)}</p>` : ""}<blockquote>“${esc(p.q)}”</blockquote><p class="td-src">${esc(p.who)} · ${esc(p.src)}</p>${favBtn("p:" + PEARLS.indexOf(p), "Save")}</div>
+      ${du ? `<div class="td-card"><p class="td-k">Du'a of the day</p><h3>${esc(du.it[1])}</h3><p>${esc(du.c.arTitle ? du.it[2] : du.it[2])}</p><a class="td-a" href="${du.route}">Recite it now →</a></div>` : ""}
+      <div class="td-card"><p class="td-k">Today's du'as</p><ul class="td-list"><li><a href="#lib/daily/day-${wdName.toLowerCase()}">Du'a for ${wdName}</a></li><li><a href="#lib/daily/ahd">Du'a al-'Ahd</a></li>${wd === 4 ? `<li><a href="#lib/duas/kumayl">Du'a Kumayl (Thursday night)</a></li>` : ""}${wd === 5 ? `<li><a href="#lib/duas/nudba">Du'a al-Nudba (Friday morning)</a></li><li><a href="#quran/18">Surat al-Kahf (Friday)</a></li>` : ""}<li><a href="#lib/ziyarat/ashura">Ziyarat Ashura</a></li></ul></div>
+      <div class="td-card"><p class="td-k">Learn today</p><h3>${esc(st.title)}</h3><p>${esc(st.summary)}</p><a class="td-a" href="#story/${st.id}">Read the story →</a></div>`;
+  }
+
   /* ---------- Android app: exact reminders scheduled by the phone ---------- */
   const DAYNAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   async function nativeSchedule() {
@@ -1481,8 +1514,9 @@
       const perm = await LN.checkPermissions(); if (perm.display !== "granted") return;
       const pend = await LN.getPending();
       if (pend && pend.notifications && pend.notifications.length) await LN.cancel({ notifications: pend.notifications.map(n => ({ id: n.id })) });
-      const loc = getLoc(), prayerOn = store.get("abp-notify", false), duasOn = store.get("abp-n-duas", true) && prayerOn, now = Date.now(), list = [];
-      const add = (id, at, title, body, route, ch) => { if (at > now + 30e3) list.push({ id, title, body, schedule: { at: new Date(at), allowWhileIdle: true }, channelId: ch, smallIcon: "ic_stat_notify", iconColor: "#d4af6a", extra: { route } }); };
+      const loc = getLoc(), prayerOn = store.get("abp-notify", false), duasOn = store.get("abp-n-duas", true) && prayerOn, hadithOn = store.get("abp-n-hadith", true) && prayerOn, learnOn = store.get("abp-n-learn", true) && prayerOn, now = Date.now(), list = [];
+      const hon = t => (window.__honor ? window.__honor(t) : t);
+      const add = (id, at, title, body, route, ch) => { title = hon(title); body = hon(body); if (at > now + 30e3) list.push({ id, title, body, largeBody: body, schedule: { at: new Date(at), allowWhileIdle: true }, channelId: ch, smallIcon: "ic_stat_notify", iconColor: "#d4af6a", extra: { route } }); };
       for (let d = 0; d < 14; d++) {
         const day = new Date(now + d * 864e5), Y = day.getFullYear(), M = day.getMonth(), D = day.getDate(), wd = day.getDay();
         const t = loc ? dayTimes(loc, d) : null;
@@ -1496,8 +1530,17 @@
           add(2000 + d * 10, morning, "Morning du'as", `Du'a al-'Ahd and the du'a for ${DAYNAMES[wd]}. Begin your day with the Imam of our Time.`, "#lib/daily/ahd", "duas");
           if (wd === 4) add(2001 + d * 10, t ? t.ts.maghrib + 70 * 60e3 : new Date(Y, M, D, 20, 0).getTime(), "Thursday night: Du'a Kumayl", "The night of Kumayl. Recite it after Isha, alone or with family.", "#lib/duas/kumayl", "duas");
           if (wd === 5) add(2002 + d * 10, new Date(Y, M, D, 8, 30).getTime(), "Friday: Du'a al-Nudba", "Friday morning, the day of Imam al-Mahdi (AS). Recite Du'a al-Nudba and Surat al-Kahf.", "#lib/duas/nudba", "duas");
-          const h = hijri(day), ev = h ? SHIA_EVENTS.filter(e => e[0] === h.m && e[1] === h.d) : [];
-          if (ev.length) add(2003 + d * 10, new Date(Y, M, D, 7, 30).getTime(), ev[0][3] === "grief" ? "Today we remember" : "Today we celebrate", ev.map(e => e[2]).join(" · "), "#/s/calendar", "duas");
+          const du = dailyDua(day);
+          if (du) add(2004 + d * 10, new Date(Y, M, D, 16, 30).getTime(), "Du'a of the day: " + du.it[1], du.c.arTitle ? "From the Sahifa Sajjadiyya of Imam Zayn al-Abidin (AS). Tap to recite." : du.it[2], du.route, "duas");
+        }
+        if (hadithOn) {
+          const p = dailyPearl(day), q = p.q.length > 230 ? p.q.slice(0, 227) + "…" : p.q;
+          add(2005 + d * 10, new Date(Y, M, D, 10, 0).getTime(), "Hadith of the day · " + p.who.replace(/^Imam /, "Imam "), q, "#/s/today", "daily");
+        }
+        if (learnOn) {
+          const ev = dailyEvents(day), st = dailyStory(day);
+          if (ev.length) add(2003 + d * 10, new Date(Y, M, D, 7, 30).getTime(), ev[0][3] === "grief" ? "Today we remember" : "Today we celebrate", ev.map(e => e[2]).join(" · ") + ". Tap to learn more.", ev[0][4] ? "#story/" + ev[0][4] : "#/s/today", "daily");
+          add(2006 + d * 10, new Date(Y, M, D, 20, 30).getTime(), "Learn today: " + st.title, st.summary, "#story/" + st.id, "daily");
         }
       }
       if (list.length) await LN.schedule({ notifications: list });
@@ -1510,7 +1553,8 @@
       if (p.display !== "granted") { toast("Notifications are off. Allow them for this app in your phone settings."); return false; }
       try {
         await LN.createChannel({ id: "prayer", name: "Prayer times", description: "Reminder at the start of each prayer time", importance: 5, visibility: 1, vibration: true });
-        await LN.createChannel({ id: "duas", name: "Daily du'as", description: "Morning du'as, Kumayl, Nudba and special days", importance: 4, visibility: 1, vibration: true });
+        await LN.createChannel({ id: "duas", name: "Daily du'as", description: "Morning du'as, du'a of the day, Kumayl and Nudba", importance: 4, visibility: 1, vibration: true });
+        await LN.createChannel({ id: "daily", name: "Hadith & today", description: "Hadith of the day, today's occasion and a story to learn", importance: 4, visibility: 1, vibration: true });
       } catch { /* older Android */ }
       try {
         if (LN.checkExactNotificationSetting) {
@@ -1541,7 +1585,7 @@
   let homeTimer = null;
   function renderHome() {
     const h = hijri(new Date()), ev = upcomingEvents(60)[0];
-    $("#hdToday").outerHTML = `<a class="hd-today" id="hdToday" href="#/s/calendar"><div>${h ? `<p class="ht-h" dir="rtl" lang="ar">${h.d} ${HM_AR[h.m - 1]} ${h.y}</p><p class="ht-g">${h.d} ${HM[h.m - 1]} ${h.y} · ${new Date().toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" })}</p>` : `<p class="ht-g">${new Date().toDateString()}</p>`}</div>
+    $("#hdToday").outerHTML = `<a class="hd-today" id="hdToday" href="#/s/today"><div>${h ? `<p class="ht-h" dir="rtl" lang="ar">${h.d} ${HM_AR[h.m - 1]} ${h.y}</p><p class="ht-g">${h.d} ${HM[h.m - 1]} ${h.y} · ${new Date().toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" })}</p>` : `<p class="ht-g">${new Date().toDateString()}</p>`}</div>
       ${ev ? `<div class="ht-ev"><small>${inDays(ev.i)}</small><b>${esc(ev.e[2])}</b></div>` : ""}</a>`;
     const loc = getLoc();
     if (loc) {
@@ -1556,7 +1600,7 @@
     ].join("");
     const last = store.get("abp-last", null);
     $("#hdContinue").innerHTML = last ? `<a class="cont" href="${last.h}"><div><small>Continue · ${esc(last.k)}</small><b>${esc(last.t)}</b></div><span class="ca">›</span></a>` : "";
-    const p = PEARLS[new Date().getDate() % PEARLS.length];
+    const p = dailyPearl(new Date());
     $("#hdPearl").innerHTML = `<div class="pearl-feature"><p class="pf-label">Pearl of the day</p><blockquote>“${esc(p.q)}”</blockquote><cite>${esc(p.who)} · ${esc(p.src)}</cite><br><a href="#/s/pearls" style="display:inline-block;margin-top:.8rem;font-size:.82rem;color:var(--gold)">More pearls ›</a></div>`;
     clearInterval(homeTimer); homeTimer = setInterval(() => { if (screenHash === "#/home" && getLoc()) { const nx = nextPrayer(getLoc()); const el = $("#hdNext .np-in"); if (nx && el) el.textContent = countdown(nx.ts - Date.now()); } }, 30000);
   }
@@ -1566,7 +1610,7 @@
       tile("#/s/haq", "scale", "Fatima's Haq"), tile("#/s/karbala", "flag", "Karbala", "red"), tile("#/s/abbas", "flag", "Moula Abbas", "green"), tile("#/s/masumin", "star", "14 Ma'sumin"),
       tile("#/s/lessons", "lamp", "Lessons"), tile("#/s/pearls", "gem", "Pearls"), tile("#/s/rulers", "crown", "Caliphs"), tile("#/s/wronged", "alert", "Who wronged", "red"),
       tile("#/s/companions", "users", "Companions"), tile("#/s/dates", "cal", "Key dates"), tile("#/s/calendar", "cal", "Calendar"), tile("#/s/reading", "books", "Books"),
-      tile("#/s/qa", "qa", "Q&A", "green"), tile("#/s/namaz-guide", "pray", "How to pray", "green"), tile("#/s/favs", "star", "Favourites"), tile("#qaza", "count", "Qaza tracker", "green")
+      tile("#/s/qa", "qa", "Q&A", "green"), tile("#/s/namaz-guide", "pray", "How to pray", "green"), tile("#/s/favs", "star", "Favourites"), tile("#/s/today", "cal", "Today", "green")
     ].join("");
   }
 
@@ -1704,6 +1748,8 @@
     $("#setTheme").value = root.dataset.theme;
     $("#setHijri").value = String(hijriAdj());
     if ($("#setNDuas")) $("#setNDuas").checked = !!store.get("abp-n-duas", true);
+    if ($("#setNHadith")) $("#setNHadith").checked = !!store.get("abp-n-hadith", true);
+    if ($("#setNLearn")) $("#setNLearn").checked = !!store.get("abp-n-learn", true);
     const h = hijri(new Date()); $("#setHijriNow").textContent = h ? `Today: ${h.d} ${HM[h.m - 1]} ${h.y} AH` : "";
     $("#setNotify").checked = !!store.get("abp-notify", false);
   }
@@ -1722,6 +1768,7 @@
     if (!getLoc()) toast("Now set your location");
     return true;
   }
+  [["#setNHadith", "abp-n-hadith", "Hadith of the day"], ["#setNLearn", "abp-n-learn", "Today's occasion and story"]].forEach(([id, k, n]) => { if ($(id)) $(id).addEventListener("change", e => { store.set(k, e.target.checked); if (LN) nativeSchedule(); toast(n + (e.target.checked ? " on" : " off")); }); });
   if ($("#setNDuas")) $("#setNDuas").addEventListener("change", e => { store.set("abp-n-duas", e.target.checked); if (LN) nativeSchedule(); toast(e.target.checked ? "Daily du'a reminders on" : "Daily du'a reminders off"); });
   $("#setNotify").addEventListener("change", async e => {
     if (LN) { if (e.target.checked) { e.target.checked = await nativeEnable(); } else { store.set("abp-notify", false); nativeSchedule(); } return; }

@@ -1384,3 +1384,22 @@ html.is-app [data-install] { display: none !important; }
 .am-apk { display: block; text-align: center; margin: .2rem 0 1rem; }
 .am-more { margin-top: 1rem; font-family: var(--sans); font-size: .85rem; }
 .am-more summary { cursor: pointer; color: var(--gold); font-weight: 600; }
+/* ---- Today ---- */
+.td-date { text-align: center; margin: .4rem 0 1.2rem; }
+.td-date h2 { font-family: var(--display); font-size: clamp(1.9rem, 6vw, 2.6rem); line-height: 1.1; }
+.td-ar { font-family: var(--arabic); font-size: 1.6rem; color: var(--gold); }
+.td-h { font-family: var(--sans); font-size: .85rem; font-weight: 600; color: var(--gold); margin-top: .2rem; }
+.td-card { border: 1px solid var(--line); background: var(--card); border-radius: 20px; padding: 1.1rem 1.15rem 1.2rem; margin-bottom: .9rem; }
+.td-card.ev-grief { border-color: color-mix(in srgb, #d9534f 55%, transparent); background: linear-gradient(180deg, color-mix(in srgb, #d9534f 12%, var(--card)), var(--card)); }
+.td-card.ev-joy { border-color: color-mix(in srgb, var(--gold) 55%, transparent); background: linear-gradient(180deg, color-mix(in srgb, var(--gold) 12%, var(--card)), var(--card)); }
+.td-card.ev-eid { border-color: color-mix(in srgb, #2fbf86 55%, transparent); background: linear-gradient(180deg, color-mix(in srgb, #2fbf86 12%, var(--card)), var(--card)); }
+.td-k { font-family: var(--sans); font-size: .68rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); margin-bottom: .45rem; }
+.td-card h3 { font-family: var(--display); font-size: 1.45rem; line-height: 1.2; margin-bottom: .35rem; }
+.td-card p { font-family: var(--serif); font-size: 1rem; line-height: 1.6; color: var(--muted); }
+.td-card blockquote { font-family: var(--serif); font-size: 1.15rem; line-height: 1.6; color: var(--text); }
+.td-har { font-family: var(--arabic) !important; font-size: calc(1.3rem * var(--ar, 1)) !important; color: var(--gold) !important; text-align: right; line-height: 1.95 !important; margin-bottom: .5rem; }
+.td-src { font-family: var(--sans) !important; font-size: .78rem !important; margin-top: .5rem; }
+.td-a { display: inline-block; margin-top: .6rem; font-family: var(--sans); font-size: .85rem; font-weight: 700; color: var(--gold); text-decoration: none; }
+.td-list { list-style: none; display: grid; gap: .4rem; }
+.td-list a { display: block; padding: .65rem .85rem; border-radius: 12px; background: color-mix(in srgb, var(--ink) 55%, transparent); color: var(--text); text-decoration: none; font-family: var(--sans); font-size: .92rem; font-weight: 600; }
+.td-list a::after { content: " ›"; color: var(--gold); }
