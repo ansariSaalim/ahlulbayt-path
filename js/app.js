@@ -904,8 +904,15 @@
     const pearls = PEARLS.filter(p => p.who === PROFILE.pearlWho[i] && !p.nb);
     const wr = WRONGED.find(w => w.who.endsWith(m.name.split(" ").slice(-1)[0]) || w.who.includes(m.name.replace("Muhammad ", "")));
     const prev = MASUMIN[i - 1], next = MASUMIN[i + 1];
+    const LF = typeof LIVES !== "undefined" && LIVES[i];
+    const lifeHTML = LF ? `<p class="lf-intro">${esc(LF.intro)}</p>
+      <ol class="lf-tl">${LF.ch.map((c, k) => `<li><span class="lf-dot">${k + 1}</span><h4>${esc(c[0])}</h4>${c[1]}</li>`).join("")}</ol>
+      ${LF.teach ? `<h4 class="pf-h">The Prophet's teachings</h4><div class="lf-teach">${LF.teach.map(t => `<div><b>${esc(t[0])}</b><p>${esc(t[1])}</p><small>${esc(t[2])}</small></div>`).join("")}</div>` : ""}
+      <h4 class="pf-h">What we learn</h4><ol class="lf-learn">${LF.learn.map(x => `<li>${esc(x)}</li>`).join("")}</ol>
+      <p class="r-sources"><b>Shia sources:</b> ${esc(LF.src)}</p>` : "";
     $("#rLessonView").innerHTML = `
       <table class="facts"><tr><td>Born</td><td>${esc(m.born)}</td></tr><tr><td>${i === 13 ? "Now" : "Died / martyred"}</td><td>${esc(m.died)}</td></tr><tr><td>Age</td><td>${esc(m.age)}</td></tr><tr><td>Rulers of the time</td><td>${esc(m.rulers)}</td></tr></table>
+      ${LF ? `<div class="q-top lf-seg"><div class="q-seg"><button data-lv="life" class="on">Life story</button><button data-lv="more">Lessons & pearls</button></div></div><div class="lf-pane" data-pane="life">${lifeHTML}</div><div class="lf-pane" data-pane="more" hidden>` : "<div>"}
       <p class="r-summary">${esc(m.note)}</p>
       ${L ? `<div class="r-content">${L.body.replace(/<table class="facts">[\s\S]*?<\/table>/, "")}</div>` : ""}
       ${LS ? `<h4 class="pf-h">What we learn</h4><p class="l-teach">${esc(LS.teach)}</p><div class="l-grid">${LS.items.map((it, k) => `<div class="l-item" style="animation-delay:${.1 + k * .1}s"><b><i>${k + 1}</i>${esc(it[0])}</b><p>${esc(it[1])}</p></div>`).join("")}</div>` : ""}
@@ -913,10 +920,15 @@
       <h4 class="pf-h">Stories</h4><div class="l-rel">${PROFILE.stories[i].map(sid => `<a href="#story/${sid}">${esc(storyById[sid].title)}</a>`).join("")}</div>
       ${wr && i > 0 ? `<h4 class="pf-h">Who wronged ${i === 1 ? "her" : "him"}</h4><p class="wr-p">${esc(wr.by)}</p>` : ""}
       ${L ? `<a class="btn btn-gold" href="#lesson/${lid}" style="margin-top:1rem">Take the lesson & quiz →</a>` : ""}
+      </div>
       <nav class="r-nav">
         <button class="r-nav-btn" ${prev ? "" : "disabled"} onclick="location.hash='imam/${i - 1}'"><small>Previous</small><span>${prev ? esc(prev.name) : ""}</span></button>
         <button class="r-nav-btn" ${next ? "" : "disabled"} onclick="location.hash='imam/${i + 1}'"><small>Next</small><span>${next ? esc(next.name) : ""}</span></button>
       </nav>`;
+    $$("#rLessonView .lf-seg button").forEach(b => b.onclick = () => {
+      $$("#rLessonView .lf-seg button").forEach(x => x.classList.toggle("on", x === b));
+      $$("#rLessonView .lf-pane").forEach(pn => pn.hidden = pn.dataset.pane !== b.dataset.lv);
+    });
     showReader(m.name);
   }
   function paintBanners() {
