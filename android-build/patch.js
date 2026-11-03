@@ -20,6 +20,11 @@ fs.writeFileSync(man, m);
 const dr = path.join(APP, "android/app/src/main/res/drawable");
 fs.mkdirSync(dr, { recursive: true });
 fs.copyFileSync(path.join(ROOT, "android-build/ic_stat_notify.xml"), path.join(dr, "ic_stat_notify.xml"));
+// 3b. notification sounds (res/raw)
+const raw = path.join(APP, "android/app/src/main/res/raw");
+fs.mkdirSync(raw, { recursive: true });
+for (const f of ["prayer_tone.wav", "dua_tone.wav"]) fs.copyFileSync(path.join(ROOT, "android-build", f), path.join(raw, f));
+console.log("Sounds copied:", fs.readdirSync(raw).join(", "));
 // 4. signing + version
 const gp = path.join(APP, "android/app/build.gradle");
 let g = fs.readFileSync(gp, "utf8");

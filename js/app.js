@@ -1516,31 +1516,31 @@
       if (pend && pend.notifications && pend.notifications.length) await LN.cancel({ notifications: pend.notifications.map(n => ({ id: n.id })) });
       const loc = getLoc(), prayerOn = store.get("abp-notify", false), duasOn = store.get("abp-n-duas", true) && prayerOn, hadithOn = store.get("abp-n-hadith", true) && prayerOn, learnOn = store.get("abp-n-learn", true) && prayerOn, now = Date.now(), list = [];
       const hon = t => (window.__honor ? window.__honor(t) : t);
-      const add = (id, at, title, body, route, ch) => { title = hon(title); body = hon(body); if (at > now + 30e3) list.push({ id, title, body, largeBody: body, schedule: { at: new Date(at), allowWhileIdle: true }, channelId: ch, smallIcon: "ic_stat_notify", iconColor: "#d4af6a", extra: { route } }); };
+      const add = (id, at, title, body, route, ch) => { title = hon(title); body = hon(body); if (at > now + 30e3) list.push({ id, title, body, largeBody: body, schedule: { at: new Date(at), allowWhileIdle: true }, channelId: ch, sound: ch === "prayer2" ? "prayer_tone.wav" : "dua_tone.wav", smallIcon: "ic_stat_notify", iconColor: "#d4af6a", extra: { route } }); };
       for (let d = 0; d < 14; d++) {
         const day = new Date(now + d * 864e5), Y = day.getFullYear(), M = day.getMonth(), D = day.getDate(), wd = day.getDay();
         const t = loc ? dayTimes(loc, d) : null;
         if (t && prayerOn) {
-          add(1000 + d * 10, t.ts.fajr, "Fajr · time to pray", `Fajr has begun in ${loc.name}. It lasts until sunrise.`, "#/prayer", "prayer");
-          add(1001 + d * 10, t.ts.dhuhr, "Zuhr & Asr · time to pray", `Zuhr has begun in ${loc.name}. You may pray Zuhr and then Asr.`, "#/prayer", "prayer");
-          add(1002 + d * 10, t.ts.maghrib, "Maghrib & Isha · time to pray", `Maghrib has begun in ${loc.name}. You may pray Maghrib and then Isha.`, "#/prayer", "prayer");
+          add(1000 + d * 10, t.ts.fajr, "Fajr · time to pray", `Fajr has begun in ${loc.name}. It lasts until sunrise.`, "#/prayer", "prayer2");
+          add(1001 + d * 10, t.ts.dhuhr, "Zuhr & Asr · time to pray", `Zuhr has begun in ${loc.name}. You may pray Zuhr and then Asr.`, "#/prayer", "prayer2");
+          add(1002 + d * 10, t.ts.maghrib, "Maghrib & Isha · time to pray", `Maghrib has begun in ${loc.name}. You may pray Maghrib and then Isha.`, "#/prayer", "prayer2");
         }
         if (duasOn) {
           const morning = t ? t.ts.fajr + 25 * 60e3 : new Date(Y, M, D, 6, 0).getTime();
-          add(2000 + d * 10, morning, "Morning du'as", `Du'a al-'Ahd and the du'a for ${DAYNAMES[wd]}. Begin your day with the Imam of our Time.`, "#lib/daily/ahd", "duas");
-          if (wd === 4) add(2001 + d * 10, t ? t.ts.maghrib + 70 * 60e3 : new Date(Y, M, D, 20, 0).getTime(), "Thursday night: Du'a Kumayl", "The night of Kumayl. Recite it after Isha, alone or with family.", "#lib/duas/kumayl", "duas");
-          if (wd === 5) add(2002 + d * 10, new Date(Y, M, D, 8, 30).getTime(), "Friday: Du'a al-Nudba", "Friday morning, the day of Imam al-Mahdi (AS). Recite Du'a al-Nudba and Surat al-Kahf.", "#lib/duas/nudba", "duas");
+          add(2000 + d * 10, morning, "Morning du'as", `Du'a al-'Ahd and the du'a for ${DAYNAMES[wd]}. Begin your day with the Imam of our Time.`, "#lib/daily/ahd", "duas2");
+          if (wd === 4) add(2001 + d * 10, t ? t.ts.maghrib + 70 * 60e3 : new Date(Y, M, D, 20, 0).getTime(), "Thursday night: Du'a Kumayl", "The night of Kumayl. Recite it after Isha, alone or with family.", "#lib/duas/kumayl", "duas2");
+          if (wd === 5) add(2002 + d * 10, new Date(Y, M, D, 8, 30).getTime(), "Friday: Du'a al-Nudba", "Friday morning, the day of Imam al-Mahdi (AS). Recite Du'a al-Nudba and Surat al-Kahf.", "#lib/duas/nudba", "duas2");
           const du = dailyDua(day);
-          if (du) add(2004 + d * 10, new Date(Y, M, D, 16, 30).getTime(), "Du'a of the day: " + du.it[1], du.c.arTitle ? "From the Sahifa Sajjadiyya of Imam Zayn al-Abidin (AS). Tap to recite." : du.it[2], du.route, "duas");
+          if (du) add(2004 + d * 10, new Date(Y, M, D, 16, 30).getTime(), "Du'a of the day: " + du.it[1], du.c.arTitle ? "From the Sahifa Sajjadiyya of Imam Zayn al-Abidin (AS). Tap to recite." : du.it[2], du.route, "duas2");
         }
         if (hadithOn) {
           const p = dailyPearl(day), q = p.q.length > 230 ? p.q.slice(0, 227) + "…" : p.q;
-          add(2005 + d * 10, new Date(Y, M, D, 10, 0).getTime(), "Hadith of the day · " + p.who.replace(/^Imam /, "Imam "), q, "#/s/today", "daily");
+          add(2005 + d * 10, new Date(Y, M, D, 10, 0).getTime(), "Hadith of the day · " + p.who.replace(/^Imam /, "Imam "), q, "#/s/today", "daily2");
         }
         if (learnOn) {
           const ev = dailyEvents(day), st = dailyStory(day);
-          if (ev.length) add(2003 + d * 10, new Date(Y, M, D, 7, 30).getTime(), ev[0][3] === "grief" ? "Today we remember" : "Today we celebrate", ev.map(e => e[2]).join(" · ") + ". Tap to learn more.", ev[0][4] ? "#story/" + ev[0][4] : "#/s/today", "daily");
-          add(2006 + d * 10, new Date(Y, M, D, 20, 30).getTime(), "Learn today: " + st.title, st.summary, "#story/" + st.id, "daily");
+          if (ev.length) add(2003 + d * 10, new Date(Y, M, D, 7, 30).getTime(), ev[0][3] === "grief" ? "Today we remember" : "Today we celebrate", ev.map(e => e[2]).join(" · ") + ". Tap to learn more.", ev[0][4] ? "#story/" + ev[0][4] : "#/s/today", "daily2");
+          add(2006 + d * 10, new Date(Y, M, D, 20, 30).getTime(), "Learn today: " + st.title, st.summary, "#story/" + st.id, "daily2");
         }
       }
       if (list.length) await LN.schedule({ notifications: list });
@@ -1552,9 +1552,10 @@
       const p = await LN.requestPermissions();
       if (p.display !== "granted") { toast("Notifications are off. Allow them for this app in your phone settings."); return false; }
       try {
-        await LN.createChannel({ id: "prayer", name: "Prayer times", description: "Reminder at the start of each prayer time", importance: 5, visibility: 1, vibration: true });
-        await LN.createChannel({ id: "duas", name: "Daily du'as", description: "Morning du'as, du'a of the day, Kumayl and Nudba", importance: 4, visibility: 1, vibration: true });
-        await LN.createChannel({ id: "daily", name: "Hadith & today", description: "Hadith of the day, today's occasion and a story to learn", importance: 4, visibility: 1, vibration: true });
+        await LN.createChannel({ id: "prayer2", name: "Prayer times", description: "Reminder at the start of each prayer time", importance: 5, visibility: 1, vibration: true, sound: "prayer_tone.wav" });
+        await LN.createChannel({ id: "duas2", name: "Daily du'as", description: "Morning du'as, du'a of the day, Kumayl and Nudba", importance: 4, visibility: 1, vibration: true, sound: "dua_tone.wav" });
+        await LN.createChannel({ id: "daily2", name: "Hadith & today", description: "Hadith of the day, today's occasion and a story to learn", importance: 4, visibility: 1, vibration: true, sound: "dua_tone.wav" });
+        ["prayer", "duas", "daily"].forEach(id => { try { LN.deleteChannel({ id }); } catch { /* ignore */ } });
       } catch { /* older Android */ }
       try {
         if (LN.checkExactNotificationSetting) {
