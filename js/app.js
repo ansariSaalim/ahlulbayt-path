@@ -1182,26 +1182,42 @@
     return (Math.atan2(Math.sin(dl), Math.cos(p1) * Math.tan(p2) - Math.sin(p1) * Math.cos(dl)) / D2R + 360) % 360;
   }
   let heading = null, compassOn = false;
-  let wasAligned = false;
+  let wasAligned = false, smooth = null, roseDeg = 0, needleDeg = 0;
+  /* move from cur to the same angle as target by the shortest way, so the dial never spins a full circle */
+  const nearAngle = (cur, target) => cur + ((((target - cur) % 360) + 540) % 360 - 180);
   function updateQibla() {
     const loc = getLoc(); if (!loc) return;
     const b = qiblaBearing(loc.lat, loc.lng);
     const rose = $("#qbRose"), needle = $("#qbNeedle"), dial = $("#qbDial");
-    if (heading == null) { rose.style.transform = "rotate(0deg)"; needle.style.setProperty("--r", b + "deg"); dial.classList.remove("aligned"); $("#qbInfo").innerHTML = `Qibla is <b>${b.toFixed(0)}°</b> from North (clockwise) at ${esc(loc.name)}.`; return; }
+    if (heading == null) {
+      roseDeg = nearAngle(roseDeg, 0); needleDeg = nearAngle(needleDeg, b);
+      rose.style.transform = `rotate(${roseDeg}deg)`; needle.style.setProperty("--r", needleDeg + "deg"); dial.classList.remove("aligned");
+      $("#qbInfo").innerHTML = `Qibla is <b>${b.toFixed(0)}°</b> from North (clockwise) at ${esc(loc.name)}.`; return;
+    }
     const rel = ((b - heading) % 360 + 360) % 360;
-    rose.style.transform = `rotate(${-heading}deg)`; needle.style.setProperty("--r", rel + "deg");
+    /* the letters turn against the phone; the Ka'ba needle points to the Qibla relative to the top of the phone */
+    roseDeg = nearAngle(roseDeg, -heading); needleDeg = nearAngle(needleDeg, rel);
+    rose.style.transform = `rotate(${roseDeg}deg)`; needle.style.setProperty("--r", needleDeg + "deg");
     const diff = Math.abs(((rel + 180) % 360) - 180), aligned = diff < 5;
     dial.classList.toggle("aligned", aligned);
-    $("#qbInfo").innerHTML = aligned ? `<b style="color:#2fbf86">You are facing the Qibla</b>` : `Turn ${rel < 180 ? "right" : "left"} until the Ka'ba reaches the top · ${diff.toFixed(0)}° away`;
+    $("#qbInfo").innerHTML = aligned ? `<b style="color:#2fbf86">You are facing the Qibla</b>` : `Turn ${rel < 180 ? "right" : "left"} until the Ka'ba reaches the top · ${diff.toFixed(0)}° away<br><small>Qibla is ${b.toFixed(0)}° from North at ${esc(loc.name)}</small>`;
     if (aligned && !wasAligned && navigator.vibrate) try { navigator.vibrate([40, 60, 40]); } catch { /* ignore */ }
     wasAligned = aligned;
   }
+  let gotAbsolute = false;
   function onOrient(e) {
     let hd = null;
-    if (typeof e.webkitCompassHeading === "number") hd = e.webkitCompassHeading;
-    else if (e.absolute && e.alpha != null) hd = 360 - e.alpha;
+    if (typeof e.webkitCompassHeading === "number" && !isNaN(e.webkitCompassHeading)) hd = e.webkitCompassHeading; /* iPhone: already true heading */
+    else if (e.alpha != null && (e.absolute || e.type === "deviceorientationabsolute")) {
+      if (e.type === "deviceorientationabsolute") gotAbsolute = true;
+      else if (gotAbsolute) return; /* prefer the absolute event when the phone gives both */
+      hd = 360 - e.alpha;
+    }
     if (hd == null) return;
-    heading = hd; updateQibla();
+    const so = (screen.orientation && typeof screen.orientation.angle === "number") ? screen.orientation.angle : (typeof window.orientation === "number" ? window.orientation : 0);
+    hd = ((hd + so) % 360 + 360) % 360;
+    smooth = smooth == null ? hd : ((nearAngle(smooth, hd) - smooth) * 0.35 + smooth + 360) % 360;
+    heading = smooth; updateQibla();
   }
   $("#qbStart").addEventListener("click", async () => {
     if (!getLoc()) { useGeo(); return; }

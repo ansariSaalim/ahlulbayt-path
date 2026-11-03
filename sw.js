@@ -1,6 +1,6 @@
 /* The Path of the Ahl al-Bayt: offline support */
-const VERSION = "abp-v17";
-const CORE = ["./", "index.html", "css/style.css?v=17", "js/data.js?v=17", "js/course.js?v=17", "js/pearls-nahj.js?v=17", "js/lives.js?v=17", "js/namaz.js?v=17", "js/app.js?v=17",
+const VERSION = "abp-v18";
+const CORE = ["./", "index.html", "css/style.css?v=18", "js/data.js?v=18", "js/course.js?v=18", "js/pearls-nahj.js?v=18", "js/lives.js?v=18", "js/namaz.js?v=18", "js/app.js?v=18",
   "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png"];
 const RUNTIME = "abp-runtime";
 
