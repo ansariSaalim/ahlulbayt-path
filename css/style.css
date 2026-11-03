@@ -1403,3 +1403,5 @@ html.is-app [data-install] { display: none !important; }
 .td-list { list-style: none; display: grid; gap: .4rem; }
 .td-list a { display: block; padding: .65rem .85rem; border-radius: 12px; background: color-mix(in srgb, var(--ink) 55%, transparent); color: var(--text); text-decoration: none; font-family: var(--sans); font-size: .92rem; font-weight: 600; }
 .td-list a::after { content: " ›"; color: var(--gold); }
+.pt-list li.fadila { cursor: pointer; }
+.pt-list li.fadila b small { border-bottom: 1px dotted color-mix(in srgb, var(--muted) 70%, transparent); }
