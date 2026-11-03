@@ -505,9 +505,9 @@ ${ar("لَا إِلَٰهَ إِلَّا اللَّهُ", "La ilaha illallah · 
 <li><b>Niyyah</b>: in your heart: "I pray two rak'at of Fajr, wajib, qurbatan ilallah."</li>
 <li><b>Takbirat al-Ihram</b>: raise both hands to your ears and say:${ar("اللَّهُ أَكْبَرُ", "Allahu Akbar", "")}</li>
 <li><b>Qira'a</b>: recite Surat al-Fatiha:${ar(AR.fatiha, "Bismillahir-Rahmanir-Rahim. Al-hamdu lillahi Rabbil-'alamin. Ar-Rahmanir-Rahim. Maliki yawmid-din. Iyyaka na'budu wa iyyaka nasta'in. Ihdinas-siratal-mustaqim. Siratal-ladhina an'amta 'alayhim, ghayril-maghdubi 'alayhim wa lad-dallin.", "In the name of Allah, the Beneficent, the Merciful. All praise is for Allah, Lord of the worlds…")} Then one complete sura, for example al-Ikhlas:${ar(AR.ikhlas, "Bismillahir-Rahmanir-Rahim. Qul huwallahu ahad. Allahus-samad. Lam yalid wa lam yulad. Wa lam yakun lahu kufuwan ahad.", "Say: He is Allah, the One…")}</li>
-<li><b>Ruku'</b>: bow until your hands reach your knees, and say:${ar("سُبْحَانَ رَبِّيَ الْعَظِيمِ وَبِحَمْدِهِ", "Subhana Rabbiyal-'Azimi wa bihamdih", "Glory be to my Lord, the Great, and praise be to Him")}</li>
+<li><b>Ruku'</b>: bow until your hands reach your knees, and say:${ar("سُبْحَانَ رَبِّيَ الْعَظِيمِ وَبِحَمْدِهِ", "Subhana Rabbiyal-'Azimi wa bihamdih", "Glory be to my Lord, the Great, and praise be to Him")}Instead, you may say <i>Subhanallah</i> three times.</li>
 <li>Stand straight up again, and be still for a moment.</li>
-<li><b>Sajda</b>: go down with <b>seven parts</b> on the ground: forehead (on the turbah), both palms, both knees, both big toes. Say:${ar("سُبْحَانَ رَبِّيَ الْأَعْلَىٰ وَبِحَمْدِهِ", "Subhana Rabbiyal-A'la wa bihamdih", "Glory be to my Lord, the Most High, and praise be to Him")}</li>
+<li><b>Sajda</b>: go down with <b>seven parts</b> on the ground: forehead (on the turbah), both palms, both knees, both big toes. Say:${ar("سُبْحَانَ رَبِّيَ الْأَعْلَىٰ وَبِحَمْدِهِ", "Subhana Rabbiyal-A'la wa bihamdih", "Glory be to my Lord, the Most High, and praise be to Him")}Instead, you may say <i>Subhanallah</i> three times.</li>
 <li>Sit up. <i>(Recommended:)</i>${ar("أَسْتَغْفِرُ اللَّهَ رَبِّي وَأَتُوبُ إِلَيْهِ", "Astaghfirullaha Rabbi wa atubu ilayh", "I seek forgiveness from Allah my Lord and turn to Him")}</li>
 <li><b>Second sajda</b>, the same as the first. Then sit up briefly.</li>
 </ol>
@@ -522,7 +522,7 @@ ${ar("لَا إِلَٰهَ إِلَّا اللَّهُ", "La ilaha illallah · 
 <li>Finish with the <b>Tasbih of Fatima</b>: 34 × Allahu Akbar, 33 × Alhamdulillah, 33 × Subhanallah.</li>
 </ol>
 <h4>3 and 4 rak'at prayers (Maghrib, Zuhr, Asr, Isha)</h4>
-<p>After the tashahhud of the 2nd rak'at, <b>do not</b> say salam; stand up for the 3rd. In the 3rd and 4th rak'at, instead of al-Fatiha and a sura, you may recite (quietly) the <b>Tasbihat al-Arba'a</b> three times:</p>
+<p>After the tashahhud of the 2nd rak'at, <b>do not</b> say salam; stand up for the 3rd. In the 3rd and 4th rak'at, recite (quietly) the <b>Tasbihat al-Arba'a</b>; once is enough and three times is better. Instead you may recite al-Fatiha alone, quietly:</p>
 ${ar("سُبْحَانَ اللَّهِ وَالْحَمْدُ لِلَّهِ وَلَا إِلَٰهَ إِلَّا اللَّهُ وَاللَّهُ أَكْبَرُ", "Subhanallahi wal-hamdu lillahi wa la ilaha illallahu wallahu akbar", "Glory be to Allah, praise be to Allah, there is no god but Allah, and Allah is the Greatest")}
 <p>Then ruku', two sajdas, and after the last rak'at: tashahhud and salam.</p>`,
   practice: "Pray today's prayers slowly with this page open. Learn al-Fatiha and the tashahhud by heart this week.",
@@ -912,11 +912,11 @@ const LEARN_CATS = [
   { id: "beliefs", icon: "◈", name: "Beliefs: Usul al-Din", desc: "Tawhid, 'Adl, Nubuwwa, Imama and Ma'ad, with their proofs.", lessons: ["tawhid-adl", "imamah", "nubuwwa-maad"] },
   { id: "masumin", icon: "✺", name: "The Fourteen Ma'sumin", desc: "One lesson for Lady Fatima and each Imam: life, struggle, teachings and lessons.", lessons: ["l-fatima", "l-ali", "l-hasan", "l-husayn", "l-sajjad", "l-baqir", "l-sadiq", "l-kazim", "l-rida", "l-jawad", "l-hadi", "l-askari", "l-mahdi", "l-women"] },
   { id: "karbala", icon: "⚑", name: "Karbala & Azadari", desc: "Ashura in order, and how we mourn: majlis, matam, imambargah, ziyarat.", lessons: ["l-ashura", "muharram"] },
-  { id: "taharat", icon: "💧", name: "Taharat: Purity", desc: "Najasat, wudu step by step, ghusl and tayammum.", lessons: ["wudu", "ghusl-tayammum"] },
+  { id: "taharat", icon: "◇", name: "Taharat: Purity", desc: "Najasat, wudu step by step, ghusl and tayammum.", lessons: ["wudu", "ghusl-tayammum"] },
   { id: "namaz", icon: "۞", name: "Namaz", desc: "Times, conditions, how to pray with the Arabic, the adhan, Friday prayer, nafila, Salat al-Layl, doubts and travel.", lessons: ["namaz-times", "namaz-steps", "adhan-jumua-nafila", "namaz-rules"] },
   { id: "sawm-khums", icon: "☾", name: "Fasting, Khums & Zakat", desc: "Ramadan and what breaks the fast; khums, zakat and the shares of the Imam and the Sayyids.", lessons: ["fasting", "khums-zakat"] },
   { id: "fiqh", icon: "⚖", name: "Fiqh, Taqlid & Ethics", desc: "Following a marja', the five rulings, halal and haram, and everyday ethics.", lessons: ["taqlid", "halal-ethics"] },
-  { id: "quran-hadith", icon: "📖", name: "Qur'an, Hadith & Duas", desc: "Tafsir, the Four Books, grading hadith, ziyarat, tawassul, salawat and daily duas.", lessons: ["tafsir", "hadith-books", "ziyarat-duas"] },
+  { id: "quran-hadith", icon: "❖", name: "Qur'an, Hadith & Duas", desc: "Tafsir, the Four Books, grading hadith, ziyarat, tawassul, salawat and daily duas.", lessons: ["tafsir", "hadith-books", "ziyarat-duas"] },
   { id: "year", icon: "◐", name: "The Shia Year", desc: "Every month and every occasion of the Ahl al-Bayt, and how to live them.", lessons: ["calendar"] },
   { id: "history", icon: "⌛", name: "History after the Imams", desc: "The great scholars, the Buyids, the Safavids, Najaf and Qom, and Shia Islam in India.", lessons: ["history-beyond"] },
   { id: "living", icon: "❀", name: "Living Shia Islam", desc: "Family, marriage, charity, conduct, a daily routine, and your lifelong path with a final exam.", lessons: ["living", "your-path"] }

@@ -17,8 +17,8 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='%23d4a94f'%3E%3Crect x='22' y='22' width='56' height='56'/%3E%3Crect x='22' y='22' width='56' height='56' transform='rotate(45 50 50)'/%3E%3C/g%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=14" />
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Amiri+Quran&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css?v=15" />
 </head>
 <body>
 
@@ -212,7 +212,7 @@
     <div class="section-head reveal">
       <p class="kicker">Namaz</p>
       <h2>How to pray</h2>
-      <p>The three prayer times, the full step-by-step guide with Arabic, and the Tasbih of Lady Fatima.</p>
+      <p>The three prayer times, a guided step-by-step walkthrough of every prayer with the Arabic, and the Tasbih of Lady Fatima.</p>
     </div>
     <div class="nd-grid">
       <div class="nd-prayers reveal">
@@ -225,8 +225,9 @@
         </table>
         <p class="nd-note">Combining is proven: Ibn Abbas narrates in <b>Sahih Muslim</b> that the Prophet ﷺ combined Zuhr and Asr, and Maghrib and Isha, in Medina "without fear and without travel", so that his Ummah would not be put in hardship. Praying each at its own preferred time (fadila) has extra reward, but combining is completely valid.</p>
         <div class="nd-links">
-          <a class="btn btn-gold" href="#lesson/namaz-steps">How to pray, step by step →</a>
-          <a class="nd-l" href="#lesson/wudu">💧 Wudu</a>
+          <a class="btn btn-gold" href="#/s/namaz-guide">Open the prayer guide →</a>
+          <a class="nd-l" href="#lesson/namaz-steps">Read: how to pray</a>
+          <a class="nd-l" href="#lesson/wudu">Wudu</a>
           <a class="nd-l" href="#lesson/ghusl-tayammum">Ghusl & Tayammum</a>
           <a class="nd-l" href="#lesson/namaz-times">Times & conditions</a>
           <a class="nd-l" href="#lesson/adhan-jumua-nafila">Adhan, Jumu'a, Nafila, Salat al-Layl</a>
@@ -245,13 +246,27 @@
   </div>
 </section>
 
+<!-- ============ NAMAZ GUIDE ============ -->
+<section class="section namaz-guide" id="namaz-guide" data-screen="sub">
+  <div class="wrap">
+    <div class="ng-head">
+      <p class="kicker">Ja'fari method</p>
+      <h2>How to pray</h2>
+      <p class="muted">Pick a prayer. "Guide me" walks you through it one step at a time, with the Arabic, the pronunciation and the meaning.</p>
+    </div>
+    <div class="ng-picks" id="ngPicks"></div>
+    <div id="ngBody"></div>
+    <p class="ng-small ng-foot">Rulings follow the common view of the major maraji' (such as Sayyid al-Sistani). Small details differ between maraji', so check your own marja's risala.</p>
+  </div>
+</section>
+
 <!-- ============ QURAN ============ -->
 <section class="section quran" id="quran" data-screen="quran">
   <div class="wrap">
     <div class="qr-head">
       <p class="sb-ar" dir="rtl" lang="ar" style="color:var(--gold)">إِنِّي تَارِكٌ فِيكُمُ الثَّقَلَيْنِ: كِتَابَ اللَّهِ وَعِتْرَتِي</p>
       <h2>The Holy Qur'an</h2>
-      <p class="muted">All 114 suras in Arabic, with translation and recitation. Your last-read place is saved.</p>
+      <p class="muted">All 114 suras in the Uthmani script with recitation by Mishary Alafasy. Your last-read place is saved.</p>
     </div>
     <div class="qr-continue" id="qrContinue"></div>
     <div class="qr-quick" id="qrQuick"></div>
@@ -299,7 +314,6 @@
       <h3>Reading</h3>
       <label class="set-row">Arabic text size <input type="range" id="setAr" min="80" max="170" step="5" /><b id="setArVal"></b></label>
       <p class="set-preview" dir="rtl" lang="ar">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيمِ</p>
-      <label class="set-row">Qur'an translation <select id="setTr"><option value="en.qarai">English · Ali Quli Qarai</option><option value="en.sahih">English · Saheeh International</option><option value="ur.jalandhry">Urdu · Jalandhry</option><option value="en.transliteration">Transliteration only</option></select></label>
       <label class="set-row">Theme <select id="setTheme"><option value="dark">Dark</option><option value="light">Light</option></select></label>
     </div>
     <div class="set-group">
@@ -673,6 +687,21 @@
         </div>
       </div>
     </div>
+    <div class="q-sheet" id="qSheet" hidden>
+      <div class="qs-head"><b id="qsTitle">Ayah</b><button class="qs-x" id="qsClose" aria-label="Close">×</button></div>
+      <div class="qs-acts">
+        <button id="qsPlay"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg>Play from here</button>
+        <button id="qsCopy"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>Copy</button>
+        <button id="qsShare"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></svg>Share</button>
+      </div>
+    </div>
+    <div class="q-player" id="qPlayer" hidden>
+      <button id="qpSize" class="qp-s" aria-label="Text size">Aa</button>
+      <button id="qpPrev" class="qp-s" aria-label="Previous ayah"><svg viewBox="0 0 24 24"><path d="M6 5v14M19 5L9 12l10 7z"/></svg></button>
+      <button id="qpPlay" class="qp-main" aria-label="Play"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></button>
+      <button id="qpNext" class="qp-s" aria-label="Next ayah"><svg viewBox="0 0 24 24"><path d="M18 5v14M5 5l10 7-10 7z"/></svg></button>
+      <span class="qp-pos" id="qpPos">1 / 1</span>
+    </div>
   </article>
 </div>
 
@@ -688,9 +717,10 @@
   </div>
 </div>
 
-<script src="js/data.js?v=14"></script>
-<script src="js/course.js?v=14"></script>
+<script src="js/data.js?v=15"></script>
+<script src="js/course.js?v=15"></script>
+<script src="js/namaz.js?v=15"></script>
 <script>if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));</script>
-<script src="js/app.js?v=14"></script>
+<script src="js/app.js?v=15"></script>
 </body>
 </html>

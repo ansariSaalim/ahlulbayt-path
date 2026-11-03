@@ -349,6 +349,7 @@
     setTimeout(() => $(".reader-close").focus({ preventScroll: true }), 50);
   }
   function setMode(mode) {
+    reader.classList.remove("is-quran"); const qp = $("#qPlayer"); if (qp) qp.hidden = true; const qs = $("#qSheet"); if (qs) qs.hidden = true;
     $("#rChapter").hidden = mode !== "chapter";
     $("#rStory").hidden = mode !== "story";
     $("#rLessonView").hidden = mode !== "lesson";
@@ -404,6 +405,7 @@
     currentId = null;
     if (!fromHash && /^#(story|chapter|learn|lesson|imam|quran)\//.test(location.hash)) history.replaceState(null, "", location.pathname + location.search + (screenHash || "#/home"));
     if (typeof stopQuran === "function") stopQuran();
+    reader.classList.remove("is-quran"); $("#qPlayer").hidden = true; $("#qSheet").hidden = true;
     if (!fromHash && screenHash) setTimeout(() => shellRoute(screenHash), 0);
     if (lastFocus) lastFocus.focus({ preventScroll: true });
   }
@@ -660,7 +662,7 @@
     paint(img, imgTitle, $("#rCredit"), SZ.big);
     $("#rBack").hidden = false; $("#rBack").href = "#learn/" + c.id; $("#rBack").textContent = "← " + c.name;
     const secName = { proofs: "The proofs", battles: "Ali's battles", karbala: "Karbala", haq: "Fatima's Haq", pearls: "Divine pearls", lessons: "Lessons of the Fourteen", rulers: "The caliphs", masumin: "The Ma'sumin", dates: "Key dates", reading: "Books" };
-    const rel = [...(L.links || []).map(sid => `<a href="#story/${sid}">📜 ${esc(storyById[sid].title)}</a>`),
+    const rel = [...(L.links || []).map(sid => `<a href="#story/${sid}">${esc(storyById[sid].title)}</a>`),
                  ...(L.sections || []).map(sec => `<a href="#${sec}" data-sec="${sec}">✦ ${secName[sec] || sec}</a>`)].join("");
     const prev = c.lessons[idx - 1], next = c.lessons[idx + 1];
     const quizHTML = L.quiz && L.quiz.length ? `<div class="quiz" id="quiz"><h4>Test yourself</h4><p class="qz-score" id="qzScore">${L.quiz.length} questions</p>
@@ -746,7 +748,7 @@
     $("#pearlNext").onclick = () => { pearlIdx = (pearlIdx + 1) % PEARLS.length; showPearl(); };
   }
   let pearlWho = "all";
-  const pearlCard = p => `<div class="pg reveal"><q>${esc(p.q)}</q><div class="pw">${esc(p.who)}</div><div class="ps">📖 ${esc(p.src)}</div></div>`;
+  const pearlCard = p => `<div class="pg reveal"><q>${esc(p.q)}</q><div class="pw">${esc(p.who)}</div><div class="ps">${esc(p.src)}</div></div>`;
   function renderPearls() {
     showPearl();
     $("#pearlCount").textContent = PEARLS.length;
@@ -882,7 +884,7 @@
       ${L ? `<div class="r-content">${L.body.replace(/<table class="facts">[\s\S]*?<\/table>/, "")}</div>` : ""}
       ${LS ? `<h4 class="pf-h">What we learn</h4><p class="l-teach">${esc(LS.teach)}</p><div class="l-grid">${LS.items.map((it, k) => `<div class="l-item" style="animation-delay:${.1 + k * .1}s"><b><i>${k + 1}</i>${esc(it[0])}</b><p>${esc(it[1])}</p></div>`).join("")}</div>` : ""}
       ${pearls.length ? `<h4 class="pf-h">Divine pearls</h4>${pearls.map(pearlCard).join("").replace(/ reveal/g, "")}` : ""}
-      <h4 class="pf-h">Stories</h4><div class="l-rel">${PROFILE.stories[i].map(sid => `<a href="#story/${sid}">📜 ${esc(storyById[sid].title)}</a>`).join("")}</div>
+      <h4 class="pf-h">Stories</h4><div class="l-rel">${PROFILE.stories[i].map(sid => `<a href="#story/${sid}">${esc(storyById[sid].title)}</a>`).join("")}</div>
       ${wr && i > 0 ? `<h4 class="pf-h">Who wronged ${i === 1 ? "her" : "him"}</h4><p class="wr-p">${esc(wr.by)}</p>` : ""}
       ${L ? `<a class="btn btn-gold" href="#lesson/${lid}" style="margin-top:1rem">Take the lesson & quiz →</a>` : ""}
       <nav class="r-nav">
@@ -907,8 +909,8 @@
      APP SHELL: tabs, screens, back
      =========================================================== */
   const TAB_TITLES = { home: "Home", prayer: "Prayer", quran: "The Holy Qur'an", duas: "Duas & Ziyarat", learn: "Learn" };
-  const SUB_TITLES = { proofs: "The Proofs", timeline: "Timeline", stories: "Stories", battles: "Battles of Imam Ali", haq: "Fatima's Haq", karbala: "Karbala", abbas: "Moula Abbas", rulers: "The Caliphs", wronged: "Who Wronged Them", masumin: "The 14 Ma'sumin", lessons: "Lessons of the Fourteen", pearls: "Divine Pearls", companions: "Companions", dates: "Key Dates", reading: "Books", calendar: "Shia Calendar", settings: "Settings" };
-  const PARENT = { calendar: "home", settings: "home" };
+  const SUB_TITLES = { proofs: "The Proofs", timeline: "Timeline", stories: "Stories", battles: "Battles of Imam Ali", haq: "Fatima's Haq", karbala: "Karbala", abbas: "Moula Abbas", rulers: "The Caliphs", wronged: "Who Wronged Them", masumin: "The 14 Ma'sumin", lessons: "Lessons of the Fourteen", pearls: "Divine Pearls", companions: "Companions", dates: "Key Dates", reading: "Books", calendar: "Shia Calendar", settings: "Settings", "namaz-guide": "How to Pray" };
+  const PARENT = { calendar: "home", settings: "home", "namaz-guide": "prayer" };
   const allSections = $$("section[data-screen]");
   const footerEl = $(".footer");
   let screenHash = "", appNav = 0;
@@ -959,6 +961,7 @@
     if (tab === "quran" && !sub) loadSurahList();
     if (sub === "calendar") renderCalendar();
     if (sub === "settings") renderSettings();
+    if (sub === "namaz-guide" && window.NamazGuide) NamazGuide.render();
     if (sub === "timeline") tlProgress();
   }
 
@@ -985,6 +988,7 @@
     lamp: '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z"/>',
     books: '<path d="M4 4h4v16H4zM10 4h4v16h-4zM16 5l3.5-1 3 15-3.5 1z"/>',
     count: '<rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M9 13h2M13 13h2M9 17h2M13 17h2"/>',
+    pray: '<rect x="6" y="3" width="12" height="18" rx="1.5"/><path d="M9 21v-7a3 3 0 0 1 6 0v7M9 7h6"/>',
     heart: '<path d="M12 21s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6-8 11-8 11z"/>'
   };
   const ico = k => `<svg viewBox="0 0 24 24">${IC[k]}</svg>`;
@@ -1223,7 +1227,7 @@
     } else $("#hdNext").innerHTML = `<a class="np-set" href="#/prayer">Set your location for prayer times & Qibla →</a>`;
     $("#hdTiles").innerHTML = [
       tile("#/prayer", "clock", "Prayer times", "green"), tile("#qibla", "compass", "Qibla", "green"), tile("#/quran", "book", "Qur'an"), tile("#/duas", "hands", "Duas"),
-      tile("#tasbih", "beads", "Tasbih"), tile("#rakat", "count", "Rak'at counter", "green"), tile("#/s/calendar", "cal", "Calendar"), tile("#/learn", "cap", "Learn"),
+      tile("#tasbih", "beads", "Tasbih"), tile("#rakat", "count", "Rak'at counter", "green"), tile("#/s/calendar", "cal", "Calendar"), tile("#/s/namaz-guide", "pray", "How to pray", "green"),
       tile("#/s/stories", "scroll", "Stories"), tile("#/s/karbala", "flag", "Karbala", "red"), tile("#/s/abbas", "flag", "Moula Abbas", "green"), tile("#/s/haq", "scale", "Fatima's Haq"),
       tile("#/s/masumin", "star", "14 Ma'sumin"), tile("#/s/proofs", "shield", "Proofs"), tile("#/s/pearls", "gem", "Pearls"), tile("#/s/battles", "sword", "Battles")
     ].join("");
@@ -1262,21 +1266,56 @@
     $("#qrList").innerHTML = surahs.filter(s => !q || String(s[0]) === q || (s[1] + s[3]).toLowerCase().replace(/[-' ]/g, "").includes(q)).map(s => `<li><a href="#quran/${s[0]}"><span class="qr-n">${s[0]}</span><span class="qr-t"><b>${esc(s[1])}</b><small>${esc(s[3])} · ${s[4]} ayat · ${s[5]}</small></span><span class="qr-ar">${s[2].replace("سُورَةُ ", "")}</span></a></li>`).join("") || `<li class="q-err">No sura found.</li>`;
   }
   $("#qrSearch").addEventListener("input", () => surahs && drawSurahs());
-  const qAudio = new Audio(); let qAyat = [], qPlayAll = false, qIdx = -1, qSurah = null;
+  const qAudio = new Audio(); let qAyat = [], qPlayAll = false, qIdx = -1, qSel = -1, qSurah = null, qSaveT = 0;
   const arNum = n => String(n).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
-  function stopQuran() { qAudio.pause(); qPlayAll = false; $$(".q-ayah.playing").forEach(e => e.classList.remove("playing")); const b = $("#qPlay"); if (b) { b.textContent = "▶ Play all"; b.classList.remove("on"); } }
+  const PLAY_I = '<svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg>', PAUSE_I = '<svg viewBox="0 0 24 24"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>';
+  const qPos = () => { const p = $("#qpPos"); if (p) p.textContent = `${Math.max(qIdx, qSel, 0) + 1} / ${qAyat.length || 1}`; };
+  function qMark(i, cls) { $$(".q-ay." + cls).forEach(e => e.classList.remove(cls)); const el = i >= 0 && $(`.q-ay[data-i="${i}"]`); if (el) el.classList.add(cls); return el; }
+  function qBtn(playing) { const b = $("#qpPlay"); if (!b) return; b.innerHTML = playing ? PAUSE_I : PLAY_I; b.classList.toggle("on", playing); b.setAttribute("aria-label", playing ? "Pause" : "Play"); }
+  function stopQuran() { qAudio.pause(); qPlayAll = false; qMark(-1, "playing"); qBtn(false); }
   function playAyah(i) {
     if (!qAyat[i] || !qAyat[i].audio) { stopQuran(); return; }
-    qIdx = i; $$(".q-ayah.playing").forEach(e => e.classList.remove("playing"));
-    const el = $(`.q-ayah[data-i="${i}"]`); if (el) { el.classList.add("playing"); el.scrollIntoView({ block: "center", behavior: "smooth" }); }
-    qAudio.src = qAyat[i].audio; qAudio.play().catch(() => toast("Tap play again to start audio"));
+    qIdx = i; qSel = i; qPos(); qMark(-1, "sel");
+    const el = qMark(i, "playing"); if (el) el.scrollIntoView({ block: "center", behavior: "smooth" });
+    qAudio.src = qAyat[i].audio; qBtn(true);
+    qAudio.play().catch(() => { qBtn(false); toast("Tap play again to start audio"); });
+    const nx = qAyat[i + 1]; if (nx && nx.audio) { const pre = new Audio(); pre.preload = "auto"; pre.src = nx.audio; }
   }
-  qAudio.addEventListener("ended", () => { if (qPlayAll && qIdx + 1 < qAyat.length) playAyah(qIdx + 1); else stopQuran(); });
+  qAudio.addEventListener("ended", () => { if (qPlayAll && qIdx + 1 < qAyat.length) playAyah(qIdx + 1); else { qPlayAll = false; qBtn(false); qMark(-1, "playing"); } });
+  qAudio.addEventListener("pause", () => qBtn(false));
+  qAudio.addEventListener("play", () => qBtn(true));
+  function qCloseSheet() { $("#qSheet").hidden = true; qMark(-1, "sel"); }
+  function qOpenSheet(i) {
+    qSel = i; qPos(); qMark(i, "sel");
+    $("#qsTitle").textContent = `${qSurah.name} · ayah ${qAyat[i].num}`;
+    $("#qSheet").hidden = false;
+  }
+  $("#qsClose").onclick = qCloseSheet;
+  $("#qsPlay").onclick = () => { const i = qSel; qCloseSheet(); qPlayAll = true; playAyah(i); };
+  $("#qsCopy").onclick = () => { const x = qAyat[qSel]; if (!x) return; const t = `${x.ar}\n(Qur'an ${qSurah.n}:${x.num})`; (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => toast("Copied"), () => toast("Could not copy")); qCloseSheet(); };
+  $("#qsShare").onclick = () => { const x = qAyat[qSel]; if (!x) return; shareText(`${qSurah.name} ${qSurah.n}:${x.num}`, `${x.ar}\n(Qur'an ${qSurah.n}:${x.num})`); qCloseSheet(); };
+  $("#qpPlay").onclick = () => {
+    if (!qAyat.length) return;
+    if (!qAudio.paused) { qAudio.pause(); return; }
+    qCloseSheet(); qPlayAll = true;
+    if (qIdx >= 0 && qAudio.src && qAudio.currentTime > 0 && !qAudio.ended && qIdx === Math.max(qSel, 0)) { qAudio.play().catch(() => {}); qMark(qIdx, "playing"); }
+    else playAyah(qSel >= 0 ? qSel : 0);
+  };
+  $("#qpPrev").onclick = () => { const i = Math.max(0, Math.max(qIdx, qSel, 0) - 1); qCloseSheet(); if (!qAudio.paused) playAyah(i); else { qSel = i; qIdx = -1; qPos(); const el = qMark(i, "sel"); if (el) el.scrollIntoView({ block: "center", behavior: "smooth" }); } };
+  $("#qpNext").onclick = () => { const i = Math.min(qAyat.length - 1, Math.max(qIdx, qSel, 0) + 1); qCloseSheet(); if (!qAudio.paused) playAyah(i); else { qSel = i; qIdx = -1; qPos(); const el = qMark(i, "sel"); if (el) el.scrollIntoView({ block: "center", behavior: "smooth" }); } };
+  const AR_STEPS = [90, 100, 115, 130, 150];
+  $("#qpSize").onclick = () => { const cur = store.get("abp-ar", 100); const i = AR_STEPS.findIndex(v => v >= cur); const nx = AR_STEPS[(i + 1) % AR_STEPS.length]; store.set("abp-ar", nx); applyArScale(); toast(`Arabic size ${nx}%`); };
+  function qSetView(v) {
+    store.set("abp-qview", v);
+    const page = $("#rLessonView .q-page"); if (page) page.classList.toggle("verse", v === "verse");
+    $$("#rLessonView .q-seg button").forEach(b => b.classList.toggle("on", b.dataset.v === v));
+  }
   async function openSurah(ref) {
     const [n, a] = ref.split(":").map(Number);
     if (!n || n < 1 || n > 114) return;
     if (!reader.classList.contains("open")) lastFocus = document.activeElement;
-    currentId = null; setMode("lesson"); stopQuran();
+    currentId = null; setMode("lesson"); stopQuran(); qAyat = []; qIdx = -1; qSel = -1;
+    reader.classList.add("is-quran"); $("#qSheet").hidden = true;
     reader.style.setProperty("--c", "#1d6b4f");
     const meta = surahs && surahs.find(s => s[0] === n);
     $("#rEra").textContent = "Sura " + n;
@@ -1286,32 +1325,46 @@
     const img = $("#rHeroImg"); img.style.backgroundImage = ""; img.classList.add("ph-fallback"); $("#rCredit").textContent = "";
     $("#rBack").hidden = false; $("#rBack").href = "#/quran"; $("#rBack").textContent = "← All suras";
     $("#rLessonView").innerHTML = `<p class="q-err">Loading sura…</p>`;
+    $("#qPlayer").hidden = true;
     showReader(meta ? meta[1] : "Qur'an");
-    const tr = store.get("abp-tr", "en.qarai");
     let data = null;
-    for (const t of [tr, "en.sahih"]) {
-      try { const r = await fetch(`${QAPI}/surah/${n}/editions/quran-uthmani,${t},ar.alafasy`); const j = await r.json(); if (j.code === 200 && j.data && j.data.length === 3) { data = { ar: j.data[0], tr: j.data[1], au: j.data[2], trId: t }; break; } } catch { /* try next */ }
-    }
+    try { const r = await fetch(`${QAPI}/surah/${n}/editions/quran-uthmani,ar.alafasy`); const j = await r.json(); if (j.code === 200 && j.data && j.data.length === 2) data = { ar: j.data[0], au: j.data[1] }; } catch { /* offline */ }
     if (!data) { $("#rLessonView").innerHTML = `<p class="q-err">Could not load this sura. Check your internet connection and try again.</p>`; return; }
-    const urdu = data.trId.startsWith("ur");
     qSurah = { n, name: data.ar.englishName };
-    qAyat = data.ar.ayahs.map((x, i) => ({ ar: x.text, tr: data.tr.ayahs[i] && data.tr.ayahs[i].text, audio: data.au.ayahs[i] && data.au.ayahs[i].audio, num: x.numberInSurah }));
+    qAyat = data.ar.ayahs.map((x, i) => ({ ar: x.text, audio: data.au.ayahs[i] && data.au.ayahs[i].audio, num: x.numberInSurah }));
     if (n !== 1 && n !== 9 && qAyat[0]) { const w = qAyat[0].ar.split(" "); if (w[0] && w[0].startsWith("بِسْمِ") && w.length > 4) qAyat[0].ar = w.slice(4).join(" "); }
-    $("#rLessonView").innerHTML = `<div class="q-bar"><button id="qPlay">▶ Play all</button><button id="qStop">■ Stop</button><button id="qShare">Share</button></div>
-      ${n !== 1 && n !== 9 ? `<p class="q-bism" dir="rtl" lang="ar">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيمِ</p>` : ""}
-      ${qAyat.map((x, i) => `<div class="q-ayah" data-i="${i}" id="qa-${x.num}"><p class="q-ar" lang="ar">${x.ar} <span class="q-num">${arNum(x.num)}</span></p>${x.tr ? `<p class="q-tr ${urdu ? "ur" : ""}">${urdu ? "" : `<b style="color:var(--gold)">${x.num}.</b> `}${esc(x.tr)}</p>` : ""}<div class="q-act"><button data-p="${i}">▶ Play</button><button data-c="${i}">Copy</button></div></div>`).join("")}
-      <p class="note-small" style="margin-top:1rem">Text and audio (Mishary Alafasy) from alquran.cloud. Translation: ${esc(data.tr.englishName || data.trId)}.</p>`;
-    $("#qPlay").onclick = () => { qPlayAll = true; $("#qPlay").textContent = "▶ Playing…"; $("#qPlay").classList.add("on"); playAyah(qIdx >= 0 && qIdx < qAyat.length - 1 ? qIdx : 0); };
-    $("#qStop").onclick = stopQuran;
-    $("#qShare").onclick = () => shareText(data.ar.englishName, `Sura ${data.ar.englishName} (${n})`);
-    $$("#rLessonView [data-p]").forEach(b => b.onclick = () => { qPlayAll = false; playAyah(+b.dataset.p); });
-    $$("#rLessonView [data-c]").forEach(b => b.onclick = () => { const x = qAyat[+b.dataset.c]; const t = `${x.ar}\n\n${x.tr || ""}\n(Qur'an ${n}:${x.num})`; (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => toast("Copied ✓"), () => {}); });
+    const view = store.get("abp-qview", "page");
+    $("#rLessonView").innerHTML = `<div class="q-top">
+        <div class="q-seg" role="group" aria-label="View"><button data-v="page">Page</button><button data-v="verse">Verse by verse</button></div>
+      </div>
+      <div class="q-frame">
+        <div class="q-band"><span>${data.ar.name}</span></div>
+        ${n !== 1 && n !== 9 ? `<p class="q-bism" dir="rtl" lang="ar">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>` : ""}
+        <div class="q-page ${view === "verse" ? "verse" : ""}" dir="rtl" lang="ar">${qAyat.map((x, i) => `<span class="q-ay" data-i="${i}" id="qa-${x.num}" role="button" tabindex="0">${x.ar}<span class="q-num" aria-label="ayah ${x.num}">${arNum(x.num)}</span></span>`).join(" ")}</div>
+      </div>
+      <p class="q-hint">Tap any ayah to play, copy or share it.</p>
+      <p class="note-small q-src">Uthmani text and recitation (Mishary Alafasy) from alquran.cloud.</p>`;
+    qSetView(view);
+    $$("#rLessonView .q-seg button").forEach(b => b.onclick = () => qSetView(b.dataset.v));
+    $$("#rLessonView .q-ay").forEach(el => {
+      const go = () => qOpenSheet(+el.dataset.i);
+      el.addEventListener("click", go);
+      el.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+    });
+    $("#qPlayer").hidden = false; qPos(); qBtn(false);
     setLast(`#quran/${n}`, "Qur'an", data.ar.englishName);
     const save = num => store.set("abp-qlast", { n, a: num, name: data.ar.englishName });
     save(a || 1);
-    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) save(+e.target.id.slice(3)); }), { root: rScroll, threshold: .6 });
-    $$("#rLessonView .q-ayah").forEach(e => io.observe(e));
-    if (a) setTimeout(() => { const el = $("#qa-" + a); if (el) { el.scrollIntoView({ block: "start" }); el.classList.add("playing"); setTimeout(() => el.classList.remove("playing"), 2500); } }, 80);
+    const onScroll = () => {
+      if (!reader.classList.contains("is-quran") || !qSurah || qSurah.n !== n) { rScroll.removeEventListener("scroll", onScroll); return; }
+      clearTimeout(qSaveT); qSaveT = setTimeout(() => {
+        const top = rScroll.getBoundingClientRect().top + 80;
+        const first = $$("#rLessonView .q-ay").find(e => e.getBoundingClientRect().bottom > top);
+        if (first) save(+first.id.slice(3));
+      }, 250);
+    };
+    rScroll.addEventListener("scroll", onScroll, { passive: true });
+    if (a) setTimeout(() => { const el = $("#qa-" + a); if (el) { el.scrollIntoView({ block: "center" }); qSel = a - 1; qPos(); el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 2600); } }, 80);
   }
 
   /* ===========================================================
@@ -1324,7 +1377,6 @@
     $("#setLocNow").textContent = loc ? "Current: " + loc.name : "No location set yet.";
     $("#setCity").innerHTML = `<option value="">Choose…</option>` + CITIES.map((c, i) => `<option value="${i}" ${loc && loc.name === c[0] ? "selected" : ""}>${c[0]}</option>`).join("");
     $("#setAr").value = store.get("abp-ar", 100); $("#setArVal").textContent = store.get("abp-ar", 100) + "%";
-    $("#setTr").value = store.get("abp-tr", "en.qarai");
     $("#setTheme").value = root.dataset.theme;
     $("#setHijri").value = String(hijriAdj());
     const h = hijri(new Date()); $("#setHijriNow").textContent = h ? `Today: ${h.d} ${HM[h.m - 1]} ${h.y} AH` : "";
@@ -1333,7 +1385,6 @@
   $("#setGeo").addEventListener("click", useGeo);
   $("#setCity").addEventListener("change", e => { const c = CITIES[+e.target.value]; if (c) { setLoc({ name: c[0], lat: c[1], lng: c[2], tz: c[3] }); toast(c[0] + " set ✓"); } });
   $("#setAr").addEventListener("input", e => { store.set("abp-ar", +e.target.value); $("#setArVal").textContent = e.target.value + "%"; applyArScale(); });
-  $("#setTr").addEventListener("change", e => { store.set("abp-tr", e.target.value); toast("Translation saved ✓"); });
   $("#setTheme").addEventListener("change", e => { root.dataset.theme = e.target.value; store.set("abp-theme", e.target.value); });
   $("#setHijri").addEventListener("change", e => { store.set("abp-hadj", +e.target.value); renderSettings(); toast("Hijri date adjusted ✓"); });
   $("#setNotify").addEventListener("change", async e => {
