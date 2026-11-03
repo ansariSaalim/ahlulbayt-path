@@ -1,0 +1,9 @@
+{
+  "appId": "io.github.ansarisaalim.ahlulbayt",
+  "appName": "Ahl al-Bayt",
+  "webDir": "www",
+  "android": { "backgroundColor": "#0b1411" },
+  "plugins": {
+    "LocalNotifications": { "smallIcon": "ic_stat_notify", "iconColor": "#d4af6a" }
+  }
+}

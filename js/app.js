@@ -826,7 +826,12 @@
     observeReveals($("#abbas"));
   }
 
-  /* ---------- Download the App (PWA) ---------- */
+  /* ---------- Download the App (Android APK + PWA) ---------- */
+  const APK_URL = "https://github.com/ansariSaalim/ahlulbayt-path/releases/download/android-latest/ahlulbayt-path.apk";
+  const CAP = window.Capacitor;
+  const NATIVE = !!(CAP && (typeof CAP.isNativePlatform === "function" ? CAP.isNativePlatform() : (CAP.getPlatform && CAP.getPlatform() !== "web")));
+  if (NATIVE) document.documentElement.classList.add("is-app", "app-installed");
+  const LN = NATIVE ? ((CAP.Plugins && CAP.Plugins.LocalNotifications) || (CAP.registerPlugin ? CAP.registerPlugin("LocalNotifications") : null)) : null;
   let installEvt = null;
   const standalone = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
   if (standalone()) document.documentElement.classList.add("app-installed");
@@ -839,7 +844,13 @@
   const ua = navigator.userAgent;
   const isIOS = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
   const inApp = /FBAN|FBAV|Instagram|Line\/|Snapchat|WhatsApp/i.test(ua);
+  const isAndroid = /android/i.test(ua);
+  const apkSteps = `<a class="btn btn-gold am-apk" href="${APK_URL}" download>Download the Android app (APK)</a>
+    <ol class="am-steps"><li>Tap the button above. The file <b>ahlulbayt-path.apk</b> downloads (a few MB).</li><li>Open it from the notification or your <b>Downloads</b>.</li><li>If Android asks, allow <b>Install unknown apps</b> for Chrome, then go back.</li><li>Tap <b>Install</b>, then <b>Open</b>. Allow notifications and location when the app asks.</li></ol>
+    <p class="am-note">The Android app gives exact reminders for Fajr, Zuhr and Maghrib and daily du'as, even when it is closed. It is our own app, not from the Play Store, which is why Android asks you to allow it once.</p>`;
   async function install() {
+    if (NATIVE) { toast("You're already using the app ✓"); return; }
+    if (isAndroid && !inApp) return openAppModal(apkSteps + `<details class="am-more"><summary>Or install the lighter web app</summary><ol class="am-steps"><li>Tap the browser menu <span class="kb">⋮</span>.</li><li>Choose <b>Install app</b> or <b>Add to Home screen</b>.</li></ol><p class="am-note">The web app cannot remind you when it is closed.</p></details>`);
     if (standalone()) { toast("You're already using the app ✓"); return; }
     if (installEvt) {
       installEvt.prompt();
@@ -1312,8 +1323,8 @@
       ${ptOff !== 0 ? `<button class="pt-today" id="ptToday">Back to today</button>` : ""}
       <ul class="pt-list"><li class="minor imsak"><b>Imsak (Sehar)<small>stop eating</small></b><span>${fmtH(imsak)}</span></li>${PNAMES.map(([k, n, c]) => `<li class="${c === "minor" ? "minor" : c === "main" ? "main" : ""} ${nx && nx.k === k && nx.ts === t.ts[k] ? "next" : ""}"><b>${n}${c === "fadila" ? "<small>preferred time</small>" : ""}</b><span>${fmtH(t.hours[k])}</span></li>`).join("")}</ul>
       <p class="pt-foot">${nx ? `Next: <b style="color:var(--gold)">${nx.name}</b> ${countdown(nx.ts - Date.now())}. ` : ""}Ja'fari method (Fajr 16°, Maghrib 4°, Isha 14°). Imsak is ${IMSAK_MIN} minutes before Fajr: when fasting, stop eating a little before Fajr to be sure (Sayyid al-Sistani, Islamic Laws). Zuhr–Asr and Maghrib–Isha may be combined. Check against your marja's local timetable.</p>`;
-    const notifOn = store.get("abp-notify", false) && "Notification" in window && Notification.permission === "granted";
-    box.insertAdjacentHTML("beforeend", `<div class="pt-extra">${loc.auto ? `<span class="pt-chip">Following your location</span>` : `<button class="pt-chip-b" id="ptUseGeo">Use my location instead</button>`}${"Notification" in window ? (notifOn ? `<span class="pt-chip">Reminders on</span>` : `<button class="pt-chip-b" id="ptNotify">Turn on prayer reminders</button>`) : ""}</div>`);
+    const notifOn = store.get("abp-notify", false) && (LN || ("Notification" in window && Notification.permission === "granted"));
+    box.insertAdjacentHTML("beforeend", `<div class="pt-extra">${loc.auto ? `<span class="pt-chip">Following your location</span>` : `<button class="pt-chip-b" id="ptUseGeo">Use my location instead</button>`}${(LN || "Notification" in window) ? (notifOn ? `<span class="pt-chip">Reminders on</span>` : `<button class="pt-chip-b" id="ptNotify">Turn on prayer reminders</button>`) : ""}</div>`);
     if ($("#ptUseGeo")) $("#ptUseGeo").onclick = useGeo;
     if ($("#ptNotify")) $("#ptNotify").onclick = enableReminders;
     $("#ptPrev").onclick = () => { ptOff--; renderPrayer(); };
@@ -1443,6 +1454,7 @@
   /* ---------- reminders ---------- */
   let remTimers = [];
   function scheduleReminders() {
+    if (LN) { nativeSchedule(); return; }
     remTimers.forEach(clearTimeout); remTimers = [];
     const loc = getLoc();
     if (!loc || !store.get("abp-notify", false) || !("Notification" in window) || Notification.permission !== "granted") return;
@@ -1454,6 +1466,67 @@
         navigator.serviceWorker && navigator.serviceWorker.ready.then(r => r.showNotification(n + " · Ahl al-Bayt", { body, icon: "icons/icon-192.png", badge: "icons/icon-192.png", tag: "prayer-" + k })).catch(() => new Notification(n, { body }));
       }, ms));
     }); });
+  }
+
+  /* ---------- Android app: exact reminders scheduled by the phone ---------- */
+  const DAYNAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  async function nativeSchedule() {
+    if (!LN) return;
+    try {
+      const perm = await LN.checkPermissions(); if (perm.display !== "granted") return;
+      const pend = await LN.getPending();
+      if (pend && pend.notifications && pend.notifications.length) await LN.cancel({ notifications: pend.notifications.map(n => ({ id: n.id })) });
+      const loc = getLoc(), prayerOn = store.get("abp-notify", false), duasOn = store.get("abp-n-duas", true) && prayerOn, now = Date.now(), list = [];
+      const add = (id, at, title, body, route, ch) => { if (at > now + 30e3) list.push({ id, title, body, schedule: { at: new Date(at), allowWhileIdle: true }, channelId: ch, smallIcon: "ic_stat_notify", iconColor: "#d4af6a", extra: { route } }); };
+      for (let d = 0; d < 14; d++) {
+        const day = new Date(now + d * 864e5), Y = day.getFullYear(), M = day.getMonth(), D = day.getDate(), wd = day.getDay();
+        const t = loc ? dayTimes(loc, d) : null;
+        if (t && prayerOn) {
+          add(1000 + d * 10, t.ts.fajr, "Fajr · time to pray", `Fajr has begun in ${loc.name}. It lasts until sunrise.`, "#/prayer", "prayer");
+          add(1001 + d * 10, t.ts.dhuhr, "Zuhr & Asr · time to pray", `Zuhr has begun in ${loc.name}. You may pray Zuhr and then Asr.`, "#/prayer", "prayer");
+          add(1002 + d * 10, t.ts.maghrib, "Maghrib & Isha · time to pray", `Maghrib has begun in ${loc.name}. You may pray Maghrib and then Isha.`, "#/prayer", "prayer");
+        }
+        if (duasOn) {
+          const morning = t ? t.ts.fajr + 25 * 60e3 : new Date(Y, M, D, 6, 0).getTime();
+          add(2000 + d * 10, morning, "Morning du'as", `Du'a al-'Ahd and the du'a for ${DAYNAMES[wd]}. Begin your day with the Imam of our Time.`, "#lib/daily/ahd", "duas");
+          if (wd === 4) add(2001 + d * 10, t ? t.ts.maghrib + 70 * 60e3 : new Date(Y, M, D, 20, 0).getTime(), "Thursday night: Du'a Kumayl", "The night of Kumayl. Recite it after Isha, alone or with family.", "#lib/duas/kumayl", "duas");
+          if (wd === 5) add(2002 + d * 10, new Date(Y, M, D, 8, 30).getTime(), "Friday: Du'a al-Nudba", "Friday morning, the day of Imam al-Mahdi (AS). Recite Du'a al-Nudba and Surat al-Kahf.", "#lib/duas/nudba", "duas");
+          const h = hijri(day), ev = h ? SHIA_EVENTS.filter(e => e[0] === h.m && e[1] === h.d) : [];
+          if (ev.length) add(2003 + d * 10, new Date(Y, M, D, 7, 30).getTime(), ev[0][3] === "grief" ? "Today we remember" : "Today we celebrate", ev.map(e => e[2]).join(" · "), "#/s/calendar", "duas");
+        }
+      }
+      if (list.length) await LN.schedule({ notifications: list });
+    } catch (e) { console.warn("schedule", e); }
+  }
+  async function nativeEnable() {
+    if (!LN) return false;
+    try {
+      const p = await LN.requestPermissions();
+      if (p.display !== "granted") { toast("Notifications are off. Allow them for this app in your phone settings."); return false; }
+      try {
+        await LN.createChannel({ id: "prayer", name: "Prayer times", description: "Reminder at the start of each prayer time", importance: 5, visibility: 1, vibration: true });
+        await LN.createChannel({ id: "duas", name: "Daily du'as", description: "Morning du'as, Kumayl, Nudba and special days", importance: 4, visibility: 1, vibration: true });
+      } catch { /* older Android */ }
+      try {
+        if (LN.checkExactNotificationSetting) {
+          const ex = await LN.checkExactNotificationSetting();
+          if (ex && ex.exact_alarm && ex.exact_alarm !== "granted") { toast("Allow 'Alarms & reminders' so reminders come exactly on time"); await LN.changeExactNotificationSetting(); }
+        }
+      } catch { /* not needed on this Android */ }
+      store.set("abp-notify", true);
+      await nativeSchedule();
+      return true;
+    } catch (e) { toast("Could not turn on reminders"); return false; }
+  }
+  if (LN) {
+    try { LN.addListener("localNotificationActionPerformed", a => { const r = a && a.notification && a.notification.extra && a.notification.extra.route; if (r) location.hash = r; }); } catch { /* ignore */ }
+    if (store.get("abp-notify", false)) setTimeout(nativeSchedule, 1200);
+    if (!store.get("abp-firstrun", false)) setTimeout(async () => {
+      store.set("abp-firstrun", true);
+      if (!getLoc()) useGeo();
+      setTimeout(() => nativeEnable().then(ok => { if (ok) { renderPrayer(); toast("Reminders on: prayer times and daily du'as"); } }), getLoc() ? 300 : 6000);
+    }, 1500);
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && store.get("abp-notify", false)) nativeSchedule(); });
   }
 
   /* ===========================================================
@@ -1625,6 +1698,7 @@
     $("#setAr").value = store.get("abp-ar", 100); $("#setArVal").textContent = store.get("abp-ar", 100) + "%";
     $("#setTheme").value = root.dataset.theme;
     $("#setHijri").value = String(hijriAdj());
+    if ($("#setNDuas")) $("#setNDuas").checked = !!store.get("abp-n-duas", true);
     const h = hijri(new Date()); $("#setHijriNow").textContent = h ? `Today: ${h.d} ${HM[h.m - 1]} ${h.y} AH` : "";
     $("#setNotify").checked = !!store.get("abp-notify", false);
   }
@@ -1634,6 +1708,7 @@
   $("#setTheme").addEventListener("change", e => { root.dataset.theme = e.target.value; store.set("abp-theme", e.target.value); });
   $("#setHijri").addEventListener("change", e => { store.set("abp-hadj", +e.target.value); renderSettings(); toast("Hijri date adjusted ✓"); });
   async function enableReminders() {
+    if (LN) { const ok = await nativeEnable(); if (ok) { renderPrayer(); toast("Reminders on: prayer times and daily du'as"); } return ok; }
     if (!("Notification" in window)) { toast("Notifications are not supported on this browser"); return false; }
     const p = await Notification.requestPermission();
     if (p !== "granted") { toast("Notifications were blocked. Allow them in your phone's settings for this app."); return false; }
@@ -1642,7 +1717,9 @@
     if (!getLoc()) toast("Now set your location");
     return true;
   }
+  if ($("#setNDuas")) $("#setNDuas").addEventListener("change", e => { store.set("abp-n-duas", e.target.checked); if (LN) nativeSchedule(); toast(e.target.checked ? "Daily du'a reminders on" : "Daily du'a reminders off"); });
   $("#setNotify").addEventListener("change", async e => {
+    if (LN) { if (e.target.checked) { e.target.checked = await nativeEnable(); } else { store.set("abp-notify", false); nativeSchedule(); } return; }
     if (e.target.checked) {
       if (!("Notification" in window)) { toast("Notifications not supported here"); e.target.checked = false; return; }
       const p = await Notification.requestPermission();
