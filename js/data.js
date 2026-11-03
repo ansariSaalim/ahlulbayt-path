@@ -1430,7 +1430,7 @@ const HAQ_ANSWER = [
   { t: "She hid her grave", d: "Buried at night by her will. Her hidden grave still asks every Muslim: why?" }
 ];
 const FADAK_HISTORY = [
-  { who: "The Prophet ﷺ", yr: "7 AH", t: "Fadak surrenders without a battle and belongs to the Prophet alone (59:6). He gives it to Fatima." },
+  { who: "The Prophet ﷺ", yr: "7 AH", t: "After Khaybar, Fadak surrenders without a battle, so it belongs to the Prophet alone (59:6). When the verse \"Give the near relative his right\" (17:26) comes down, he gives it to Fatima." },
   { who: "Abu Bakr", yr: "11 AH", t: "Her workers are removed. Her claim, her witnesses and her inheritance are all refused." },
   { who: "Uthman", yr: "23–35 AH", t: "Gives Fadak to his cousin Marwan ibn al-Hakam." },
   { who: "Imam Ali", yr: "35–40 AH", t: "Writes to his governor: 'Of all that the sky covers, we had Fadak. Some people coveted it, and others let it go. The best judge is Allah.'" },

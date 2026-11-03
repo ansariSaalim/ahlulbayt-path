@@ -1273,3 +1273,23 @@ body.scr-sub .section-head .kicker { display: none; }
 .lf-learn li { counter-increment: lf; position: relative; padding: .6rem .8rem .6rem 2.8rem; margin-bottom: .45rem; border-radius: 12px; background: color-mix(in srgb, #2f8f6b 10%, transparent); border: 1px solid color-mix(in srgb, #2f8f6b 35%, transparent); }
 .lf-learn li::before { content: counter(lf); position: absolute; left: .8rem; top: .62rem; width: 1.4rem; height: 1.4rem; border-radius: 50%; display: grid; place-items: center; background: #2f8f6b; color: #fff; font-family: var(--sans); font-size: .72rem; font-weight: 700; }
 .lf-pane[hidden] { display: none; }
+/* bidi: keep dates and numbers in order next to Arabic signs like ﷺ */
+small, .fadak-tl b, .pw, .ps { unicode-bidi: isolate; }
+/* ---- Q&A ---- */
+#qa .search { margin: .4rem 0 1.1rem; }
+.qa-list { display: grid; gap: .6rem; }
+.qa-item { border: 1px solid var(--line); background: var(--card); border-radius: 16px; overflow: hidden; transition: border-color .25s; }
+.qa-item[open] { border-color: color-mix(in srgb, var(--gold) 55%, transparent); }
+.qa-item summary { list-style: none; cursor: pointer; display: flex; gap: .8rem; align-items: flex-start; justify-content: space-between; padding: 1rem 1.1rem; font-family: var(--display); font-size: 1.22rem; line-height: 1.3; font-weight: 600; }
+.qa-item summary::-webkit-details-marker { display: none; }
+.qa-item summary i { flex-shrink: 0; width: 26px; height: 26px; margin-top: .1rem; border-radius: 50%; border: 1.5px solid var(--gold); position: relative; transition: transform .3s; }
+.qa-item summary i::before, .qa-item summary i::after { content: ""; position: absolute; left: 50%; top: 50%; width: 10px; height: 1.6px; margin: -.8px 0 0 -5px; background: var(--gold); }
+.qa-item summary i::after { transform: rotate(90deg); transition: transform .3s; }
+.qa-item[open] summary i::after { transform: rotate(0deg); }
+.qa-a { padding: 0 1.1rem 1.1rem; font-family: var(--serif); font-size: 1.02rem; line-height: 1.7; }
+.qa-a p { margin-bottom: .8rem; }
+.qa-a ul { margin: 0 0 .9rem 1.1rem; }
+.qa-a li { margin-bottom: .55rem; }
+.qa-a b { color: var(--gold); font-weight: 600; }
+.qa-a i { color: var(--text); }
+.qa-src { font-family: var(--sans); font-size: .76rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: .6rem; margin: .4rem 0 0 !important; }

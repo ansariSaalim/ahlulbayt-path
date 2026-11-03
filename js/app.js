@@ -718,6 +718,7 @@
       <span class="hn">${i + 1}</span><span class="har" dir="rtl" lang="ar">${h.ar}</span><h4>${esc(h.t)}</h4><p>${esc(h.d)}</p>
       <a href="#story/${h.s}">Read: ${esc(storyById[h.s].title)} →</a></div>`).join("");
     $("#haqAnswer").innerHTML = HAQ_ANSWER.map((h, i) => `<div class="ha reveal" style="transition-delay:${i * 70}ms"><b>${esc(h.t)}</b><p>${esc(h.d)}</p></div>`).join("");
+    if (typeof QA !== "undefined" && $("#haqQa")) $("#haqQa").innerHTML = QA.filter(x => x.id === "ali-fight" || x.id === "fadak-back").map(x => qaItem(x, false)).join("");
     $("#fadakTl").innerHTML = FADAK_HISTORY.map(f => `<li class="reveal"><b>${esc(f.who)}</b>${f.yr ? `<small>${esc(f.yr)}</small>` : ""}<p>${esc(f.t)}${f.s ? ` <a href="#story/${f.s}" style="color:var(--gold)">Read →</a>` : ""}</p></li>`).join("");
     observeReveals($("#haq"));
   }
@@ -947,7 +948,7 @@
      APP SHELL: tabs, screens, back
      =========================================================== */
   const TAB_TITLES = { home: "Home", prayer: "Prayer", quran: "The Holy Qur'an", duas: "Duas & Ziyarat", learn: "Learn" };
-  const SUB_TITLES = { proofs: "The Proofs", timeline: "Timeline", stories: "Stories", battles: "Battles of Imam Ali", haq: "Fatima's Haq", karbala: "Karbala", abbas: "Moula Abbas", rulers: "The Caliphs", wronged: "Who Wronged Them", masumin: "The 14 Ma'sumin", lessons: "Lessons of the Fourteen", pearls: "Divine Pearls", companions: "Companions", dates: "Key Dates", reading: "Books", calendar: "Shia Calendar", settings: "Settings", "namaz-guide": "How to Pray" };
+  const SUB_TITLES = { proofs: "The Proofs", timeline: "Timeline", stories: "Stories", battles: "Battles of Imam Ali", haq: "Fatima's Haq", karbala: "Karbala", abbas: "Moula Abbas", rulers: "The Caliphs", wronged: "Who Wronged Them", masumin: "The 14 Ma'sumin", lessons: "Lessons of the Fourteen", pearls: "Divine Pearls", companions: "Companions", dates: "Key Dates", reading: "Books", calendar: "Shia Calendar", settings: "Settings", "namaz-guide": "How to Pray", qa: "Q & A" };
   const PARENT = { calendar: "home", settings: "home", "namaz-guide": "prayer" };
   const allSections = $$("section[data-screen]");
   const footerEl = $(".footer");
@@ -1000,6 +1001,7 @@
     if (sub === "calendar") renderCalendar();
     if (sub === "settings") renderSettings();
     if (sub === "namaz-guide" && window.NamazGuide) NamazGuide.render();
+    if (sub === "qa") renderQA();
     if (sub === "timeline") tlProgress();
   }
 
@@ -1027,10 +1029,27 @@
     books: '<path d="M4 4h4v16H4zM10 4h4v16h-4zM16 5l3.5-1 3 15-3.5 1z"/>',
     count: '<rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M9 13h2M13 13h2M9 17h2M13 17h2"/>',
     pray: '<rect x="6" y="3" width="12" height="18" rx="1.5"/><path d="M9 21v-7a3 3 0 0 1 6 0v7M9 7h6"/>',
+    qa: '<path d="M4 5h16v11H9l-4 4v-4H4z"/><path d="M10 9a2 2 0 1 1 2.6 1.9c-.4.2-.6.5-.6 1v.4M12 14.2v.3"/>',
     heart: '<path d="M12 21s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6-8 11-8 11z"/>'
   };
   const ico = k => `<svg viewBox="0 0 24 24">${IC[k]}</svg>`;
   const tile = (href, icon, label, cls = "") => `<a class="tile ${cls}" href="${href}"><i>${ico(icon)}</i><span>${label}</span></a>`;
+
+  /* ---------- questions & answers ---------- */
+  var qaCat = "all", qaQ = "";
+  function qaItem(x, open) { return `<details class="qa-item" id="qa-${x.id}"${open ? " open" : ""}><summary><span>${esc(x.q)}</span><i></i></summary><div class="qa-a">${x.a}<p class="qa-src">Sources: ${esc(x.src)}</p></div></details>`; }
+  function drawQA() {
+    const q = qaQ.trim().toLowerCase();
+    const list = QA.filter(x => (qaCat === "all" || x.c === qaCat) && (!q || (x.q + " " + x.a).toLowerCase().includes(q)));
+    $("#qaList").innerHTML = list.map(x => qaItem(x, false)).join("") || `<p class="q-err">No question matches. Try another word.</p>`;
+  }
+  function renderQA() {
+    if (typeof QA === "undefined") return;
+    $("#qaCats").innerHTML = `<button class="chip ${qaCat === "all" ? "on" : ""}" data-c="all">All (${QA.length})</button>` + Object.keys(QA_CATS).map(k => `<button class="chip ${qaCat === k ? "on" : ""}" data-c="${k}">${QA_CATS[k]}</button>`).join("");
+    $$("#qaCats .chip").forEach(c => c.onclick = () => { qaCat = c.dataset.c; renderQA(); });
+    drawQA();
+  }
+  if ($("#qaSearch")) $("#qaSearch").addEventListener("input", e => { qaQ = e.target.value; drawQA(); });
 
   /* ---------- share ---------- */
   function shareText(title, text) {
@@ -1283,7 +1302,7 @@
       tile("#/prayer", "clock", "Prayer times", "green"), tile("#qibla", "compass", "Qibla", "green"), tile("#/quran", "book", "Qur'an"), tile("#/duas", "hands", "Duas"),
       tile("#tasbih", "beads", "Tasbih"), tile("#rakat", "count", "Rak'at counter", "green"), tile("#/s/calendar", "cal", "Calendar"), tile("#/s/namaz-guide", "pray", "How to pray", "green"),
       tile("#/s/stories", "scroll", "Stories"), tile("#/s/karbala", "flag", "Karbala", "red"), tile("#/s/abbas", "flag", "Moula Abbas", "green"), tile("#/s/haq", "scale", "Fatima's Haq"),
-      tile("#/s/masumin", "star", "14 Ma'sumin"), tile("#/s/proofs", "shield", "Proofs"), tile("#/s/pearls", "gem", "Pearls"), tile("#/s/battles", "sword", "Battles")
+      tile("#/s/masumin", "star", "14 Ma'sumin"), tile("#/s/qa", "qa", "Q&A", "green"), tile("#/s/pearls", "gem", "Pearls"), tile("#/s/battles", "sword", "Battles")
     ].join("");
     const last = store.get("abp-last", null);
     $("#hdContinue").innerHTML = last ? `<a class="cont" href="${last.h}"><div><small>Continue · ${esc(last.k)}</small><b>${esc(last.t)}</b></div><span class="ca">›</span></a>` : "";
@@ -1296,7 +1315,8 @@
       tile("#/s/stories", "scroll", "Stories"), tile("#/s/timeline", "line", "Timeline"), tile("#/s/proofs", "shield", "Proofs"), tile("#/s/battles", "sword", "Battles"),
       tile("#/s/haq", "scale", "Fatima's Haq"), tile("#/s/karbala", "flag", "Karbala", "red"), tile("#/s/abbas", "flag", "Moula Abbas", "green"), tile("#/s/masumin", "star", "14 Ma'sumin"),
       tile("#/s/lessons", "lamp", "Lessons"), tile("#/s/pearls", "gem", "Pearls"), tile("#/s/rulers", "crown", "Caliphs"), tile("#/s/wronged", "alert", "Who wronged", "red"),
-      tile("#/s/companions", "users", "Companions"), tile("#/s/dates", "cal", "Key dates"), tile("#/s/calendar", "cal", "Calendar"), tile("#/s/reading", "books", "Books")
+      tile("#/s/companions", "users", "Companions"), tile("#/s/dates", "cal", "Key dates"), tile("#/s/calendar", "cal", "Calendar"), tile("#/s/reading", "books", "Books"),
+      tile("#/s/qa", "qa", "Q&A", "green"), tile("#/s/namaz-guide", "pray", "How to pray", "green"), tile("#/quran", "book", "Qur'an"), tile("#/duas", "hands", "Duas")
     ].join("");
   }
 

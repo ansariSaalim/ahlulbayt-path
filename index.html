@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Amiri+Quran&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=18" />
+<link rel="stylesheet" href="css/style.css?v=19" />
 </head>
 <body>
 
@@ -246,6 +246,20 @@
   </div>
 </section>
 
+<!-- ============ Q & A ============ -->
+<section data-screen="sub" class="section qa" id="qa">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Questions & answers</p>
+      <h2>What people ask the Shia</h2>
+      <p>The questions you will hear in debates, with clear answers from the Qur'an, the Ahl al-Bayt and the Shia books. Tap a question to open it.</p>
+    </div>
+    <div class="chips" id="qaCats"></div>
+    <label class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="qaSearch" type="search" placeholder="Search: Fadak, turbah, mut'a, Mahdi…" /></label>
+    <div class="qa-list" id="qaList"></div>
+  </div>
+</section>
+
 <!-- ============ NAMAZ GUIDE ============ -->
 <section class="section namaz-guide" id="namaz-guide" data-screen="sub">
   <div class="wrap">
@@ -430,6 +444,9 @@
     <div class="haq-answer" id="haqAnswer"></div>
     <h3 class="sub-h reveal">Fadak through the centuries</h3>
     <ol class="fadak-tl" id="fadakTl"></ol>
+    <h3 class="sub-h reveal">Questions people ask</h3>
+    <div class="qa-list" id="haqQa"></div>
+    <p style="text-align:center;margin-top:1rem"><a class="btn btn-gold" href="#/s/qa">All questions & answers →</a></p>
   </div>
 </section>
 
@@ -720,12 +737,13 @@
   </div>
 </div>
 
-<script src="js/data.js?v=18"></script>
-<script src="js/course.js?v=18"></script>
-<script src="js/pearls-nahj.js?v=18"></script>
-<script src="js/lives.js?v=18"></script>
-<script src="js/namaz.js?v=18"></script>
+<script src="js/data.js?v=19"></script>
+<script src="js/course.js?v=19"></script>
+<script src="js/pearls-nahj.js?v=19"></script>
+<script src="js/lives.js?v=19"></script>
+<script src="js/qa.js?v=19"></script>
+<script src="js/namaz.js?v=19"></script>
 <script>if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));</script>
-<script src="js/app.js?v=18"></script>
+<script src="js/app.js?v=19"></script>
 </body>
 </html>
