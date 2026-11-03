@@ -747,17 +747,43 @@
     $("#pearlFeature").innerHTML = `<p class="pf-label">Pearl of the day</p><blockquote>“${esc(p.q)}”</blockquote><cite>${esc(p.who)} · ${esc(p.src)}</cite><br><button id="pearlNext">Another pearl ↻</button>`;
     $("#pearlNext").onclick = () => { pearlIdx = (pearlIdx + 1) % PEARLS.length; showPearl(); };
   }
-  let pearlWho = "all";
-  const pearlCard = p => `<div class="pg reveal"><q>${esc(p.q)}</q><div class="pw">${esc(p.who)}</div><div class="ps">${esc(p.src)}</div></div>`;
+  const PCATS = { k: "Knowledge & Wisdom", i: "Faith & Worship", c: "Character", s: "Speech", f: "People & Friendship", p: "Patience & Trials", w: "This World & the Next", m: "Wealth & Giving", j: "Justice & Leadership" };
+  (function mergePearls() {
+    const base = "fiiiikcffificfksckkpskcwkwkpcifpffikikiccifkkckiikikiwciifiiiip";
+    PEARLS.forEach((p, i) => { if (!p.cat) p.cat = base[i] || "i"; });
+    if (typeof NAHJ_PEARLS === "undefined") return;
+    const extra = NAHJ_PEARLS.map(([n, c, ar, en]) => ({ who: "Imam Ali", q: en, ar, src: `Nahj al-Balagha, saying ${n}`, cat: c, nb: true }));
+    let at = -1; PEARLS.forEach((p, i) => { if (p.who === "Imam Ali") at = i; });
+    PEARLS.splice(at + 1, 0, ...extra);
+  })();
+  let pearlWho = "all", pearlCat = "all", pearlQ = "", pearlShown = 24;
+  const pearlCard = p => `<div class="pg reveal">${p.ar ? `<p class="pg-ar" dir="rtl" lang="ar">${esc(p.ar)}</p>` : ""}<q>${esc(p.q)}</q><div class="pw">${esc(p.who)}</div><div class="ps">${esc(p.src)}</div></div>`;
+  function pearlList() {
+    const q = pearlQ.trim().toLowerCase();
+    return PEARLS.filter(p => (pearlWho === "all" || p.who === pearlWho) && (pearlCat === "all" || p.cat === pearlCat) && (!q || (p.q + " " + p.src + " " + p.who).toLowerCase().includes(q) || (p.ar && p.ar.includes(pearlQ.trim()))));
+  }
+  function drawPearlGrid() {
+    const list = pearlList();
+    $("#pearlGrid").innerHTML = list.slice(0, pearlShown).map(pearlCard).join("") || `<p class="q-err">No pearls match. Try another word or topic.</p>`;
+    const left = list.length - pearlShown;
+    $("#pearlMore").innerHTML = left > 0 ? `<button class="pm-btn" id="pearlMoreBtn">Show more · ${left} left</button>` : (list.length ? `<p class="note-small">${list.length} pearl${list.length === 1 ? "" : "s"} shown</p>` : "");
+    const mb = $("#pearlMoreBtn"); if (mb) mb.onclick = () => { pearlShown += 36; drawPearlGrid(); };
+    observeReveals($("#pearlGrid"));
+  }
   function renderPearls() {
     showPearl();
     $("#pearlCount").textContent = PEARLS.length;
     const whos = [...new Set(PEARLS.map(p => p.who))];
-    $("#pearlChips").innerHTML = `<button class="chip ${pearlWho === "all" ? "on" : ""}" data-w="all">All (${PEARLS.length})</button>` + whos.map(w => `<button class="chip ${pearlWho === w ? "on" : ""}" data-w="${esc(w)}">${esc(w.replace("Imam ", ""))}</button>`).join("");
-    $$("#pearlChips .chip").forEach(c => c.addEventListener("click", () => { pearlWho = c.dataset.w; renderPearls(); }));
-    $("#pearlGrid").innerHTML = PEARLS.filter(p => pearlWho === "all" || p.who === pearlWho).map(pearlCard).join("");
-    observeReveals($("#pearlGrid"));
+    const cnt = w => PEARLS.filter(p => p.who === w).length;
+    $("#pearlChips").innerHTML = `<button class="chip ${pearlWho === "all" ? "on" : ""}" data-w="all">All (${PEARLS.length})</button>` + whos.map(w => `<button class="chip ${pearlWho === w ? "on" : ""}" data-w="${esc(w)}">${esc(w.replace("Imam ", ""))} · ${cnt(w)}</button>`).join("");
+    $$("#pearlChips .chip").forEach(c => c.addEventListener("click", () => { pearlWho = c.dataset.w; pearlCat = "all"; pearlShown = 24; renderPearls(); }));
+    const pool = PEARLS.filter(p => pearlWho === "all" || p.who === pearlWho);
+    const cats = Object.keys(PCATS).filter(k => pool.some(p => p.cat === k));
+    $("#pearlCats").innerHTML = `<button class="chip ${pearlCat === "all" ? "on" : ""}" data-c="all">Every topic</button>` + cats.map(k => `<button class="chip ${pearlCat === k ? "on" : ""}" data-c="${k}">${PCATS[k]} · ${pool.filter(p => p.cat === k).length}</button>`).join("");
+    $$("#pearlCats .chip").forEach(c => c.addEventListener("click", () => { pearlCat = c.dataset.c; pearlShown = 24; $$("#pearlCats .chip").forEach(x => x.classList.toggle("on", x === c)); drawPearlGrid(); }));
+    drawPearlGrid();
   }
+  $("#pearlSearch").addEventListener("input", e => { pearlQ = e.target.value; pearlShown = 24; drawPearlGrid(); });
   function killersHTML() {
     return `<div class="kl-grid">${KILLERS.map(k => `<div class="kl reveal"><h4>${esc(k.n)}</h4>${k.ln ? `<span class="ln-tag" dir="rtl" lang="ar">لَعْنَةُ اللّٰهِ عَلَيْهِ</span>` : ""}<p>${esc(k.d)}</p><p class="kf"><b>Their end</b>${esc(k.f)}</p></div>`).join("")}</div>`;
   }
@@ -875,7 +901,7 @@
     paint(img, IMAM_IMAGES[m.name], $("#rCredit"), SZ.big);
     $("#rBack").hidden = false; $("#rBack").href = "#masumin"; $("#rBack").textContent = "← The Fourteen Ma'sumin";
     const lid = PROFILE.lessons[i], L = lid && LESSONS_LIB[lid], LS = LESSONS[m.name];
-    const pearls = PEARLS.filter(p => p.who === PROFILE.pearlWho[i]);
+    const pearls = PEARLS.filter(p => p.who === PROFILE.pearlWho[i] && !p.nb);
     const wr = WRONGED.find(w => w.who.endsWith(m.name.split(" ").slice(-1)[0]) || w.who.includes(m.name.replace("Muhammad ", "")));
     const prev = MASUMIN[i - 1], next = MASUMIN[i + 1];
     $("#rLessonView").innerHTML = `

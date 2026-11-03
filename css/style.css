@@ -1248,3 +1248,9 @@ body.scr-sub .section-head .kicker { display: none; }
 .ng-check li:last-child { border-bottom: 0; }
 .ng-check li::before { content: ""; position: absolute; left: 0; top: .72rem; width: 1.15rem; height: 1.15rem; border-radius: 6px; border: 1.5px solid var(--gold); }
 .ng-check a { color: var(--gold); font-size: .85rem; margin-left: .3rem; }
+.pg-ar { font-family: var(--arabic); font-size: calc(1.2rem * var(--ar, 1)); line-height: 1.95; color: var(--gold); text-align: right; margin-bottom: .45rem; }
+.pearl-cats { margin-top: -.3rem; }
+.pearl-cats .chip { font-size: .74rem; }
+#pearls .search { margin: .4rem 0 1.1rem; }
+.pearl-more { text-align: center; margin: .6rem 0 1rem; }
+.pm-btn { font-family: var(--sans); font-weight: 600; font-size: .88rem; padding: .75rem 1.4rem; border-radius: 99px; border: 1px solid var(--gold); color: var(--gold); }

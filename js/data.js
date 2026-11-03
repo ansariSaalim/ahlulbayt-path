@@ -1514,9 +1514,9 @@ const KARBALA_WOMEN = [
    DIVINE PEARLS — sayings, in order of the Fourteen
    --------------------------------------------------------- */
 const PEARLS = [
-  { who: "Prophet Muhammad ﷺ", q: "The best of you is the one who is best to his family, and I am the best of you to my family.", src: "Sunan al-Tirmidhi" },
-  { who: "Prophet Muhammad ﷺ", q: "None of you truly believes until he loves for his brother what he loves for himself.", src: "Sahih al-Bukhari; Sahih Muslim" },
-  { who: "Prophet Muhammad ﷺ", q: "Fatima is a part of me. Whoever angers her has angered me.", src: "Sahih al-Bukhari" },
+  { who: "Prophet Muhammad ﷺ", q: "The best of you is the one who is best to his family, and I am the best of you to my family.", src: "al-Saduq, Man la Yahduruhu al-Faqih" },
+  { who: "Prophet Muhammad ﷺ", q: "I am leaving among you two weighty things: the Book of Allah and my family, my Ahl al-Bayt. As long as you hold on to them both, you will never go astray after me. They will not separate until they come to me at the Pond.", src: "al-Saduq, Kamal al-Din; al-Kafi" },
+  { who: "Prophet Muhammad ﷺ", q: "Fatima is a part of me. Whoever hurts her has hurt me.", src: "al-Saduq, al-Amali; 'Ilal al-Shara'i'" },
   { who: "Lady Fatima al-Zahra", q: "Allah made faith a purification from shirk, and prayer a cure for arrogance… and He made obedience to us order for the community, and our leadership a protection from division.", src: "The Sermon of Fadak" },
   { who: "Imam Ali", q: "People are of two kinds: either your brother in religion, or your equal in creation.", src: "Nahj al-Balagha, letter 53" },
   { who: "Imam Ali", q: "The worth of every person is in what he does well.", src: "Nahj al-Balagha, saying 81" },
@@ -1712,12 +1712,12 @@ const PROFILE = {
    MORE DIVINE PEARLS, with references
    --------------------------------------------------------- */
 PEARLS.push(
-  { who: "Prophet Muhammad ﷺ", q: "I am the city of knowledge and Ali is its gate. Whoever wants the city, let him come through its gate.", src: "al-Hakim, al-Mustadrak; al-Saduq, 'Uyun Akhbar al-Rida" },
-  { who: "Prophet Muhammad ﷺ", q: "Ali is with the Qur'an and the Qur'an is with Ali. They will not separate until they come to me at the Pond.", src: "al-Hakim, al-Mustadrak; al-Tabarani, al-Mu'jam al-Awsat" },
-  { who: "Prophet Muhammad ﷺ", q: "Seeking knowledge is an obligation upon every Muslim.", src: "al-Kafi, Book of the Merit of Knowledge; Sunan Ibn Majah" },
-  { who: "Prophet Muhammad ﷺ", q: "The strong one is not the one who overpowers others, but the one who controls himself when angry.", src: "Sahih al-Bukhari; al-Kafi" },
+  { who: "Prophet Muhammad ﷺ", q: "I am the city of knowledge and Ali is its gate. Whoever wants the city, let him come through its gate.", src: "al-Saduq, 'Uyun Akhbar al-Rida; al-Amali" },
+  { who: "Prophet Muhammad ﷺ", q: "Ali is with the Qur'an and the Qur'an is with Ali. They will not separate until they come to me at the Pond.", src: "al-Tusi, al-Amali; Bihar al-Anwar" },
+  { who: "Prophet Muhammad ﷺ", q: "Seeking knowledge is an obligation upon every Muslim.", src: "al-Kafi, Book of the Merit of Knowledge" },
+  { who: "Prophet Muhammad ﷺ", q: "The strong one is not the one who overpowers others, but the one who controls himself when angry.", src: "al-Kafi" },
   { who: "Prophet Muhammad ﷺ", q: "Whoever wakes up and does not care about the affairs of the Muslims is not one of them.", src: "al-Kafi, Book of Faith and Disbelief" },
-  { who: "Prophet Muhammad ﷺ", q: "Paradise lies beneath the feet of mothers.", src: "Mustadrak al-Wasa'il; Kanz al-'Ummal" },
+  { who: "Prophet Muhammad ﷺ", q: "Paradise lies beneath the feet of mothers.", src: "al-Nuri, Mustadrak al-Wasa'il" },
   { who: "Lady Fatima al-Zahra", q: "First the neighbour, then the house.", src: "al-Saduq, 'Ilal al-Shara'i' (Imam Hasan heard her pray all night for the neighbours before her own family)" },
   { who: "Lady Fatima al-Zahra", q: "Whoever sends up his sincere worship to Allah, Allah sends down to him the best of what is good for him.", src: "Ibn Fahd al-Hilli, 'Uddat al-Da'i; Bihar al-Anwar" },
   { who: "Lady Fatima al-Zahra", q: "The best of you are the gentlest with people, and the most generous to their wives.", src: "al-Tabari al-Imami, Dala'il al-Imama" },

@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Amiri+Quran&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=15" />
+<link rel="stylesheet" href="css/style.css?v=16" />
 </head>
 <body>
 
@@ -559,11 +559,14 @@
     <div class="section-head reveal">
       <p class="kicker">Divine pearls</p>
       <h2>Words of the Fourteen</h2>
-      <p><span id="pearlCount">Sixty</span> sayings of the Prophet, Lady Fatima, the Imams and al-Abbas, in their order, each with the book it comes from. Tap a name to filter.</p>
+      <p><span id="pearlCount">Sixty</span> sayings of the Prophet, Lady Fatima, the Imams and al-Abbas, each with the Shia book it comes from. Imam Ali's sayings from Nahj al-Balagha include the Arabic. Filter by person or topic, or search.</p>
     </div>
     <div class="pearl-feature reveal" id="pearlFeature"></div>
     <div class="chips" id="pearlChips"></div>
+    <div class="chips pearl-cats" id="pearlCats"></div>
+    <label class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="pearlSearch" type="search" placeholder="Search: patience, knowledge, death, friend…" /></label>
     <div class="pearl-grid" id="pearlGrid"></div>
+    <div class="pearl-more" id="pearlMore"></div>
   </div>
 </section>
 
@@ -717,10 +720,11 @@
   </div>
 </div>
 
-<script src="js/data.js?v=15"></script>
-<script src="js/course.js?v=15"></script>
-<script src="js/namaz.js?v=15"></script>
+<script src="js/data.js?v=16"></script>
+<script src="js/course.js?v=16"></script>
+<script src="js/pearls-nahj.js?v=16"></script>
+<script src="js/namaz.js?v=16"></script>
 <script>if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));</script>
-<script src="js/app.js?v=15"></script>
+<script src="js/app.js?v=16"></script>
 </body>
 </html>
