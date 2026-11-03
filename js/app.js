@@ -489,12 +489,12 @@
           <div class="m-face m-front">
             <div class="ph" data-wiki="${IMAM_IMAGES[m.name] || ""}"></div>
             <div class="medal">${starSVG}<b>${m.n}</b></div>
-            <h3>${esc(m.name)} ${m.n === "ﷺ" ? "" : "<span style='color:#f0d28c;font-size:.75em'>(ع)</span>"}</h3>
+            <h3>${esc(m.name)} ${i === 0 ? "ﷺ" : `<span class="hon">(${i === 1 ? "SA" : "AS"})</span>`}</h3>
             <div class="t">${esc(m.title)}</div>
             <div class="hint">Tap to turn ↻</div>
           </div>
           <div class="m-face m-back">
-            <h4>${esc(m.name)}</h4>
+            <h4>${esc(m.name)} ${i === 0 ? "ﷺ" : `<span class="hon">(${i === 1 ? "SA" : "AS"})</span>`}</h4>
             <dl>
               <dt>Born</dt><dd>${esc(m.born)}</dd>
               <dt>${m.n === "12" ? "Now" : "Died"}</dt><dd>${esc(m.died)}</dd>
@@ -896,7 +896,7 @@
     reader.style.setProperty("--c", "#b9822e");
     $("#rEra").textContent = i < 2 ? (i === 0 ? "The Prophet" : "Lady of the Worlds") : "Imam " + m.n;
     $("#rArabic").textContent = "";
-    $("#rTitle").textContent = m.name + (i === 0 ? " ﷺ" : " (ع)");
+    $("#rTitle").textContent = m.name + (i === 0 ? " ﷺ" : i === 1 ? " (SA)" : " (AS)");
     $("#rMeta").textContent = m.title;
     const img = $("#rHeroImg"); img.style.backgroundImage = ""; img.classList.remove("ph-fallback"); $("#rCredit").textContent = "";
     paint(img, IMAM_IMAGES[m.name], $("#rCredit"), SZ.big);
@@ -1505,4 +1505,35 @@
   observeReveals();
   onScroll();
   route();
+
+  /* ===========================================================
+     HONORIFICS: (AS) after every Imam, (SA) after the Ladies.
+     Applied to visible text, so every screen and reader gets it.
+     =========================================================== */
+  (function honorifics() {
+    const IMAMS = ["Ali ibn Abi Talib", "Ali Zayn al-Abidin", "Ali ibn al-Husayn", "Ali ibn Musa", "Ali ibn Muhammad", "Ali al-Rida", "Ali al-Hadi", "Ali al-Naqi",
+      "Ja'far al-Sadiq", "Ja'far ibn Muhammad", "Musa al-Kazim", "Musa ibn Ja'far", "Muhammad al-Baqir", "Muhammad ibn Ali", "Muhammad al-Jawad", "Muhammad al-Taqi",
+      "Muhammad ibn al-Hasan", "Muhammad al-Mahdi", "Hasan al-Askari", "al-Hasan al-Askari", "al-Hasan ibn Ali", "al-Husayn ibn Ali", "Husayn ibn Ali",
+      "Zayn al-Abidin", "Zayn al-'Abidin", "al-Sajjad", "al-Baqir", "al-Sadiq", "al-Kazim", "al-Rida", "al-Jawad", "al-Taqi", "al-Hadi", "al-Naqi", "al-Askari", "al-Mahdi",
+      "al-Hasan", "al-Husayn", "Hasan", "Husayn", "Ali", "Mahdi", "Sadiq", "Baqir", "Rida", "Kazim"];
+    const rx = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const HAS = String.raw`(?!\s*(?:\((?:AS|A\.S\.?|SA|S\.A\.?|as|sa|ع|عليه السلام|عليها السلام)\)|\(peace|ﷺ|\(pbuh))`;
+    const R_IMAM = new RegExp(String.raw`\b(Imam )(${IMAMS.map(rx).join("|")})('s)?(?![\w'-])` + HAS, "g");
+    const R_LADY = new RegExp(String.raw`\b((?:Lady|Sayyida) (?:Fatima(?: al-Zahra)?|Zaynab|Khadija|Umm al-Banin))('s)?(?![\w'-])` + HAS, "g");
+    const R_ABBAS = new RegExp(String.raw`\b(Moula Abbas|Mawla Abbas|al-Abbas ibn Ali|Abbas ibn Ali|Abu al-Fadl al-Abbas)('s)?(?![\w'-])` + HAS, "g");
+    const fix = t => t.replace(R_IMAM, (m, a, n, ps) => `${a}${n}${ps || ""} (AS)`).replace(R_LADY, (m, n, ps) => `${n}${ps || ""} (SA)`).replace(R_ABBAS, (m, n, ps) => `${n}${ps || ""} (AS)`);
+    const SKIP = /^(SCRIPT|STYLE|TEXTAREA|INPUT|OPTION|TITLE|SVG)$/;
+    function walk(root) {
+      if (!root) return;
+      if (root.nodeType === 3) { const v = root.nodeValue; if (v && /Imam |Lady |Sayyida |Abbas/.test(v)) { const n = fix(v); if (n !== v) root.nodeValue = n; } return; }
+      if (root.nodeType !== 1 || SKIP.test(root.nodeName.toUpperCase()) || root.closest && root.closest(".no-hon")) return;
+      const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: n => (n.parentElement && (SKIP.test(n.parentElement.nodeName.toUpperCase()) || n.parentElement.closest(".no-hon"))) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
+      const list = []; while (tw.nextNode()) list.push(tw.currentNode);
+      list.forEach(walk);
+    }
+    walk(document.body);
+    new MutationObserver(ms => ms.forEach(m => { if (m.type === "characterData") walk(m.target); else m.addedNodes.forEach(walk); }))
+      .observe(document.body, { childList: true, subtree: true, characterData: true });
+    window.__honor = fix;
+  })();
 })();

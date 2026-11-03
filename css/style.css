@@ -1293,3 +1293,4 @@ small, .fadak-tl b, .pw, .ps { unicode-bidi: isolate; }
 .qa-a b { color: var(--gold); font-weight: 600; }
 .qa-a i { color: var(--text); }
 .qa-src { font-family: var(--sans); font-size: .76rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: .6rem; margin: .4rem 0 0 !important; }
+.hon { color: #f0d28c; font-size: .72em; font-weight: 600; }
