@@ -1009,17 +1009,22 @@ body.scr-sub .section-head .kicker { display: none; }
 .pt-list li.next { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 12%, var(--ink)); }
 .pt-foot { font-size: .78rem; color: var(--muted); margin-top: .7rem; }
 .qibla { text-align: center; }
-.qb-dial { width: 210px; height: 210px; margin: .4rem auto .8rem; border-radius: 50%; border: 2px solid var(--gold); position: relative; background: radial-gradient(circle, color-mix(in srgb, var(--gold) 10%, transparent), transparent 70%); }
+.qb-dial { width: 230px; height: 230px; margin: 1.2rem auto .9rem; border-radius: 50%; border: 2px solid var(--gold); position: relative; background: radial-gradient(circle, color-mix(in srgb, var(--gold) 10%, transparent), transparent 70%); }
 .qb-rose { position: absolute; inset: 0; transition: transform .25s linear; }
 .qb-rose span { position: absolute; font-weight: 700; font-size: .8rem; color: var(--muted); }
 .qn { top: 6px; left: 50%; transform: translateX(-50%); color: #e07a6a !important; }
 .qs { bottom: 6px; left: 50%; transform: translateX(-50%); }
 .qe { right: 9px; top: 50%; transform: translateY(-50%); }
 .qw { left: 9px; top: 50%; transform: translateY(-50%); }
-.qb-needle { position: absolute; left: 50%; top: 50%; width: 40px; height: 170px; margin: -85px 0 0 -20px; transition: transform .4s var(--ease); }
-.qb-needle svg { width: 40px; height: 120px; }
-.qb-needle path { fill: var(--gold); }
-.qb-needle .kaaba { fill: #111; stroke: var(--gold); stroke-width: 1.5; }
+.qb-needle { position: absolute; inset: 0; transform: rotate(var(--r, 0deg)); transition: transform .35s var(--ease); }
+.qb-line { position: absolute; left: 50%; top: 27%; bottom: 50%; width: 3px; margin-left: -1.5px; border-radius: 3px; background: linear-gradient(var(--gold), color-mix(in srgb, var(--gold) 20%, transparent)); }
+.qb-kaaba { position: absolute; top: 3%; left: 50%; width: 50px; height: 50px; margin-left: -25px; transform: rotate(calc(-1 * var(--r, 0deg))); transition: transform .35s var(--ease); filter: drop-shadow(0 4px 8px rgba(0,0,0,.5)); }
+.qb-pointer { position: absolute; top: -12px; left: 50%; margin-left: -9px; width: 0; height: 0; border-left: 9px solid transparent; border-right: 9px solid transparent; border-top: 13px solid var(--gold); }
+.qb-center { position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 4px color-mix(in srgb, var(--gold) 25%, transparent); }
+.qb-dial { transition: border-color .3s, box-shadow .3s; }
+.qb-dial.aligned { border-color: #2fbf86; box-shadow: 0 0 0 6px rgba(47,191,134,.18), 0 0 40px rgba(47,191,134,.35); }
+.qb-dial.aligned .qb-pointer { border-top-color: #2fbf86; }
+.qb-dial.aligned .qb-kaaba { transform: rotate(calc(-1 * var(--r, 0deg))) scale(1.18); }
 .qb-info { font-size: .9rem; color: var(--muted); }
 .qb-info b { color: var(--gold); }
 .qb-start { margin-top: .7rem; }

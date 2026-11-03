@@ -1140,17 +1140,19 @@
     return (Math.atan2(Math.sin(dl), Math.cos(p1) * Math.tan(p2) - Math.sin(p1) * Math.cos(dl)) / D2R + 360) % 360;
   }
   let heading = null, compassOn = false;
+  let wasAligned = false;
   function updateQibla() {
     const loc = getLoc(); if (!loc) return;
     const b = qiblaBearing(loc.lat, loc.lng);
-    const rose = $("#qbRose"), needle = $("#qbNeedle");
-    if (heading == null) { rose.style.transform = "rotate(0deg)"; needle.style.transform = `rotate(${b}deg)`; $("#qbInfo").innerHTML = `Qibla is <b>${b.toFixed(0)}°</b> from North (clockwise) at ${esc(loc.name)}.`; }
-    else {
-      rose.style.transform = `rotate(${-heading}deg)`; needle.style.transform = `rotate(${b - heading}deg)`;
-      const diff = Math.abs(((b - heading + 540) % 360) - 180);
-      $("#qbInfo").innerHTML = diff < 5 ? `<b>You are facing the Qibla</b>` : `Turn until the Ka'ba points straight up · ${diff.toFixed(0)}° away`;
-      $("#qbDial").style.borderColor = diff < 5 ? "#2fbf86" : "";
-    }
+    const rose = $("#qbRose"), needle = $("#qbNeedle"), dial = $("#qbDial");
+    if (heading == null) { rose.style.transform = "rotate(0deg)"; needle.style.setProperty("--r", b + "deg"); dial.classList.remove("aligned"); $("#qbInfo").innerHTML = `Qibla is <b>${b.toFixed(0)}°</b> from North (clockwise) at ${esc(loc.name)}.`; return; }
+    const rel = ((b - heading) % 360 + 360) % 360;
+    rose.style.transform = `rotate(${-heading}deg)`; needle.style.setProperty("--r", rel + "deg");
+    const diff = Math.abs(((rel + 180) % 360) - 180), aligned = diff < 5;
+    dial.classList.toggle("aligned", aligned);
+    $("#qbInfo").innerHTML = aligned ? `<b style="color:#2fbf86">You are facing the Qibla</b>` : `Turn ${rel < 180 ? "right" : "left"} until the Ka'ba reaches the top · ${diff.toFixed(0)}° away`;
+    if (aligned && !wasAligned && navigator.vibrate) try { navigator.vibrate([40, 60, 40]); } catch { /* ignore */ }
+    wasAligned = aligned;
   }
   function onOrient(e) {
     let hd = null;
