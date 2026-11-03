@@ -758,7 +758,7 @@
     PEARLS.splice(at + 1, 0, ...extra);
   })();
   let pearlWho = "all", pearlCat = "all", pearlQ = "", pearlShown = 24;
-  const pearlCard = p => `<div class="pg reveal">${p.ar ? `<p class="pg-ar" dir="rtl" lang="ar">${esc(p.ar)}</p>` : ""}<q>${esc(p.q)}</q><div class="pw">${esc(p.who)}</div><div class="ps">${esc(p.src)}</div></div>`;
+  const pearlCard = p => `<div class="pg reveal">${favBtn("p:" + PEARLS.indexOf(p))}${p.ar ? `<p class="pg-ar" dir="rtl" lang="ar">${esc(p.ar)}</p>` : ""}<q>${esc(p.q)}</q><div class="pw">${esc(p.who)}</div><div class="ps">${esc(p.src)}</div></div>`;
   function pearlList() {
     const q = pearlQ.trim().toLowerCase();
     return PEARLS.filter(p => (pearlWho === "all" || p.who === pearlWho) && (pearlCat === "all" || p.cat === pearlCat) && (!q || (p.q + " " + p.src + " " + p.who).toLowerCase().includes(q) || (p.ar && p.ar.includes(pearlQ.trim()))));
@@ -856,7 +856,7 @@
   /* ---------- Namaz & Dua ---------- */
   function renderDuas() {
     $("#duaList").innerHTML = DUAS.map((d, i) => `<div class="dua reveal">
-      <button class="dua-h"><span><b>${esc(d.t)}</b><small>${esc(d.when)}</small></span><i class="chev"></i></button>
+      <button class="dua-h"><span><b>${esc(d.t)}</b><small>${esc(d.when)}</small></span><i class="chev"></i></button>${favBtn("d:" + i)}
       <div class="dua-body"><div><p class="dua-ar" dir="rtl" lang="ar">${d.ar}</p><p class="dua-tr">${esc(d.tr)}</p><p class="dua-en">${esc(d.en)}</p>
       ${d.counter ? `<a href="#tasbih" class="dua-copy" style="text-decoration:none">Open the counter ↑</a>` : `<button class="dua-copy" data-i="${i}">Copy Arabic</button>`}</div></div></div>`).join("");
     $$("#duaList .dua").forEach(d => $(".dua-h", d).addEventListener("click", () => d.classList.toggle("open")));
@@ -948,8 +948,8 @@
      APP SHELL: tabs, screens, back
      =========================================================== */
   const TAB_TITLES = { home: "Home", prayer: "Prayer", quran: "The Holy Qur'an", duas: "Duas & Ziyarat", learn: "Learn" };
-  const SUB_TITLES = { proofs: "The Proofs", timeline: "Timeline", stories: "Stories", battles: "Battles of Imam Ali", haq: "Fatima's Haq", karbala: "Karbala", abbas: "Moula Abbas", rulers: "The Caliphs", wronged: "Who Wronged Them", masumin: "The 14 Ma'sumin", lessons: "Lessons of the Fourteen", pearls: "Divine Pearls", companions: "Companions", dates: "Key Dates", reading: "Books", calendar: "Shia Calendar", settings: "Settings", "namaz-guide": "How to Pray", qa: "Q & A" };
-  const PARENT = { calendar: "home", settings: "home", "namaz-guide": "prayer" };
+  const SUB_TITLES = { proofs: "The Proofs", timeline: "Timeline", stories: "Stories", battles: "Battles of Imam Ali", haq: "Fatima's Haq", karbala: "Karbala", abbas: "Moula Abbas", rulers: "The Caliphs", wronged: "Who Wronged Them", masumin: "The 14 Ma'sumin", lessons: "Lessons of the Fourteen", pearls: "Divine Pearls", companions: "Companions", dates: "Key Dates", reading: "Books", calendar: "Shia Calendar", settings: "Settings", "namaz-guide": "How to Pray", qa: "Q & A", favs: "Favourites" };
+  const PARENT = { calendar: "home", settings: "home", "namaz-guide": "prayer", favs: "home" };
   const allSections = $$("section[data-screen]");
   const footerEl = $(".footer");
   let screenHash = "", appNav = 0;
@@ -1002,6 +1002,7 @@
     if (sub === "settings") renderSettings();
     if (sub === "namaz-guide" && window.NamazGuide) NamazGuide.render();
     if (sub === "qa") renderQA();
+    if (sub === "favs") renderFavs();
     if (sub === "timeline") tlProgress();
   }
 
@@ -1035,9 +1036,34 @@
   const ico = k => `<svg viewBox="0 0 24 24">${IC[k]}</svg>`;
   const tile = (href, icon, label, cls = "") => `<a class="tile ${cls}" href="${href}"><i>${ico(icon)}</i><span>${label}</span></a>`;
 
+  /* ---------- favourites ---------- */
+  var STAR = '<svg viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.7 6.3.9-4.6 4.4 1.1 6.2L12 17l-5.6 3 1.1-6.2-4.6-4.4 6.3-.9z"/></svg>';
+  function favs() { return store.get("abp-favs", []); }
+  function favBtn(key, label) { const on = favs().includes(key); return `<button class="fav ${on ? "on" : ""} ${label ? "fav-l" : ""}" data-fav="${key}" aria-label="${on ? "Remove from" : "Add to"} favourites">${STAR}${label ? `<span>${on ? "Saved" : label}</span>` : ""}</button>`; }
+  document.addEventListener("click", e => {
+    const b = e.target.closest(".fav"); if (!b) return;
+    e.preventDefault(); e.stopPropagation();
+    const k = b.dataset.fav, f = favs(), i = f.indexOf(k), on = i < 0;
+    if (on) f.unshift(k); else f.splice(i, 1);
+    store.set("abp-favs", f);
+    $$(`.fav[data-fav="${k}"]`).forEach(x => { x.classList.toggle("on", on); const sp = $("span", x); if (sp) sp.textContent = on ? "Saved" : "Save"; });
+    toast(on ? "Added to favourites" : "Removed from favourites");
+    if (screenHash === "#/s/favs" && !on) renderFavs();
+  }, true);
+  function renderFavs() {
+    const f = favs();
+    const P = f.filter(k => k.startsWith("p:")).map(k => PEARLS[+k.slice(2)]).filter(Boolean);
+    const D = f.filter(k => k.startsWith("d:")).map(k => [+k.slice(2), DUAS[+k.slice(2)]]).filter(x => x[1]);
+    const Q = typeof QA !== "undefined" ? f.filter(k => k.startsWith("q:")).map(k => QA.find(x => x.id === k.slice(2))).filter(Boolean) : [];
+    $("#favBody").innerHTML = !f.length ? `<div class="fav-empty">${STAR}<p>Nothing saved yet.</p><p class="muted">Tap the star on any pearl, du'a or Q&A answer to keep it here.</p></div>` :
+      (D.length ? `<h3 class="sub-h">Du'as</h3>${D.map(([i, d]) => `<div class="dua open">${favBtn("d:" + i)}<div class="dua-h"><span><b>${esc(d.t)}</b><small>${esc(d.when)}</small></span></div><div class="dua-body" style="max-height:none"><div><p class="dua-ar" dir="rtl" lang="ar">${d.ar}</p><p class="dua-tr">${esc(d.tr)}</p><p class="dua-en">${esc(d.en)}</p></div></div></div>`).join("")}` : "") +
+      (P.length ? `<h3 class="sub-h">Pearls</h3><div class="pearl-grid">${P.map(pearlCard).join("").replace(/ reveal/g, "")}</div>` : "") +
+      (Q.length ? `<h3 class="sub-h">Questions & answers</h3><div class="qa-list">${Q.map(x => qaItem(x, false)).join("")}</div>` : "");
+  }
+
   /* ---------- questions & answers ---------- */
   var qaCat = "all", qaQ = "";
-  function qaItem(x, open) { return `<details class="qa-item" id="qa-${x.id}"${open ? " open" : ""}><summary><span>${esc(x.q)}</span><i></i></summary><div class="qa-a">${x.a}<p class="qa-src">Sources: ${esc(x.src)}</p></div></details>`; }
+  function qaItem(x, open) { return `<details class="qa-item" id="qa-${x.id}"${open ? " open" : ""}><summary><span>${esc(x.q)}</span><i></i></summary><div class="qa-a">${x.a}<p class="qa-src">Sources: ${esc(x.src)}</p>${favBtn("q:" + x.id, "Save")}</div></details>`; }
   function drawQA() {
     const q = qaQ.trim().toLowerCase();
     const list = QA.filter(x => (qaCat === "all" || x.c === qaCat) && (!q || (x.q + " " + x.a).toLowerCase().includes(q)));
@@ -1063,7 +1089,7 @@
      =========================================================== */
   const HM = ["Muharram", "Safar", "Rabi al-Awwal", "Rabi al-Thani", "Jumada al-Ula", "Jumada al-Thani", "Rajab", "Sha'ban", "Ramadan", "Shawwal", "Dhul Qa'da", "Dhul Hijja"];
   const HM_AR = ["مُحَرَّم", "صَفَر", "رَبِيع الأَوَّل", "رَبِيع الثَّانِي", "جُمَادَى الأُولَى", "جُمَادَى الثَّانِيَة", "رَجَب", "شَعْبَان", "رَمَضَان", "شَوَّال", "ذُو القَعْدَة", "ذُو الحِجَّة"];
-  const defaultAdj = /Kolkata|Calcutta|Karachi|Dhaka/.test(Intl.DateTimeFormat().resolvedOptions().timeZone || "") ? -1 : 0;
+  const defaultAdj = 0;
   const hijriAdj = () => +store.get("abp-hadj", defaultAdj);
   let HF = null;
   try { HF = new Intl.DateTimeFormat("en-u-ca-islamic-umalqura-nu-latn", { day: "numeric", month: "numeric", year: "numeric", timeZone: "UTC" }); if (!/islamic/.test(HF.resolvedOptions().calendar)) HF = null; } catch { HF = null; }
@@ -1081,7 +1107,7 @@
     [3, 8, "Martyrdom of Imam al-Askari", "grief", "askari"], [3, 9, "Imamate of Imam al-Mahdi begins", "joy", "mahdi-birth"], [3, 17, "Birth of the Prophet ﷺ and Imam al-Sadiq", "joy", "sadiq"],
     [4, 8, "Birth of Imam al-Askari", "joy", "askari"],
     [5, 5, "Birth of Lady Zaynab", "joy", "zaynab"], [5, 13, "Martyrdom of Lady Fatima (75-day report)", "grief", "fatima-burial"],
-    [6, 3, "Martyrdom of Lady Fatima (95-day report)", "grief", "fatima-burial"], [6, 20, "Birth of Lady Fatima al-Zahra", "joy", "marriage"],
+    [6, 3, "Martyrdom of Lady Fatima (95-day report)", "grief", "fatima-burial"], [6, 13, "Passing of Umm al-Banin, mother of al-Abbas", "grief", "abbas"], [6, 20, "Birth of Lady Fatima al-Zahra", "joy", "marriage"],
     [7, 1, "Birth of Imam al-Baqir", "joy", "baqir"], [7, 3, "Martyrdom of Imam al-Hadi", "grief", "hadi-samarra"], [7, 10, "Birth of Imam al-Jawad", "joy", "jawad"], [7, 13, "Birth of Imam Ali, in the Ka'ba", "joy", "kaaba-birth"],
     [7, 25, "Martyrdom of Imam al-Kazim", "grief", "kazim"], [7, 27, "Mab'ath: the Prophet's mission begins", "joy", "dhul-ashira"],
     [8, 3, "Birth of Imam Husayn", "joy", "husayn-prophet"], [8, 4, "Birth of al-Abbas", "joy", "abbas"], [8, 5, "Birth of Imam Zayn al-Abidin", "joy", "sajjad"], [8, 15, "Birth of Imam al-Mahdi", "joy", "mahdi-birth"],
@@ -1103,7 +1129,36 @@
   const inDays = i => i === 0 ? "Today" : i === 1 ? "Tomorrow" : `In ${i} days`;
   const gdate = d => d.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" });
   let calFilter = "all";
+  let calM = 0, calSel = null;
+  const evKind = e => /Eid/.test(e[2]) ? "eid" : e[3];
+  function drawMonth() {
+    const now = new Date(), first = new Date(now.getFullYear(), now.getMonth() + calM, 1);
+    const y = first.getFullYear(), m = first.getMonth(), days = new Date(y, m + 1, 0).getDate(), start = first.getDay();
+    const todayKey = now.toDateString();
+    const hFirst = hijri(first), hLast = hijri(new Date(y, m, days));
+    const hTitle = hFirst && hLast ? (hFirst.m === hLast.m ? `${HM[hFirst.m - 1]} ${hFirst.y}` : `${HM[hFirst.m - 1]} – ${HM[hLast.m - 1]} ${hLast.y}`) : "";
+    let cells = "";
+    for (let i = 0; i < start; i++) cells += `<span class="cm-cell empty"></span>`;
+    for (let d = 1; d <= days; d++) {
+      const dt = new Date(y, m, d), hd = hijri(dt), evs = hd ? SHIA_EVENTS.filter(e => e[0] === hd.m && e[1] === hd.d) : [];
+      const kind = evs.length ? evKind(evs[0]) : "";
+      cells += `<button class="cm-cell ${kind ? "ev-" + kind : ""} ${dt.toDateString() === todayKey ? "today" : ""} ${calSel === dt.toDateString() ? "sel" : ""}" data-d="${d}"><b>${d}</b><small>${hd ? hd.d : ""}</small></button>`;
+    }
+    $("#calMonth").innerHTML = `<div class="cm-head"><button class="pt-arr" id="cmPrev" aria-label="Previous month">‹</button><div><b>${first.toLocaleDateString(undefined, { month: "long", year: "numeric" })}</b><small>${hTitle}</small></div><button class="pt-arr" id="cmNext" aria-label="Next month">›</button></div>
+      <div class="cm-grid">${["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(w => `<span class="cm-wd">${w}</span>`).join("")}${cells}</div>
+      <div class="cm-legend"><span class="ev-grief">Martyrdom</span><span class="ev-joy">Birth / joy</span><span class="ev-eid">Eid</span><span class="ev-worship">Worship</span></div>
+      <div class="cm-day" id="cmDay"></div>`;
+    $("#cmPrev").onclick = () => { calM--; calSel = null; drawMonth(); };
+    $("#cmNext").onclick = () => { calM++; calSel = null; drawMonth(); };
+    const showDay = d => {
+      const dt = new Date(y, m, d), hd = hijri(dt), evs = hd ? SHIA_EVENTS.filter(e => e[0] === hd.m && e[1] === hd.d) : [];
+      $("#cmDay").innerHTML = `<p class="cm-dh">${dt.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" })}${hd ? ` · ${hd.d} ${HM[hd.m - 1]} ${hd.y}` : ""}</p>` + (evs.length ? evs.map(e => `<a class="cal-ev ${e[3]}" href="${e[4] ? "#story/" + e[4] : "#/s/calendar"}"><span class="ct"><b>${esc(e[2])}</b></span></a>`).join("") : `<p class="muted" style="font-size:.85rem">No special occasion on this day.</p>`);
+    };
+    $$("#calMonth .cm-cell[data-d]").forEach(c => c.onclick = () => { calSel = new Date(y, m, +c.dataset.d).toDateString(); $$("#calMonth .cm-cell.sel").forEach(x => x.classList.remove("sel")); c.classList.add("sel"); showDay(+c.dataset.d); });
+    if (calM === 0) showDay(now.getDate());
+  }
   function renderCalendar() {
+    drawMonth();
     const h = hijri(new Date());
     $("#calToday").innerHTML = h ? `<p class="ct-ar" dir="rtl" lang="ar">${h.d} ${HM_AR[h.m - 1]} ${h.y}</p><p class="ct-h">${h.d} ${HM[h.m - 1]} ${h.y} AH</p><p class="ct-g">${new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</p>` : `<p class="ct-h">Hijri calendar not supported on this browser</p>`;
     $("#calChips").innerHTML = [["all", "All"], ["joy", "Celebrations"], ["grief", "Mourning"], ["worship", "Worship"]].map(c => `<button class="chip ${calFilter === c[0] ? "on" : ""}" data-f="${c[0]}">${c[1]}</button>`).join("");
@@ -1170,16 +1225,22 @@
     return null;
   }
   const countdown = ms => { const m = Math.round(ms / 60000), h = Math.floor(m / 60); return h ? `in ${h} h ${m % 60} min` : `in ${m} min`; };
+  let ptOff = 0; const IMSAK_MIN = 15;
   function renderPrayer() {
     const loc = getLoc(), box = $("#ptTimes");
     if (!loc) {
       box.innerHTML = `<h3>Prayer times</h3><p class="muted">Set your location to see today's prayer times and the Qibla (Ja'fari method).</p><div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.8rem"><button class="btn btn-gold" id="ptGeo">Use my location</button><a class="btn btn-ghost" href="#/s/settings" style="color:var(--gold);border-color:var(--gold)">Choose a city</a></div>`;
       $("#ptGeo").onclick = useGeo; $("#qbInfo").textContent = "Set your location to find the Qibla."; return;
     }
-    const t = dayTimes(loc), nx = nextPrayer(loc), h = hijri(new Date());
-    box.innerHTML = `<div class="pt-top"><div><h3 style="margin:0">Prayer times</h3><small>${new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" })}${h ? " · " + h.d + " " + HM[h.m - 1] + " " + h.y : ""}</small></div><a class="pt-loc" href="#/s/settings">${esc(loc.name)} ›</a></div>
-      <ul class="pt-list">${PNAMES.map(([k, n, c]) => `<li class="${c === "minor" ? "minor" : c === "main" ? "main" : ""} ${nx && nx.k === k && nx.ts === t.ts[k] ? "next" : ""}"><b>${n}${c === "fadila" ? "<small>preferred time</small>" : ""}</b><span>${fmtH(t.hours[k])}</span></li>`).join("")}</ul>
-      <p class="pt-foot">${nx ? `Next: <b style="color:var(--gold)">${nx.name}</b> ${countdown(nx.ts - Date.now())}. ` : ""}Ja'fari method (Fajr 16°, Maghrib 4°, Isha 14°). Zuhr–Asr and Maghrib–Isha may be combined. Check against your marja's local timetable.</p>`;
+    const t = dayTimes(loc, ptOff), nx = ptOff === 0 ? nextPrayer(loc) : null, day = new Date(Date.now() + ptOff * 864e5), h = hijri(day);
+    const imsak = t.hours.fajr - IMSAK_MIN / 60;
+    box.innerHTML = `<div class="pt-top"><div class="pt-day"><button class="pt-arr" id="ptPrev" aria-label="Previous day">‹</button><div><h3 style="margin:0">${ptOff === 0 ? "Today" : day.toLocaleDateString(undefined, { weekday: "long" })}</h3><small>${day.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "long", year: "numeric" })}</small>${h ? `<small class="pt-hij">${h.d} ${HM[h.m - 1]} ${h.y}</small>` : ""}</div><button class="pt-arr" id="ptNext" aria-label="Next day">›</button></div><a class="pt-loc" href="#/s/settings">${esc(loc.name)} ›</a></div>
+      ${ptOff !== 0 ? `<button class="pt-today" id="ptToday">Back to today</button>` : ""}
+      <ul class="pt-list"><li class="minor imsak"><b>Imsak (Sehar)<small>stop eating</small></b><span>${fmtH(imsak)}</span></li>${PNAMES.map(([k, n, c]) => `<li class="${c === "minor" ? "minor" : c === "main" ? "main" : ""} ${nx && nx.k === k && nx.ts === t.ts[k] ? "next" : ""}"><b>${n}${c === "fadila" ? "<small>preferred time</small>" : ""}</b><span>${fmtH(t.hours[k])}</span></li>`).join("")}</ul>
+      <p class="pt-foot">${nx ? `Next: <b style="color:var(--gold)">${nx.name}</b> ${countdown(nx.ts - Date.now())}. ` : ""}Ja'fari method (Fajr 16°, Maghrib 4°, Isha 14°). Imsak is ${IMSAK_MIN} minutes before Fajr: when fasting, stop eating a little before Fajr to be sure (Sayyid al-Sistani, Islamic Laws). Zuhr–Asr and Maghrib–Isha may be combined. Check against your marja's local timetable.</p>`;
+    $("#ptPrev").onclick = () => { ptOff--; renderPrayer(); };
+    $("#ptNext").onclick = () => { ptOff++; renderPrayer(); };
+    if ($("#ptToday")) $("#ptToday").onclick = () => { ptOff = 0; renderPrayer(); };
     updateQibla();
   }
 
@@ -1245,6 +1306,19 @@
     $("#qbStart").textContent = "Compass on · hold phone flat";
     setTimeout(() => { if (heading == null) $("#qbInfo").innerHTML += "<br><small>No compass found on this device; use the degrees shown.</small>"; }, 2500);
   });
+
+  /* ---------- qaza tracker ---------- */
+  const QZ = [["fajr", "Fajr", 2], ["zuhr", "Zuhr", 4], ["asr", "Asr", 4], ["maghrib", "Maghrib", 3], ["isha", "Isha", 4], ["ayat", "Ayat", 2]];
+  function qzDraw() {
+    const q = store.get("abp-qaza", {}), tot = QZ.reduce((a, [k]) => a + (q[k] || 0), 0);
+    $("#qzList").innerHTML = QZ.map(([k, n, r]) => `<div class="qz-row"><span><b>${n}</b><small>${r} rak'at</small></span><button data-k="${k}" data-v="-1" aria-label="Prayed one ${n}">−</button><output>${q[k] || 0}</output><button data-k="${k}" data-v="1" aria-label="Add a missed ${n}">+</button></div>`).join("") + `<p class="qz-tot">${tot ? `<b>${tot}</b> prayers left to make up` : "Nothing to make up. Alhamdulillah."}</p>`;
+    $$("#qzList button").forEach(b => b.onclick = () => { const q2 = store.get("abp-qaza", {}); q2[b.dataset.k] = Math.max(0, (q2[b.dataset.k] || 0) + +b.dataset.v); store.set("abp-qaza", q2); qzDraw(); if (+b.dataset.v < 0 && navigator.vibrate) try { navigator.vibrate(25); } catch { /* ignore */ } });
+  }
+  if ($("#qzList")) {
+    qzDraw();
+    $("#qzDay").onclick = () => { const q = store.get("abp-qaza", {}); ["fajr", "zuhr", "asr", "maghrib", "isha"].forEach(k => q[k] = (q[k] || 0) + 1); store.set("abp-qaza", q); qzDraw(); toast("Added one full day (5 prayers)"); };
+    $("#qzReset").onclick = () => { if (confirm("Clear the qaza tracker?")) { store.set("abp-qaza", {}); qzDraw(); } };
+  }
 
   /* ---------- rak'at counter ---------- */
   let rkTotal = 4, rkS = 0; const rkHist = [];
@@ -1316,7 +1390,7 @@
       tile("#/s/haq", "scale", "Fatima's Haq"), tile("#/s/karbala", "flag", "Karbala", "red"), tile("#/s/abbas", "flag", "Moula Abbas", "green"), tile("#/s/masumin", "star", "14 Ma'sumin"),
       tile("#/s/lessons", "lamp", "Lessons"), tile("#/s/pearls", "gem", "Pearls"), tile("#/s/rulers", "crown", "Caliphs"), tile("#/s/wronged", "alert", "Who wronged", "red"),
       tile("#/s/companions", "users", "Companions"), tile("#/s/dates", "cal", "Key dates"), tile("#/s/calendar", "cal", "Calendar"), tile("#/s/reading", "books", "Books"),
-      tile("#/s/qa", "qa", "Q&A", "green"), tile("#/s/namaz-guide", "pray", "How to pray", "green"), tile("#/quran", "book", "Qur'an"), tile("#/duas", "hands", "Duas")
+      tile("#/s/qa", "qa", "Q&A", "green"), tile("#/s/namaz-guide", "pray", "How to pray", "green"), tile("#/s/favs", "star", "Favourites"), tile("#qaza", "count", "Qaza tracker", "green")
     ].join("");
   }
 

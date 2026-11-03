@@ -1294,3 +1294,65 @@ small, .fadak-tl b, .pw, .ps { unicode-bidi: isolate; }
 .qa-a i { color: var(--text); }
 .qa-src { font-family: var(--sans); font-size: .76rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: .6rem; margin: .4rem 0 0 !important; }
 .hon { color: #f0d28c; font-size: .72em; font-weight: 600; }
+/* ---- prayer day nav & imsak ---- */
+.pt-day { display: flex; align-items: center; gap: .5rem; }
+.pt-arr { width: 36px; height: 36px; flex-shrink: 0; border-radius: 50%; border: 1px solid var(--line); color: var(--gold); font-size: 1.4rem; line-height: 1; display: grid; place-items: center; padding-bottom: 3px; }
+.pt-arr:hover { border-color: var(--gold); }
+.pt-hij { color: var(--gold) !important; font-weight: 600; }
+.pt-today { display: block; margin: -.2rem 0 .7rem; font-family: var(--sans); font-size: .78rem; font-weight: 600; color: var(--gold); padding: .35rem .8rem; border-radius: 99px; border: 1px solid var(--gold); }
+.pt-list li.imsak span { color: var(--muted); }
+/* ---- month calendar ---- */
+.cal-month { border: 1px solid var(--line); background: var(--card); border-radius: 20px; padding: 1rem .8rem 1.1rem; margin-bottom: 1.4rem; }
+.cm-head { display: flex; align-items: center; justify-content: space-between; gap: .5rem; text-align: center; margin-bottom: .8rem; }
+.cm-head b { display: block; font-family: var(--display); font-size: 1.5rem; line-height: 1.1; }
+.cm-head small { font-family: var(--sans); font-size: .78rem; color: var(--gold); font-weight: 600; }
+.cm-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.cm-wd { text-align: center; font-family: var(--sans); font-size: .64rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding-bottom: .3rem; }
+.cm-cell { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 52px; border-radius: 12px; border: 1px solid transparent; font-family: var(--sans); color: var(--text); background: color-mix(in srgb, var(--ink) 50%, transparent); -webkit-tap-highlight-color: transparent; }
+.cm-cell.empty { background: none; }
+.cm-cell b { font-size: .98rem; font-weight: 600; line-height: 1.1; }
+.cm-cell small { font-size: .68rem; color: var(--muted); margin-top: .1rem; }
+.cm-cell.ev-grief { background: color-mix(in srgb, #d9534f 22%, transparent); }
+.cm-cell.ev-grief small, .cm-legend .ev-grief::before { color: #ff8a80; }
+.cm-cell.ev-joy { background: color-mix(in srgb, var(--gold) 22%, transparent); }
+.cm-cell.ev-joy small { color: var(--gold); }
+.cm-cell.ev-eid { background: color-mix(in srgb, #2fbf86 24%, transparent); }
+.cm-cell.ev-eid small { color: #4fd39e; }
+.cm-cell.ev-worship { background: color-mix(in srgb, #3a8fd9 22%, transparent); }
+.cm-cell.ev-worship small { color: #7cb9ee; }
+.cm-cell.today { border-color: var(--gold); box-shadow: inset 0 0 0 1px var(--gold); }
+.cm-cell.today b { color: var(--gold); }
+.cm-cell.sel { outline: 2px solid var(--text); outline-offset: -2px; }
+.cm-legend { display: flex; flex-wrap: wrap; gap: .4rem .9rem; justify-content: center; margin-top: .8rem; font-family: var(--sans); font-size: .7rem; color: var(--muted); }
+.cm-legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: .35rem; vertical-align: -1px; }
+.cm-legend .ev-grief::before { background: #d9534f; }
+.cm-legend .ev-joy::before { background: var(--gold); }
+.cm-legend .ev-eid::before { background: #2fbf86; }
+.cm-legend .ev-worship::before { background: #3a8fd9; }
+.cm-day { margin-top: .9rem; display: grid; gap: .45rem; }
+.cm-dh { font-family: var(--sans); font-size: .8rem; font-weight: 600; color: var(--gold); }
+/* ---- qaza ---- */
+.qz-row { display: grid; grid-template-columns: 1fr 40px 52px 40px; align-items: center; gap: .4rem; padding: .45rem 0; border-bottom: 1px solid var(--line); font-family: var(--sans); }
+.qz-row b { display: block; font-size: .95rem; }
+.qz-row small { font-size: .7rem; color: var(--muted); }
+.qz-row button { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--gold); color: var(--gold); font-size: 1.3rem; line-height: 1; display: grid; place-items: center; }
+.qz-row button[data-v="1"] { background: color-mix(in srgb, var(--gold) 14%, transparent); }
+.qz-row output { text-align: center; font-size: 1.25rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.qz-tot { font-family: var(--sans); font-size: .85rem; color: var(--muted); margin: .7rem 0 .2rem; text-align: center; }
+.qz-tot b { color: var(--gold); font-size: 1.1rem; }
+.qz-how { font-family: var(--sans); font-size: .8rem; font-weight: 600; color: var(--gold); text-decoration: none; align-self: center; }
+/* ---- favourites ---- */
+.fav { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; color: var(--muted); -webkit-tap-highlight-color: transparent; }
+.fav svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linejoin: round; transition: transform .2s; }
+.fav.on { color: var(--gold); }
+.fav.on svg { fill: var(--gold); }
+.fav:active svg { transform: scale(1.25); }
+.pg { padding-bottom: 2.4rem; }
+.pg > .fav { position: absolute; right: .6rem; bottom: .5rem; }
+.dua { position: relative; }
+.dua > .fav { position: absolute; right: 2.9rem; top: .55rem; z-index: 2; }
+.fav-l { width: auto; height: auto; display: inline-flex; gap: .4rem; align-items: center; padding: .4rem .8rem; border-radius: 99px; border: 1px solid var(--line); margin-top: .7rem; font-family: var(--sans); font-size: .8rem; font-weight: 600; }
+.fav-l.on { border-color: var(--gold); }
+.fav-empty { text-align: center; padding: 2.5rem 1rem; }
+.fav-empty svg { width: 48px; height: 48px; fill: none; stroke: var(--gold); stroke-width: 1.4; margin-bottom: .6rem; }
+.dua-h > span { padding-right: 2.2rem; }
