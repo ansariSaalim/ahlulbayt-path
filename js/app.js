@@ -1327,16 +1327,12 @@
     const imsak = t.hours.fajr - IMSAK_MIN / 60;
     box.innerHTML = `<div class="pt-top"><div class="pt-day"><button class="pt-arr" id="ptPrev" aria-label="Previous day">‹</button><div><h3 style="margin:0">${ptOff === 0 ? "Today" : day.toLocaleDateString(undefined, { weekday: "long" })}</h3><small>${day.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "long", year: "numeric" })}</small>${h ? `<small class="pt-hij">${h.d} ${HM[h.m - 1]} ${h.y}</small>` : ""}</div><button class="pt-arr" id="ptNext" aria-label="Next day">›</button></div><a class="pt-loc" href="#/s/settings">${esc(loc.name)} ›</a></div>
       ${ptOff !== 0 ? `<button class="pt-today" id="ptToday">Back to today</button>` : ""}
-      <ul class="pt-list"><li class="minor imsak"><b>Imsak (Sehar)<small>stop eating</small></b><span>${fmtH(imsak)}</span></li>${PNAMES.map(([k, n, c]) => `<li class="${c === "minor" ? "minor" : c === "main" ? "main" : ""} ${c === "fadila" ? "fadila" : ""} ${nx && nx.k === k && nx.ts === t.ts[k] ? "next" : ""}"${c === "fadila" ? ` data-fad="${k}"` : ""}><b>${n}${c === "fadila" ? `<small>best time · tap</small>` : ""}</b><span>${fmtH(t.hours[k])}</span></li>`).join("")}</ul>
+      <ul class="pt-list"><li class="minor imsak"><b>Imsak (Sehar)<small>stop eating</small></b><span>${fmtH(imsak)}</span></li>${PNAMES.map(([k, n, c]) => `<li class="${c === "minor" ? "minor" : c === "main" ? "main" : ""} ${nx && nx.k === k && nx.ts === t.ts[k] ? "next" : ""}"><b>${n}</b><span>${fmtH(t.hours[k])}</span></li>`).join("")}</ul>
       <p class="pt-foot">${nx ? `Next: <b style="color:var(--gold)">${nx.name}</b> ${countdown(nx.ts - Date.now())}. ` : ""}Ja'fari method (Fajr 16°, Maghrib 4°, Isha 14°). Imsak is ${IMSAK_MIN} minutes before Fajr: when fasting, stop eating a little before Fajr to be sure (Sayyid al-Sistani, Islamic Laws). Asr and Isha show their <b>best</b> time; you may pray Asr any time after Zuhr, and Isha any time after Maghrib, up to midnight — together or apart. Check against your marja's timetable.</p>`;
     const notifOn = store.get("abp-notify", false) && (LN || ("Notification" in window && Notification.permission === "granted"));
     box.insertAdjacentHTML("beforeend", `<div class="pt-extra">${loc.auto ? `<span class="pt-chip">Following your location</span>` : `<button class="pt-chip-b" id="ptUseGeo">Use my location instead</button>`}${(LN || "Notification" in window) ? (notifOn ? `<span class="pt-chip">Reminders on</span>` : `<button class="pt-chip-b" id="ptNotify">Turn on prayer reminders</button>`) : ""}</div>`);
     if ($("#ptUseGeo")) $("#ptUseGeo").onclick = useGeo;
     if ($("#ptNotify")) $("#ptNotify").onclick = enableReminders;
-    $$("#ptTimes li.fadila").forEach(li => li.onclick = () => {
-      const k = li.dataset.fad, isAsr = k === "asr";
-      toast(`${isAsr ? "Asr" : "Isha"}'s best time is ${fmtH(t.hours[k])}, but you may pray it any time after ${isAsr ? "Zuhr (even right after Zuhr)" : "Maghrib (even right after Maghrib)"}, up to ${isAsr ? "sunset" : "Islamic midnight"}.`);
-    });
     $("#ptPrev").onclick = () => { ptOff--; renderPrayer(); };
     $("#ptNext").onclick = () => { ptOff++; renderPrayer(); };
     if ($("#ptToday")) $("#ptToday").onclick = () => { ptOff = 0; renderPrayer(); };
