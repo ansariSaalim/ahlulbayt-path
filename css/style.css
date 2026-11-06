@@ -1408,3 +1408,38 @@ html.is-app [data-install] { display: none !important; }
 #updBanner { position: fixed; left: 12px; right: 12px; bottom: calc(var(--tab, 66px) + 10px + env(safe-area-inset-bottom)); z-index: 400; display: flex; align-items: center; gap: .6rem; padding: .7rem .9rem; border-radius: 14px; background: linear-gradient(135deg, var(--gold-2), var(--gold-deep)); color: #1b1407; text-decoration: none; font-family: var(--sans); font-size: .85rem; font-weight: 700; box-shadow: 0 10px 30px rgba(0,0,0,.45); animation: ngIn .4s var(--ease); }
 #updBanner span { flex: 1; }
 #updBanner i { font-style: normal; font-size: 1.3rem; line-height: 1; padding: 0 .3rem; opacity: .8; }
+
+/* ============ Support & Charity ============ */
+.support .sup-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.3rem 1.4rem; margin-bottom: 1rem; box-shadow: var(--shadow); }
+.sup-ch { display: flex; align-items: center; gap: .9rem; margin-bottom: 1rem; }
+.sup-ic { width: 46px; height: 46px; flex: none; display: grid; place-items: center; border-radius: 14px; background: linear-gradient(135deg, rgba(212,169,79,.22), rgba(212,169,79,.06)); color: var(--gold); }
+.sup-ic svg { width: 24px; height: 24px; }
+.sup-ch b { font-family: var(--display); font-size: 1.35rem; display: block; }
+.sup-ch small { color: var(--muted); font-size: .86rem; }
+.sup-soon { display: inline-block; font-weight: 700; letter-spacing: .04em; color: #1b1407; background: linear-gradient(135deg, #f0d28c, #c9973b); padding: .45rem 1rem; border-radius: 999px; font-size: .92rem; }
+.sup-note { color: var(--muted); font-family: var(--serif); margin-top: .7rem; line-height: 1.5; }
+.sup-verifyline { color: var(--muted); font-size: .92rem; margin: -.3rem 0 1.1rem; line-height: 1.6; }
+.sc-verified { display: inline-block; font-size: .78rem; font-weight: 700; color: #0c2f1a; background: #bfe9cf; padding: .18rem .6rem; border-radius: 999px; margin-right: .4rem; }
+.sup-empty { text-align: center; padding: 2.6rem 1rem; border: 1px dashed var(--line); border-radius: var(--radius); color: var(--muted); }
+.sup-empty svg { width: 40px; height: 40px; color: var(--gold); opacity: .6; margin-bottom: .6rem; }
+.sup-empty p { margin: .3rem 0; }
+.sup-empty .muted { font-size: .9rem; color: var(--muted); }
+.sup-case { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.2rem 1.3rem; margin-bottom: 1rem; }
+.sc-top { display: flex; justify-content: space-between; align-items: flex-start; gap: .8rem; }
+.sc-top b { font-family: var(--display); font-size: 1.25rem; }
+.sc-top small { display: block; color: var(--muted); font-size: .84rem; }
+.sc-type { flex: none; font-size: .76rem; font-weight: 700; color: var(--gold); border: 1px solid var(--line); padding: .22rem .6rem; border-radius: 999px; }
+.sc-need { font-family: var(--serif); margin: .7rem 0 .4rem; line-height: 1.55; }
+.sc-goal { color: var(--muted); font-size: .92rem; }
+.sup-qr-img { display: block; width: 190px; height: 190px; margin: .9rem 0; border-radius: 12px; background: #fff; padding: 8px; }
+.sup-upi { display: inline-block; margin: .5rem 0; font-family: var(--sans); font-size: .9rem; background: var(--card-hover); border: 1px solid var(--line); color: var(--text); padding: .55rem .9rem; border-radius: 10px; cursor: pointer; }
+.sup-upi:hover { border-color: var(--gold); }
+.sup-phone { display: inline-block; margin-top: .4rem; color: var(--gold); font-weight: 600; }
+.sup-req { border-style: dashed; }
+.sup-req b { font-family: var(--display); font-size: 1.2rem; }
+.sup-types { display: grid; gap: .8rem; }
+@media (min-width: 620px) { .sup-types { grid-template-columns: 1fr 1fr; } }
+.sup-type { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: .95rem 1.1rem; }
+.sup-type b { color: var(--gold); display: block; margin-bottom: .3rem; font-size: 1.02rem; }
+.sup-type p { color: var(--muted); font-family: var(--serif); font-size: .92rem; line-height: 1.5; }
+.sup-disc { margin-top: 1.4rem; font-size: .82rem; color: var(--muted); line-height: 1.6; border-top: 1px solid var(--line); padding-top: 1rem; }

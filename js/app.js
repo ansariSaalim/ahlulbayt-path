@@ -983,8 +983,8 @@
      APP SHELL: tabs, screens, back
      =========================================================== */
   const TAB_TITLES = { home: "Home", prayer: "Prayer", quran: "The Holy Qur'an", duas: "Duas & Ziyarat", learn: "Learn" };
-  const SUB_TITLES = { proofs: "The Proofs", timeline: "Timeline", stories: "Stories", battles: "Battles of Imam Ali", haq: "Fatima's Haq", karbala: "Karbala", abbas: "Moula Abbas", rulers: "The Caliphs", wronged: "Who Wronged Them", masumin: "The 14 Ma'sumin", lessons: "Lessons of the Fourteen", pearls: "Divine Pearls", companions: "Companions", dates: "Key Dates", reading: "Books", calendar: "Shia Calendar", settings: "Settings", "namaz-guide": "How to Pray", qa: "Q & A", favs: "Favourites", today: "Today" };
-  const PARENT = { calendar: "home", settings: "home", "namaz-guide": "prayer", favs: "home", today: "home" };
+  const SUB_TITLES = { proofs: "The Proofs", timeline: "Timeline", stories: "Stories", battles: "Battles of Imam Ali", haq: "Fatima's Haq", karbala: "Karbala", abbas: "Moula Abbas", rulers: "The Caliphs", wronged: "Who Wronged Them", masumin: "The 14 Ma'sumin", lessons: "Lessons of the Fourteen", pearls: "Divine Pearls", companions: "Companions", dates: "Key Dates", reading: "Books", calendar: "Shia Calendar", settings: "Settings", "namaz-guide": "How to Pray", qa: "Q & A", favs: "Favourites", today: "Today", support: "Support & Charity" };
+  const PARENT = { calendar: "home", settings: "home", "namaz-guide": "prayer", favs: "home", today: "home", support: "home" };
   const allSections = $$("section[data-screen]");
   const footerEl = $(".footer");
   let screenHash = "", appNav = 0;
@@ -1039,6 +1039,7 @@
     if (sub === "qa") renderQA();
     if (sub === "favs") renderFavs();
     if (sub === "today") renderToday();
+    if (sub === "support") renderSupport();
     if (tab === "duas" && !sub) renderLibHome();
     if (sub === "timeline") tlProgress();
   }
@@ -1510,6 +1511,40 @@
   }
   function dailyStory(d) { return STORIES[(dayNo(d) * 11) % STORIES.length]; }
   function dailyEvents(d) { const h = hijri(d); return h ? SHIA_EVENTS.filter(e => e[0] === h.m && e[1] === h.d) : []; }
+  /* ===========================================================
+     SUPPORT & CHARITY
+     =========================================================== */
+  function givingLabel(id) { const g = (typeof GIVING_TYPES !== "undefined") && GIVING_TYPES.find(x => x[0] === id); return g ? g[1] : "Sadaqah"; }
+  function caseCard(c) {
+    return `<div class="sup-case">
+      <div class="sc-top"><div><b>${esc(c.name)}</b>${c.city ? `<small>${esc(c.city)}</small>` : ""}</div><span class="sc-type">${esc(givingLabel(c.type))}</span></div>
+      <span class="sc-verified">✓ Verified by our team${c.verifiedOn ? " · " + esc(c.verifiedOn) : ""}</span>
+      ${c.need ? `<p class="sc-need">${esc(c.need)}</p>` : ""}
+      ${c.goal ? `<p class="sc-goal">Goal: <b>${esc(c.goal)}</b></p>` : ""}
+      ${c.qr ? `<img class="sup-qr-img" src="${esc(c.qr)}" alt="Payment QR" loading="lazy">` : ""}
+      ${c.upi ? `<button class="sup-upi" data-copy="${esc(c.upi)}">${esc(c.upi)} · tap to copy</button>` : ""}
+      ${c.phone ? `<a class="sup-phone" href="tel:${esc(c.phone)}">Call ${esc(c.phone)}</a>` : ""}
+    </div>`;
+  }
+  function renderSupport() {
+    if (typeof APP_SUPPORT === "undefined") return;
+    const b = $("#supBody");
+    const cases = typeof SUPPORT_CASES !== "undefined" ? SUPPORT_CASES : [];
+    const appBlock = APP_SUPPORT.comingSoon
+      ? `<div class="sup-soon">Coming soon, inshaAllah</div><p class="sup-note">${esc(APP_SUPPORT.note)}</p>`
+      : `${APP_SUPPORT.qr ? `<img class="sup-qr-img" src="${esc(APP_SUPPORT.qr)}" alt="Support QR">` : ""}${APP_SUPPORT.upi ? `<button class="sup-upi" data-copy="${esc(APP_SUPPORT.upi)}">${esc(APP_SUPPORT.upi)} · tap to copy</button>` : ""}`;
+    b.innerHTML = `
+      <div class="section-head"><p class="kicker">Support</p><h2>Support &amp; charity</h2><p>Support the app, or give to someone our team has checked. The app never takes or holds your money — you pay the person or charity directly.</p></div>
+      <div class="sup-card"><div class="sup-ch"><span class="sup-ic">${ico("heart")}</span><div><b>Support this app</b><small>Help keep it running and growing</small></div></div>${appBlock}</div>
+      <h3 class="sub-h">Support someone in need</h3>
+      <p class="sup-verifyline"><span class="sc-verified">✓ Verified by our team</span> Every person below has been checked by the team before appearing here. Please still give thoughtfully.</p>
+      ${cases.length ? cases.map(caseCard).join("") : `<div class="sup-empty">${ico("heart")}<p>No verified requests right now.</p><p class="muted">When a family in need is checked and approved, their cause appears here with a verified badge.</p></div>`}
+      <div class="sup-card sup-req"><b>Need help, or know someone who does?</b><p class="sup-note">Reach the team. Every case is checked before it is shown, so please share real, honest details.</p>${APP_SUPPORT.contact ? `<a class="btn btn-gold" href="${esc(APP_SUPPORT.contact)}" target="_blank" rel="noopener">Contact the team</a>` : `<p class="sup-note"><em>A contact option will be added here soon.</em></p>`}</div>
+      <h3 class="sub-h">Ways of giving</h3>
+      <div class="sup-types">${(typeof GIVING_TYPES !== "undefined" ? GIVING_TYPES : []).map(g => `<div class="sup-type"><b>${esc(g[1])}</b><p>${esc(g[2])}</p></div>`).join("")}</div>
+      <p class="sup-disc">The app only shows information. It does not process payments, take a cut, or guarantee any cause. You give directly, at your own discretion. Khums and zakat are best given through your marja' or his representative.</p>`;
+    $$("#supBody .sup-upi").forEach(btn => btn.onclick = () => (navigator.clipboard ? navigator.clipboard.writeText(btn.dataset.copy) : Promise.reject()).then(() => toast("UPI ID copied"), () => toast("Could not copy")));
+  }
   function renderToday() {
     const d = new Date(), h = hijri(d), ev = dailyEvents(d), p = dailyPearl(d), du = dailyDua(d), st = dailyStory(d), wd = d.getDay();
     const next = ev.length ? null : upcomingEvents(60)[0];
@@ -1615,7 +1650,7 @@
       tile("#/prayer", "clock", "Prayer times", "green"), tile("#qibla", "compass", "Qibla", "green"), tile("#/quran", "book", "Qur'an"), tile("#/duas", "hands", "Duas"),
       tile("#tasbih", "beads", "Tasbih"), tile("#rakat", "count", "Rak'at counter", "green"), tile("#/s/calendar", "cal", "Calendar"), tile("#/s/namaz-guide", "pray", "How to pray", "green"),
       tile("#/s/stories", "scroll", "Stories"), tile("#/s/karbala", "flag", "Karbala", "red"), tile("#/s/abbas", "flag", "Moula Abbas", "green"), tile("#/s/haq", "scale", "Fatima's Haq"),
-      tile("#/s/masumin", "star", "14 Ma'sumin"), tile("#/s/qa", "qa", "Q&A", "green"), tile("#/s/pearls", "gem", "Pearls"), tile("#/s/battles", "sword", "Battles")
+      tile("#/s/masumin", "star", "14 Ma'sumin"), tile("#/s/qa", "qa", "Q&A", "green"), tile("#/s/pearls", "gem", "Pearls"), tile("#/s/support", "heart", "Support", "green")
     ].join("");
     const last = store.get("abp-last", null);
     $("#hdContinue").innerHTML = last ? `<a class="cont" href="${last.h}"><div><small>Continue · ${esc(last.k)}</small><b>${esc(last.t)}</b></div><span class="ca">›</span></a>` : "";
