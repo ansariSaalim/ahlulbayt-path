@@ -14,7 +14,7 @@ const APP_SUPPORT = {
   name: "The Path of the Ahl al-Bayt",
   upi: "",            // e.g. "yourname@okbank"
   note: "A way to support the app and keep it running is coming soon, inshaAllah.",
-  contact: ""         // public contact for help requests, e.g. "https://wa.me/9199..." or "mailto:..."
+  contact: "https://wa.me/917567724402?text=" + encodeURIComponent("Assalamu alaikum, I am writing from The Path of the Ahl al-Bayt app about a help request.")  // public WhatsApp contact for help requests
 };
 
 /* Each person here has been checked by the team before appearing.
