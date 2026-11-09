@@ -2,7 +2,7 @@
    QUESTIONS PEOPLE ASK THE SHIA — with answers from the Qur'an,
    the Ahl al-Bayt and the Shia books.
    ========================================================= */
-const QA_CATS = { ali: "Imam Ali & the caliphate", belief: "Beliefs", practice: "Prayer & practice", mourn: "Muharram & shrines", sahaba: "The companions", origin: "Shia & Islam" };
+const QA_CATS = { ali: "Imam Ali & the caliphate", belief: "Beliefs", practice: "Prayer & practice", mourn: "Muharram & shrines", sahaba: "The companions", origin: "Shia & Islam", family: "Marriage & family" };
 const QA = [
 /* ---------- Imam Ali ---------- */
 { id: "ali-fight", c: "ali", q: "Why didn't Imam Ali fight when they attacked his house and hurt Lady Fatima?",
@@ -170,5 +170,36 @@ src: "Hadith al-Thaqalayn; al-Kafi" },
 
 { id: "abu-talib", c: "origin", q: "Was Abu Talib a believer?",
 a: `<p><b>Yes</b>, the Shia are agreed on this, following the Imams. He raised the Prophet, protected him for over forty years, suffered three years of boycott for him, and wrote poems declaring that Muhammad is a true prophet. Imam al-Sadiq said that the example of Abu Talib is like the People of the Cave: they hid their faith and showed something else, and Allah gave them double reward. The Prophet called the year of his death the Year of Sorrow.</p>`,
-src: "al-Kafi, Kitab al-Hujja; Kamal al-Din; al-Amini, al-Ghadir (vol. 7-8)" }
+src: "al-Kafi, Kitab al-Hujja; Kamal al-Din; al-Amini, al-Ghadir (vol. 7-8)" },
+{ id: "sayyida-marry", c: "family", q: "Can a Sayyida (a woman from the Prophet's family) marry a non-Sayyid man?",
+a: `<p><b>Yes.</b> A Sayyida may marry a non-Sayyid Muslim man. No verse of the Qur'an and no hadith of the Prophet ﷺ or the Imams forbids it, and no Shia jurist forbids it. Refusing it is a cultural custom, not a ruling of Islam.</p>
+<ul>
+<li><b>The Qur'an:</b> "The most noble of you in the sight of Allah is the most God-conscious of you" (49:13).</li>
+<li><b>What the Prophet ﷺ did:</b> he married his own cousin from Banu Hashim, <b>Duba'a bint al-Zubayr ibn Abd al-Muttalib</b>, to <b>al-Miqdad</b>, who was not from Banu Hashim. Imam al-Sadiq explained that he did it to make marriage easy, so that people would follow his example and know that the most noble is the most God-fearing. He also married his cousin <b>Zaynab bint Jahsh</b> to his freed slave <b>Zayd ibn Haritha</b>, and sent the poor, tribeless <b>Juwaybir</b> to marry <b>Dhulfa</b>, daughter of the noble Ziyad ibn Labid, telling her father: <i>"A believing man is the equal of a believing woman."</i></li>
+<li><b>What the Prophet ﷺ said:</b> <i>"If someone whose religion and character you are pleased with comes to you to propose, marry him. If you do not, there will be fitna on earth and great corruption."</i></li>
+<li><b>What the Imams said:</b> Imam al-Jawad wrote these same words to men who asked about marrying their daughters, and told one who said he could find no "equal" for his daughters not to hold back for that reason. Imam Zayn al-Abidin married a freed slave woman; when the caliph Abd al-Malik mocked him, he answered that Islam has raised up the lowly and there is no shame on a Muslim, only the shame of the Jahiliyya.</li>
+<li><b>Sayyid al-Sistani:</b> asked <i>"Can a Sayyid girl marry a non-Sayyid man?"</i>, he answered: <i>"It is permissible and there is no objection to it."</i> Other maraji' say the same, and great Sayyid maraji' married their own daughters to non-Sayyid scholars: Imam Khomeini's daughter married Shaykh Shahab al-Din Ishraqi, and Ayatollah Sayyid Muhammad Reza Golpaygani's daughter married Shaykh Lutfullah Safi Golpaygani.</li>
+<li><b>Sunni scholars:</b> all four schools hold the marriage valid. Some (Hanafi, Shafi'i) count lineage within <i>kafa'a</i> (suitability), which can give the guardian a right to object, but none calls it haram.</li>
+<li><b>Honouring Sayyids:</b> love for the Prophet's family is obligatory (42:23), and Sayyids deserve respect. That honour does not close marriage to other believers. The saying that a Sayyida is "like a mother" to non-Sayyid men has no basis.</li>
+</ul>
+<p>For any first marriage of a virgin girl, her father's permission is still needed, whoever the groom is. See the next question.</p>`,
+src: "Qur'an 49:13, 42:23, 33:36–37; al-Kafi, vol. 5, Kitab al-Nikah (chapter: the believer is the equal of the believing woman — Duba'a and al-Miqdad, Juwaybir and Dhulfa; the letters of Imam al-Jawad; Imam Zayn al-Abidin and Abd al-Malik); Sunan al-Tirmidhi 1084; Sayyid al-Sistani, sistani.org Q&A 15064" },
+{ id: "family-refuses", c: "family", q: "My family refuses a good proposal only because he is not a Sayyid. What does Islam say?",
+a: `<p>Lineage alone is not a reason Islam accepts for refusing a good believer. But the father's role is real, so this needs patience and wisdom, not rebellion.</p>
+<ul>
+<li><b>The father's permission:</b> according to Sayyid al-Sistani, a virgin girl needs her father's (or paternal grandfather's) permission to marry, permanent or temporary. If she is independent, this is still required as an obligatory precaution. The permission of the mother, brothers or other relatives is not a condition, though their goodwill matters.</li>
+<li><b>The Prophet's warning:</b> <i>"If someone whose religion and character you are pleased with proposes, marry him; if you do not, there will be fitna on earth and great corruption."</i> Turning away a good believer only for his family name goes against this.</li>
+<li><b>If the father blocks every suitable match:</b> Sayyid al-Sistani rules that if the father or grandfather prevents her from marrying anyone who is suitable for her in Shari'a and in custom, his permission is no longer required. This is a serious step: take it only after advice from a trusted 'alim or your marja's representative.</li>
+</ul>
+<p><b>What helps in practice:</b> stay respectful; show the family Sayyid al-Sistani's answer and the example of the Sayyid maraji' who married their daughters to non-Sayyids; ask an 'alim the family trusts to speak with them; pray, and be patient. Never turn to a secret relationship.</p>`,
+src: "Sunan al-Tirmidhi 1084; al-Kafi, vol. 5 (Kitab al-Nikah); Sayyid al-Sistani: sistani.org Q&A 15054, 15055 and 15064; Islamic Laws, Ruling 2396" },
+{ id: "sayyid-children", c: "family", q: "Can a Sayyid man marry a non-Sayyida? And are the children Sayyids?",
+a: `<p><b>Yes, a Sayyid man may marry any Muslim woman</b>, and it has always been common. Most of the Imams' own mothers were not from Banu Hashim: Shahrbanu (mother of Imam Zayn al-Abidin), Umm Farwa (Imam al-Sadiq), Hamida (Imam al-Kazim), Najma (Imam al-Rida), Sabika (Imam al-Jawad), Samana (Imam al-Hadi), Hudayth (Imam al-Askari) and Narjis (Imam al-Mahdi).</p>
+<ul>
+<li><b>Through the father:</b> in fiqh, being a Sayyid (Hashimi) passes through the father. The children of a Sayyid father are Sayyids: a needy Sayyid may receive Sahm al-Sadat from khums, and may not take zakat from non-Sayyids except in necessity.</li>
+<li><b>Through the mother:</b> the children of a Sayyida and a non-Sayyid father are not counted as Sayyids for these rulings, in the view of most jurists. They are still the Prophet's descendants through their mother, and that is an honour.</li>
+</ul>
+<p>Lady Fatima is the exception that proves the honour: through her, Hasan and Husayn are called the Prophet's own sons in the verse of Mubahala, "our sons" (3:61).</p>`,
+src: "Qur'an 3:61; al-Mufid, al-Irshad (the mothers of the Imams); Muhammad Hasan al-Najafi, Jawahir al-Kalam (Kitab al-Khums: the share of the Sayyids is for those descended from Hashim through the father); Sayyid al-Sistani, Islamic Laws: Khums, Zakat" }
+
 ];
