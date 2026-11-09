@@ -403,13 +403,13 @@
     document.body.classList.remove("locked");
     document.title = "The Path of the Ahl al-Bayt · History & Stories for Learning Shia Islam";
     currentId = null;
-    if (!fromHash && /^#(story|chapter|learn|lesson|imam|quran|lib)\//.test(location.hash)) history.replaceState(null, "", location.pathname + location.search + (screenHash || "#/home"));
+    if (!fromHash && /^#(story|chapter|learn|lesson|imam|quran|lib)\//.test(location.hash)) history.replaceState(history.state, "", location.pathname + location.search + (screenHash || "#/home"));
     if (typeof stopQuran === "function") stopQuran();
     reader.classList.remove("is-quran"); $("#qPlayer").hidden = true; $("#qSheet").hidden = true;
     if (!fromHash && screenHash) setTimeout(() => shellRoute(screenHash), 0);
     if (lastFocus) lastFocus.focus({ preventScroll: true });
   }
-  $$("[data-close]", reader).forEach(b => b.addEventListener("click", () => closeStory()));
+  $$("[data-close]", reader).forEach(b => b.addEventListener("click", () => closeReaderBack()));
   document.addEventListener("keydown", e => {
     if (!reader.classList.contains("open")) return;
     if (e.key === "Escape") closeStory();
@@ -991,7 +991,7 @@
     setTimeout(measure, 50);
   }
   function shellRoute(h) {
-    if (!h || h === "#" || h === "#/" || h === "#top") { history.replaceState(null, "", location.pathname + location.search + "#/home"); return showScreen("home"); }
+    if (!h || h === "#" || h === "#/" || h === "#top") { history.replaceState(history.state, "", location.pathname + location.search + "#/home"); return showScreen("home"); }
     if (h.startsWith("#/s/")) { const id = h.slice(4); if ($("#" + id)) return showScreen(PARENT[id] || "learn", id); return showScreen("home"); }
     if (h.startsWith("#/")) { const t = h.slice(2); return showScreen(TAB_TITLES[t] ? t : "home"); }
     const el = document.getElementById(h.slice(1));
@@ -999,15 +999,53 @@
     const sec = el.closest("section[data-screen]");
     if (!sec) return showScreen("home");
     const canon = sec.dataset.screen === "sub" ? "#/s/" + sec.id : "#/" + sec.dataset.screen;
-    history.replaceState(null, "", location.pathname + location.search + canon);
+    history.replaceState(history.state, "", location.pathname + location.search + canon);
     if (sec.dataset.screen === "sub") showScreen(PARENT[sec.id] || "learn", sec.id); else showScreen(sec.dataset.screen);
     if (el !== sec) setTimeout(() => el.scrollIntoView({ block: "start" }), 60);
   }
-  addEventListener("hashchange", () => { appNav++; });
-  $("#abBack").addEventListener("click", () => {
-    if (appNav > 0 && history.length > 1) history.back();
-    else { const sub = screenHash.startsWith("#/s/") ? screenHash.slice(4) : null; location.hash = "#/" + (PARENT[sub] || "learn"); }
+  /* ---------- Back navigation ----------
+     Every in-app history entry is stamped {d: depth, b: depth of the last
+     full screen}. So we always know whether "back" stays inside the app,
+     and the reader's ✕ can return to the exact screen it was opened from
+     instead of leaving duplicate entries behind. */
+  const isOverlayHash = h => /^#(story|chapter|learn|lesson|imam|quran|lib)\//.test(decodeURIComponent(h || ""));
+  let navDepth = 1, navBase = 1;
+  const stampNav = () => { try { history.replaceState({ d: navDepth, b: navBase }, ""); } catch { /* ignore */ } };
+  (() => { const st = history.state;
+    if (st && st.d) { navDepth = st.d; navBase = st.b || 0; }
+    else { navDepth = 1; navBase = isOverlayHash(location.hash) ? 0 : 1; stampNav(); } })();
+  addEventListener("hashchange", () => {
+    appNav++;
+    const st = history.state;
+    if (st && st.d) { navDepth = st.d; navBase = st.b || 0; return; }
+    navDepth++; if (!isOverlayHash(location.hash)) navBase = navDepth; stampNav();
   });
+  function closeReaderBack() {
+    if (navBase >= 1 && navDepth > navBase && isOverlayHash(location.hash)) history.go(navBase - navDepth);
+    else closeStory();
+  }
+  let exitAt = 0;
+  function goBack(hardware) {
+    if (modal.classList.contains("open")) return closeAppModal();
+    if (!$("#qSheet").hidden) return qCloseSheet();
+    const readerOpen = reader.classList.contains("open");
+    if (hardware && !readerOpen && screenHash === "#/home") {
+      if (Date.now() - exitAt < 2000 && APP_PLUGIN) return APP_PLUGIN.exitApp();
+      exitAt = Date.now(); return toast("Press back again to exit");
+    }
+    if (navDepth > 1) return history.back();
+    if (readerOpen) return closeStory();
+    const sub = screenHash.startsWith("#/s/") ? screenHash.slice(4) : null;
+    location.hash = sub ? "#/" + (PARENT[sub] || "learn") : "#/home";
+  }
+  $("#abBack").addEventListener("click", () => goBack(false));
+  /* Android hardware/gesture back: without this listener Android closes the app */
+  let APP_PLUGIN = null;
+  if (NATIVE) {
+    try { APP_PLUGIN = (CX && CX.registerPlugin && CX.registerPlugin("App")) || (CAP.registerPlugin && CAP.registerPlugin("App")) || (CAP.Plugins && CAP.Plugins.App) || null; } catch { APP_PLUGIN = null; }
+    if (APP_PLUGIN) try { APP_PLUGIN.addListener("backButton", () => goBack(true)); } catch { /* plugin missing in an old build */ }
+  }
+  window.__goBack = goBack; /* for testing */
   const screenInit = {};
   function onScreen(tab, sub) {
     if (tab === "home" && !sub) renderHome();

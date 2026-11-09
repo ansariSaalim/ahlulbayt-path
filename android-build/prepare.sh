@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(pwd)"
 rm -rf app && mkdir app && cd app
 npm init -y >/dev/null
-npm i --no-audit --no-fund @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6 @capacitor/local-notifications@6 @capacitor/assets@3
+npm i --no-audit --no-fund @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6 @capacitor/local-notifications@6 @capacitor/app@6 @capacitor/assets@3
 echo "core dist:"; ls node_modules/@capacitor/core/dist || true
 mkdir www
 rsync -a --exclude '.git' --exclude '.github' --exclude 'android-build' --exclude 'app' --exclude 'out' --exclude 'README.md' "$ROOT"/ www/
