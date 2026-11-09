@@ -514,6 +514,8 @@
     });
     $$("#mGrid .ph").forEach(el => el.dataset.wiki ? lazy(el) : el.classList.add("ph-fallback"));
     observeReveals($("#mGrid"));
+    const sl = $("#shrineList");
+    if (sl && typeof SHRINES !== "undefined") sl.innerHTML = MASUMIN.map((m, i) => `<li><b>${esc(m.name)}</b><span>${esc(SHRINES[i][0])}</span><small>${esc(SHRINES[i][1])}</small><a href="#lib/ziyarat/${SHRINES[i][2]}">Ziyarat →</a></li>`).join("");
   }
 
   /* ===========================================================
@@ -671,6 +673,7 @@
       <button class="qz-retake" id="qzRetake" hidden>Retake the quiz</button></div>` : "";
     $("#rLessonView").innerHTML = `
       <div class="r-content">${L.body}</div>
+      ${typeof LESSON_SRC !== "undefined" && LESSON_SRC[id] ? `<p class="r-sources"><b>Sources:</b> ${esc(LESSON_SRC[id])}</p>` : ""}
       ${L.practice ? `<div class="l-practice"><b>Practise today</b>${esc(L.practice)}</div>` : ""}
       ${rel ? `<p style="font-family:var(--sans);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)">Read more on this site</p><div class="l-rel">${rel}</div>` : ""}
       ${quizHTML}
@@ -732,8 +735,9 @@
     const body = $("#kBody");
     if (tab === "days") body.innerHTML = `<ol class="k-days">${KARBALA_DAYS.map(d => `<li><a class="k-day reveal ${/Ashura\)/.test(d.d) ? "ashura" : ""}" href="#story/${d.s}"><time>${esc(d.d)}</time><span>${esc(d.t)}</span></a></li>`).join("")}</ol>`;
     if (tab === "martyrs") body.innerHTML = MARTYRS.map(g => `<div class="k-group"><h4>${esc(g.g)}</h4><div class="m-list">${g.items.map(m => `<div class="mt reveal"><b>${esc(m[0])}</b><p>${esc(m[1])}</p></div>`).join("")}</div></div>`).join("");
+    if (tab === "after") body.innerHTML = typeof AFTER_KARBALA === "undefined" ? "" : `<p class="note-small">What happened to the family of Husayn after Ashura, in order. Tap any step to read its full story.</p><ol class="k-days">${AFTER_KARBALA.map(a => `<li><a class="k-day reveal" href="#story/${a[2]}"><time>${esc(a[0])}</time><span>${esc(a[1])}</span></a></li>`).join("")}</ol><p class="r-sources"><b>Sources:</b> ${esc(AFTER_KARBALA_SRC)}</p>`;
     if (tab === "women") body.innerHTML = `<div class="m-list">${KARBALA_WOMEN.map(m => `<div class="mt reveal"><b>${esc(m[0])}</b><p>${esc(m[1])}</p></div>`).join("")}</div>`;
-    if (tab === "after") body.innerHTML = `<div class="k-after">${["night-11", "zaynab", "captives-damascus", "arbain", "after-karbala", "sajjad", "mourning"].map(id => { const st = storyById[id]; return `<a class="ka reveal" href="#story/${id}"><div class="ka-img"><div class="ph" data-wiki="${STORY_IMAGES[id]}"></div></div><div class="ka-b"><b>${esc(st.title)}</b><small>${esc(st.when)}</small></div></a>`; }).join("")}</div>`;
+    if (tab === "after") body.innerHTML += `<h4 class="pf-h">Read the full stories</h4><div class="k-after">${["night-11", "zaynab", "captives-damascus", "arbain", "after-karbala", "sajjad", "mourning"].map(id => { const st = storyById[id]; return `<a class="ka reveal" href="#story/${id}"><div class="ka-img"><div class="ph" data-wiki="${STORY_IMAGES[id]}"></div></div><div class="ka-b"><b>${esc(st.title)}</b><small>${esc(st.when)}</small></div></a>`; }).join("")}</div>`;
     if (tab === "killers") body.innerHTML = killersHTML() + `<p style="margin-top:1rem"><a href="#wronged" style="color:var(--gold)">See who wronged each of the Fourteen →</a></p>`;
     $$("#kBody .ph").forEach(lazy);
     observeReveals(body);
@@ -799,30 +803,6 @@
     $("#abTitles").innerHTML = ABBAS.titles.map((t, i) => `<span class="ab-t reveal" style="transition-delay:${i * 60}ms"><b>${esc(t[0])}</b>${esc(t[1])}</span>`).join("");
     $("#abFacts").innerHTML = ABBAS.facts.map(f => `<tr><td>${esc(f[0])}</td><td>${esc(f[1])}</td></tr>`).join("");
     $("#abMoments").innerHTML = ABBAS.moments.map(m => `<li class="reveal"><b>${esc(m[0])}</b><p>${esc(m[1])}</p></li>`).join("");
-    $("#gzStats").innerHTML = ABBAS_GENZ.stats.map(s => `<div class="gz-stat"><b>${s[1]}</b><span>${esc(s[0])}</span></div>`).join("");
-    $("#gzGrid").innerHTML = ABBAS_GENZ.cards.map((c, i) => `<div class="gz-card"><span class="gn">${String(i + 1).padStart(2, "0")}</span><h4>${esc(c.h)}</h4><p>${esc(c.p)}</p></div>`).join("");
-    $("#gzTags").innerHTML = ABBAS_GENZ.tags.map(t => `<span>${t}</span>`).join("");
-    let salams = store.get("abp-salam-abbas", 0);
-    const showCount = () => { $("#gzCount").textContent = salams ? `You've sent ${salams} salam${salams > 1 ? "s" : ""} to Moula Abbas` : "Tap to send your salam"; };
-    showCount();
-    $("#gzBtn").addEventListener("click", () => {
-      salams++; store.set("abp-salam-abbas", salams); showCount();
-      if (navigator.vibrate) try { navigator.vibrate(15); } catch { /* ignore */ }
-      if (reduceMotion) return;
-      const box = $("#gzFloat");
-      const n = salams % 10 === 0 ? 9 : 4;
-      for (let k = 0; k < n; k++) {
-        const el = document.createElement("i");
-        const txt = k === 0;
-        el.className = txt ? "txt" : "dot";
-        if (txt) el.textContent = salams % 10 === 0 ? "Ya Abul Fadl al-Abbas" : "Ya Abbas";
-        el.style.left = (txt ? 50 : 30 + Math.random() * 40) + "%";
-        el.style.setProperty("--dx", (txt ? 0 : (Math.random() - .5) * 110) + "px");
-        el.style.animationDelay = (k * .07) + "s";
-        box.appendChild(el);
-        setTimeout(() => el.remove(), 2200);
-      }
-    });
     observeReveals($("#abbas"));
   }
 
@@ -892,14 +872,14 @@
   function renderDuas() {
     $("#duaList").innerHTML = DUAS.map((d, i) => `<div class="dua reveal">
       <button class="dua-h"><span><b>${esc(d.t)}</b><small>${esc(d.when)}</small></span><i class="chev"></i></button>${favBtn("d:" + i)}
-      <div class="dua-body"><div><p class="dua-ar" dir="rtl" lang="ar">${d.ar}</p><p class="dua-tr">${esc(d.tr)}</p><p class="dua-en">${esc(d.en)}</p>
+      <div class="dua-body"><div><p class="dua-ar" dir="rtl" lang="ar">${d.ar}</p><p class="dua-tr">${esc(d.tr)}</p><p class="dua-en">${esc(d.en)}</p>${typeof DUA_SRC !== "undefined" && DUA_SRC[i] ? `<p class="p-src"><b>Source:</b> ${esc(DUA_SRC[i])}</p>` : ""}
       ${d.counter ? `<a href="#tasbih" class="dua-copy" style="text-decoration:none">Open the counter ↑</a>` : `<button class="dua-copy" data-i="${i}">Copy Arabic</button>`}</div></div></div>`).join("");
     $$("#duaList .dua").forEach(d => $(".dua-h", d).addEventListener("click", () => d.classList.toggle("open")));
     $$("#duaList .dua-copy[data-i]").forEach(b => b.addEventListener("click", () => {
       const t = DUAS[+b.dataset.i].ar;
       (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => toast("Copied ✓"), () => toast("Copy not available"));
     }));
-    $("#longDuas").innerHTML = LONG_DUAS.map(l => `<div class="ld reveal"><b>${esc(l[0])}</b><small>${esc(l[1])}</small><p>${esc(l[2])}</p></div>`).join("");
+    $("#longDuas").innerHTML = LONG_DUAS.map(l => `<div class="ld reveal"><b>${esc(l[0])}</b><small>${esc(l[1])}</small><p>${esc(l[2])}</p>${typeof LONG_DUA_SRC !== "undefined" && LONG_DUA_SRC[l[0]] ? `<p class="p-src"><b>Source:</b> ${esc(LONG_DUA_SRC[l[0]])}</p>` : ""}</div>`).join("");
     observeReveals($("#namaz-dua"));
     // tasbih counter
     const phases = [["Allahu Akbar", "اللّٰهُ أَكْبَرُ", 34], ["Alhamdulillah", "الْحَمْدُ لِلّٰهِ", 33], ["Subhanallah", "سُبْحَانَ اللّٰهِ", 33]];
@@ -947,7 +927,7 @@
       <h4 class="pf-h">What we learn</h4><ol class="lf-learn">${LF.learn.map(x => `<li>${esc(x)}</li>`).join("")}</ol>
       <p class="r-sources"><b>Shia sources:</b> ${esc(LF.src)}</p>` : "";
     $("#rLessonView").innerHTML = `
-      <table class="facts"><tr><td>Born</td><td>${esc(m.born)}</td></tr><tr><td>${i === 13 ? "Now" : "Died / martyred"}</td><td>${esc(m.died)}</td></tr><tr><td>Age</td><td>${esc(m.age)}</td></tr><tr><td>Rulers of the time</td><td>${esc(m.rulers)}</td></tr></table>
+      <table class="facts"><tr><td>Born</td><td>${esc(m.born)}</td></tr><tr><td>${i === 13 ? "Now" : "Died / martyred"}</td><td>${esc(m.died)}</td></tr><tr><td>Age</td><td>${esc(m.age)}</td></tr><tr><td>Rulers of the time</td><td>${esc(m.rulers)}</td></tr>${typeof SHRINES !== "undefined" && SHRINES[i] ? `<tr><td>${i === 13 ? "Grave" : "Resting place"}</td><td><b>${esc(SHRINES[i][0])}</b><br>${esc(SHRINES[i][1])}<br><a href="#lib/ziyarat/${SHRINES[i][2]}" style="color:var(--gold)">Recite the ziyarat →</a></td></tr>` : ""}</table>
       ${LF ? `<div class="q-top lf-seg"><div class="q-seg"><button data-lv="life" class="on">Life story</button><button data-lv="more">Lessons & pearls</button></div></div><div class="lf-pane" data-pane="life">${lifeHTML}</div><div class="lf-pane" data-pane="more" hidden>` : "<div>"}
       <p class="r-summary">${esc(m.note)}</p>
       ${L ? `<div class="r-content">${L.body.replace(/<table class="facts">[\s\S]*?<\/table>/, "")}</div>` : ""}
@@ -1844,6 +1824,23 @@
   /* ===========================================================
      INIT
      =========================================================== */
+  /* section-level sources: each <p class="sec-src" data-src="key"> in index.html */
+  if (typeof SECTION_SRC !== "undefined") $$(".sec-src").forEach(p => {
+    const k = p.dataset.src, t = k === "shrines" ? (typeof SHRINES_SRC !== "undefined" && SHRINES_SRC) : SECTION_SRC[k];
+    if (t) p.innerHTML = `<b>Sources:</b> ${esc(t)}`;
+  });
+  /* Why we celebrate, why we mourn (Calendar) */
+  function renderYearWhy(f = "all") {
+    if (typeof YEAR_WHY === "undefined" || !$("#ywList")) return;
+    $("#ywIntro").textContent = YEAR_WHY_INTRO;
+    $("#ywChips").innerHTML = [["all", "All"], ["joy", "We celebrate"], ["grief", "We mourn"]].map(c => `<button class="chip ${c[0] === f ? "on" : ""}" data-f="${c[0]}">${c[1]}</button>`).join("");
+    $$("#ywChips .chip").forEach(b => b.onclick = () => renderYearWhy(b.dataset.f));
+    $("#ywList").innerHTML = YEAR_WHY.filter(y => f === "all" || y[3] === f).map(y => `<div class="yw ${y[3]}${/Fatimiyya/.test(y[2]) ? " big" : ""}">
+      <span class="yw-k">${y[3] === "joy" ? "We celebrate" : "We mourn"}</span><time>${esc(y[1])}</time><h4>${esc(y[2])}</h4><p>${esc(y[4])}</p>
+      ${y[5] ? `<a href="#story/${y[5]}">Read the story →</a>` : ""}<small><b>Source:</b> ${esc(y[6])}</small></div>`).join("");
+    $("#ywSrc").innerHTML = `<b>Sources:</b> ${esc(YEAR_WHY_SRC)}`;
+  }
+  renderYearWhy();
   renderEras();
   renderLearn();
   renderLearnTiles();

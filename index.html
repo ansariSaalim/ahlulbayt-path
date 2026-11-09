@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Amiri+Quran&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=34" />
+<link rel="stylesheet" href="css/style.css?v=35" />
 </head>
 <body>
 
@@ -296,6 +296,7 @@
     </div>
     <div class="ng-picks" id="ngPicks"></div>
     <div id="ngBody"></div>
+    <p class="r-sources" id="ngSrc"></p>
     <p class="ng-small ng-foot">Rulings follow the common view of the major maraji' (such as Sayyid al-Sistani). Small details differ between maraji', so check your own marja's risala.</p>
   </div>
 </section>
@@ -342,7 +343,13 @@
     <div class="cal-today" id="calToday"></div>
     <div class="chips" id="calChips"></div>
     <ol class="cal-list" id="calList"></ol>
+    <h3 class="sub-h" id="why">Why we celebrate, why we mourn</h3>
+    <p class="yw-intro" id="ywIntro"></p>
+    <div class="chips" id="ywChips"></div>
+    <div class="yw-list" id="ywList"></div>
+    <p class="r-sources" id="ywSrc"></p>
     <p class="note-small">Hijri dates depend on the moon sighting in your country. If your community's date is different, adjust it in <a href="#/s/settings" style="color:var(--gold)">Settings</a>.</p>
+    <p class="r-sources sec-src" data-src="calendar"></p>
   </div>
 </section>
 
@@ -407,6 +414,7 @@
       <div class="tl-line"><i id="tlFill"></i></div>
       <ol id="tlList"></ol>
     </div>
+    <p class="r-sources sec-src" data-src="timeline"></p>
   </div>
 </section>
 
@@ -459,6 +467,7 @@
       </div>
     </div>
     <ol class="b-list" id="bList"></ol>
+    <p class="r-sources sec-src" data-src="battles"></p>
   </div>
 </section>
 
@@ -481,6 +490,7 @@
     <h3 class="sub-h reveal">Questions people ask</h3>
     <div class="qa-list" id="haqQa"></div>
     <p style="text-align:center;margin-top:1rem"><a class="btn btn-gold" href="#/s/qa">All questions & answers →</a></p>
+    <p class="r-sources sec-src" data-src="haq"></p>
   </div>
 </section>
 
@@ -501,6 +511,7 @@
       <button class="tab" data-k="killers">The killers & their end</button>
     </div>
     <div id="kBody"></div>
+    <p class="r-sources sec-src" data-src="karbala"></p>
   </div>
 </section>
 
@@ -526,22 +537,8 @@
         <a class="btn btn-gold" href="#story/abbas">Read his full story</a></div>
       <div class="reveal"><h3 class="sub-h" style="margin-top:0">His life in six moments</h3><ol class="fadak-tl" id="abMoments"></ol></div>
     </div>
-    <div class="gz reveal" id="genz">
-      <div class="gz-head">
-        <span class="gz-badge">Gen Z · Moula Abbas</span>
-        <h3>Brother goals since 61 AH</h3>
-        <p>Real history, told our way. We say it with love, and never joke about his sacrifice.</p>
-      </div>
-      <div class="gz-stats" id="gzStats"></div>
-      <div class="gz-grid" id="gzGrid"></div>
-      <div class="gz-tags" id="gzTags"></div>
-      <div class="gz-salam">
-        <button class="gz-btn" id="gzBtn">Send salam to Moula Abbas</button>
-        <p id="gzCount"></p>
-        <div class="gz-float" id="gzFloat" aria-hidden="true"></div>
-      </div>
-    </div>
     <blockquote class="ab-quote reveal">"May Allah have mercy on my uncle al-Abbas. He preferred his brother over himself… so Allah gave him two wings with which he flies with the angels in Paradise. Al-Abbas has a rank with Allah that all the martyrs will envy on the Day of Resurrection."<cite>Imam Zayn al-Abidin · al-Saduq, al-Amali</cite></blockquote>
+    <p class="r-sources sec-src" data-src="abbas"></p>
   </div>
 </section>
 
@@ -555,6 +552,7 @@
     </div>
     <div class="tabs reveal" id="rulerTabs" role="tablist"></div>
     <div class="ruler-list" id="rulerList"></div>
+    <p class="r-sources sec-src" data-src="rulers"></p>
   </div>
 </section>
 
@@ -576,6 +574,7 @@
     <div class="wr-list" id="wrList"></div>
     <h3 class="sub-h reveal">The killers of Karbala, and their end</h3>
     <div class="kl-grid" id="klGrid"></div>
+    <p class="r-sources sec-src" data-src="wronged"></p>
   </div>
 </section>
 
@@ -588,6 +587,9 @@
       <p>Tap a card to turn it over, then open the full life story: how their mission began, the challenges they faced, how they overcame them, how their life ended and what we learn. Told from the Shia sources.</p>
     </div>
     <div class="m-grid" id="mGrid"></div>
+    <h3 class="sub-h">Where they rest</h3>
+    <ol class="shrine-list" id="shrineList"></ol>
+    <p class="r-sources sec-src" data-src="shrines"></p>
   </div>
 </section>
 
@@ -601,6 +603,7 @@
     </div>
     <div class="l-pick reveal" id="lPick" role="tablist"></div>
     <div class="l-panel" id="lPanel" aria-live="polite"></div>
+    <p class="r-sources sec-src" data-src="lessons"></p>
   </div>
 </section>
 
@@ -629,6 +632,7 @@
       <h2>Companions who paid the price of loyalty</h2>
     </div>
     <div class="c-grid" id="cGrid"></div>
+    <p class="r-sources sec-src" data-src="companions"></p>
   </div>
 </section>
 
@@ -641,6 +645,7 @@
       <p>Islamic (Hijri) calendar dates. Each one links to its story.</p>
     </div>
     <div class="d-grid" id="dGrid"></div>
+    <p class="r-sources sec-src" data-src="dates"></p>
   </div>
 </section>
 
@@ -771,15 +776,17 @@
   </div>
 </div>
 
-<script src="js/data.js?v=34"></script>
-<script src="js/course.js?v=34"></script>
-<script src="js/pearls-nahj.js?v=34"></script>
-<script src="js/lives.js?v=34"></script>
-<script src="js/qa.js?v=34"></script>
-<script src="js/lib-index.js?v=34"></script>
-<script src="js/namaz.js?v=34"></script>
-<script src="js/support.js?v=34"></script>
+<script src="js/data.js?v=35"></script>
+<script src="js/course.js?v=35"></script>
+<script src="js/pearls-nahj.js?v=35"></script>
+<script src="js/lives.js?v=35"></script>
+<script src="js/qa.js?v=35"></script>
+<script src="js/lib-index.js?v=35"></script>
+<script src="js/namaz.js?v=35"></script>
+<script src="js/support.js?v=35"></script>
+<script src="js/sources.js?v=35"></script>
+<script src="js/year.js?v=35"></script>
 <script>if ("serviceWorker" in navigator && !window.Capacitor) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));</script>
-<script src="js/app.js?v=34"></script>
+<script src="js/app.js?v=35"></script>
 </body>
 </html>

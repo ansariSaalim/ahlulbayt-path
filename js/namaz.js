@@ -198,7 +198,47 @@
 
   /* ---------- the menu ---------- */
   const NIY = (n, w = "wajib") => `I pray ${n}, ${w}, qurbatan ilallah (to come closer to Allah).`;
+
+  /* ---------- purity: wudu, ghusl, tayammum ---------- */
+  const W = (t, d, tag, quote) => S("water", t, { d, tag, quote });
+  const WUDU = [
+    W("Before you start", "The water must be pure (tahir) and permitted, and nothing on the skin may stop water reaching it: remove nail polish, paint, glue or a tight ring. Be free of najasa on the parts you wash.", "Condition"),
+    W("Niyyah (intention)", "In your heart, intend to do wudu for the closeness of Allah. You do not have to say it aloud.", "Obligatory", "I do wudu, qurbatan ilallah."),
+    W("Hands, mouth and nose", "Wash both hands, rinse the mouth three times and the nose three times.", "Recommended"),
+    W("Wash the face", "From where the hair grows on the forehead down to the end of the chin, and as wide as the span between your thumb and middle finger. Pour the water with the right hand and wash <b>from top to bottom</b>. Once is obligatory, twice is allowed; never three times.", "Obligatory"),
+    W("Wash the right arm", "From the elbow down to the fingertips, top to bottom, using the left hand. Begin a little above the elbow to be sure it is all washed.", "Obligatory"),
+    W("Wash the left arm", "The same, from the elbow to the fingertips, using the right hand.", "Obligatory"),
+    W("Masah of the head", "With the wetness left on the <b>right</b> hand, without taking new water, wipe the front part of the head (the quarter above the forehead), from top towards the forehead. Wiping the width of one finger is enough.", "Obligatory"),
+    W("Masah of the right foot", "With the wetness on your right hand, wipe the top of the right foot from the tips of the toes up to the ankle joint.", "Obligatory"),
+    W("Masah of the left foot", "With the wetness on your left hand, wipe the left foot the same way. By precaution, the right foot comes first.", "Obligatory"),
+    W("Keep these rules", "<b>Order:</b> face, right arm, left arm, head, feet. <b>Continuity:</b> do not wait so long that the earlier parts dry before you finish. <b>Do it yourself</b> unless you are unable. The Qur'an: \"wash your faces and your hands up to the elbows, and wipe your heads and your feet up to the ankles\" (5:6).", "Obligatory"),
+    W("What breaks wudu", "Urine, stool, passing wind, sleep that overcomes hearing and seeing, anything that takes away the mind (fainting, drunkenness), and anything that makes ghusl obligatory. Bleeding, vomiting or touching the private parts do <b>not</b> break wudu.", "Know this")
+  ];
+  const GHUSL = [
+    W("When it is obligatory", "Janaba (after intercourse or discharge of semen); for women after hayd (menses), nifas (childbirth bleeding) and some cases of istihada; after touching a human corpse once it is cold and before its ghusl (mass al-mayyit); and the ghusl of the dead. Recommended: Friday, the two Eids, the Nights of Qadr.", "Know this"),
+    W("Clean the body first", "Wash away any najasa from the body before starting, so the ghusl water stays pure.", "Condition"),
+    W("Niyyah", "Intend the ghusl you are doing, for the closeness of Allah.", "Obligatory", "I do ghusl of janaba (or whichever), qurbatan ilallah."),
+    W("1. Head and neck", "Wash the whole head and neck, making sure water reaches the skin under the hair.", "Obligatory"),
+    W("2. The right side", "Wash the right half of the body, from the shoulder to the foot. Include a little of the left side to be sure.", "Obligatory"),
+    W("3. The left side", "Wash the left half of the body the same way. Water must reach every part of the skin.", "Obligatory"),
+    W("Or: irtimasi (immersion)", "Instead of the three parts, with niyyah you may immerse the whole body in water at once, so that water reaches all of it.", "Allowed"),
+    W("After ghusl", "The ghusl of janaba replaces wudu, so you may pray without wudu. For other ghusls, follow your marja's ruling on whether wudu is also needed.", "Know this")
+  ];
+  const TAYAMMUM = [
+    W("When to do it", "When there is no water, when using water would harm you (illness, wounds), or when there is not enough time for wudu or ghusl before the prayer time ends. Tayammum can replace either.", "Know this"),
+    W("Niyyah", "Intend tayammum in place of wudu (or of ghusl), for the closeness of Allah.", "Obligatory", "I do tayammum in place of wudu, qurbatan ilallah."),
+    W("Strike the earth", "Strike both palms together on clean earth, sand, a stone or a clay brick. It must be pure and permitted.", "Obligatory"),
+    W("Wipe the forehead", "With both palms, wipe the forehead from where the hair grows down to the eyebrows and the top of the nose.", "Obligatory"),
+    W("Wipe the right hand", "With the left palm, wipe the back of the right hand from the wrist to the fingertips.", "Obligatory"),
+    W("Wipe the left hand", "With the right palm, wipe the back of the left hand from the wrist to the fingertips.", "Obligatory"),
+    W("Strike again (precaution)", "By precaution, strike the earth once more and wipe the backs of both hands again, as above.", "Precaution"),
+    W("Afterwards", "Tayammum is broken by whatever breaks wudu (or makes ghusl obligatory), and as soon as the excuse ends, for example when water becomes available.", "Know this")
+  ];
+
   const LIST = [
+    { g: "Purity", id: "wudu", name: "Wudu", sub: "Step by step", ar: "الْوُضُوء", facts: [["Washed", "Face, right arm, left arm"], ["Wiped", "Front of the head, then the feet"], ["Needed for", "Every prayer, tawaf, touching the Qur'an's writing"]], build: () => WUDU },
+    { g: "Purity", id: "ghusl", name: "Ghusl", sub: "Full bath", ar: "الْغُسْل", facts: [["Order", "Head & neck, right side, left side"], ["Or", "Immersion (irtimasi)"], ["Janaba ghusl", "Replaces wudu"]], build: () => GHUSL },
+    { g: "Purity", id: "tayammum", name: "Tayammum", sub: "Without water", ar: "التَّيَمُّم", facts: [["Instead of", "Wudu or ghusl"], ["On", "Clean earth, sand or stone"], ["Wiped", "Forehead, backs of the hands"]], build: () => TAYAMMUM },
     { g: "Daily", id: "fajr", name: "Fajr", ar: "صَلَاةُ الصُّبْح", rk: 2, map: [2], facts: [["Rak'at", "2"], ["Time", "From true dawn until sunrise"], ["Recite", "Aloud (men)"], ["Before it", "2 rak'at nafila"]], build: () => dailySteps({ rk: 2, loud: true, niyyah: NIY("two rak'at of Fajr") }) },
     { g: "Daily", id: "zuhr", name: "Zuhr", ar: "صَلَاةُ الظُّهْر", rk: 4, map: [2, 2], facts: [["Rak'at", "4"], ["Time", "From midday until sunset (shared with Asr; Zuhr first)"], ["Recite", "Quietly"], ["Before it", "8 rak'at nafila"]], build: () => dailySteps({ rk: 4, loud: false, niyyah: NIY("four rak'at of Zuhr") }) },
     { g: "Daily", id: "asr", name: "Asr", ar: "صَلَاةُ الْعَصْر", rk: 4, map: [2, 2], facts: [["Rak'at", "4"], ["Time", "After Zuhr, until sunset"], ["Recite", "Quietly"], ["Before it", "8 rak'at nafila"]], build: () => dailySteps({ rk: 4, loud: false, niyyah: NIY("four rak'at of Asr") }) },
@@ -206,6 +246,7 @@
     { g: "Daily", id: "isha", name: "Isha", ar: "صَلَاةُ الْعِشَاء", rk: 4, map: [2, 2], facts: [["Rak'at", "4"], ["Time", "After Maghrib, until midnight"], ["Recite", "First two rak'at aloud (men)"], ["After it", "Al-Watira: 2 rak'at sitting"]], build: () => dailySteps({ rk: 4, loud: true, niyyah: NIY("four rak'at of Isha") }) },
     { g: "Night", id: "layl", name: "Salat al-Layl", sub: "Tahajjud", ar: "صَلَاةُ اللَّيْل", special: "layl" },
     { g: "Night", id: "nafila", name: "Daily nafila", sub: "34 rak'at", ar: "النَّوَافِل", special: "nafila", build: () => nafila2("nafila", "I pray two rak'at of the nafila of (Fajr / Zuhr / Asr / Maghrib), recommended, qurbatan ilallah.") },
+    { g: "After prayer", id: "ziyarat-after", name: "Ziyarat after namaz", sub: "Stand, salam, sajda", ar: "زِيَارَةُ عَاشُورَاء", special: "afterz" },
     { g: "Special", id: "ayat", name: "Salat al-Ayat", sub: "Eclipse, earthquake", ar: "صَلَاةُ الْآيَات", facts: [["Rak'at", "2, each with 5 ruku'"], ["When", "Solar or lunar eclipse, earthquake, and (by precaution) any heavenly event that frightens most people"], ["Time", "As soon as it begins; for an eclipse, do not delay until it starts to clear"], ["Ruling", "Obligatory; if missed, make it up"]], intro: "There are two ways. <b>Full way:</b> before each of the ten ruku' recite al-Fatiha and a complete sura. <b>Short way</b> (shown below): in each rak'at recite al-Fatiha once, then split one sura into five parts, one part before each ruku'.", build: ayatSteps },
     { g: "Special", id: "jumua", name: "Jumu'a", sub: "Friday prayer", ar: "صَلَاةُ الْجُمُعَة", special: "jumua" },
     { g: "Special", id: "eid", name: "Eid prayer", sub: "Fitr & Adha", ar: "صَلَاةُ الْعِيد", facts: [["Rak'at", "2, with 9 qunuts (5 + 4)"], ["Time", "Sunrise until midday on Eid day"], ["Ruling", "In the Occultation: recommended; alone or in congregation"], ["Before it", "Ghusl; on Eid al-Fitr, pay Zakat al-Fitra"]], build: eidSteps },
@@ -228,6 +269,7 @@
     sajda: '<circle cx="12" cy="51" r="5"/><path d="M17 49l21-14M38 35l3 22h15M21 47l1 10M4 60h56"/>',
     sit: '<circle cx="25" cy="17" r="5"/><path d="M25 23l2 22M27 45l20 6M47 54H26M26 27l14 19M4 58h56"/>'
   };
+  POSE.water = '<path d="M32 8C25 21 18 30 18 40a14 14 0 0 0 28 0c0-10-7-19-14-32z"/><path d="M26 42a6 6 0 0 0 6 6"/>';
   const fig = p => `<svg class="ng-fig" viewBox="0 0 64 64" aria-hidden="true">${POSE[p] || POSE.stand}</svg>`;
 
   /* ---------- render ---------- */
@@ -338,6 +380,32 @@
         <div class="ng-card">${stepperHTML("Any 2-rak'at nafila")}</div>`;
       return useSteps(it.build(), body);
     }
+    if (it.special === "afterz") return infoPage(body, `<div class="ng-card ng-sum"><p class="ng-sum-ar" dir="rtl" lang="ar">السَّلَامُ عَلَيْكَ يَا أَبَا عَبْدِ اللّٰه</p><h3>Ziyarat after namaz <small>what happens in the mosque after the jama'at</small></h3></div>
+      <div class="ng-card"><h4 class="ng-h">What you are seeing</h4>
+      <p>In many Shia mosques, after the congregational prayer (and every day in Muharram), everyone stands and the reciter leads <b>Ziyarat Ashura</b> or a shorter <b>salam to Imam Husayn (AS)</b>. At the end, everyone goes down into one <b>sajda</b>.</p>
+      <ul class="ng-ol">
+        <li><b>Why stand?</b> A ziyarat is a greeting. You stand to greet the Imam, as you would stand for an honoured guest. Many turn toward Karbala; Imam al-Sadiq (AS) taught that greeting Husayn from afar, facing toward his grave, is like visiting him.</li>
+        <li><b>Is it part of namaz?</b> No. Your namaz is complete at the salam. This is a recommended act (mustahab). You can join in, or sit quietly; both are fine.</li>
+        <li><b>Why the sajda?</b> Ziyarat Ashura itself ends with a sajda of thanks and grief, taught by Imam al-Baqir (AS). The words are below.</li>
+      </ul></div>
+      <div class="ng-card"><h4 class="ng-h">The order, step by step</h4><ol class="ng-ol">
+        <li><b>Stand</b> after the namaz and its tasbih.</li>
+        <li><b>The opening salaams:</b> "As-salamu 'alayka ya Aba 'Abdillah…" (Peace be upon you, O Aba Abdillah). <a href="#lib/ziyarat/ashura">Full text</a></li>
+        <li><b>The middle part</b> asks Allah to distance from His mercy those who killed Imam Husayn and who began the wrongs against the Ahl al-Bayt. This is <i>bara'a</i>: turning away from oppression.</li>
+        <li><b>The salam</b> below. In the full ziyarat it is said 100 times; in the mosque it is often said once or a few times.</li>
+        <li><b>The sajda:</b> everyone goes down and recites the words below, then rises.</li>
+        <li>Many then say <b>"Ya Husayn"</b> and the short salam: "As-salamu 'alayka ya Aba 'Abdillah, la'anallahu qatilak."</li>
+      </ol></div>
+      <div class="ng-card"><h4 class="ng-h">The salam</h4>
+      <p class="ng-ar" dir="rtl" lang="ar">السَّلَامُ عَلَيْكَ يَا أَبَا عَبْدِ اللّٰهِ، وَعَلَى الْأَرْوَاحِ الَّتِي حَلَّتْ بِفِنَائِكَ، عَلَيْكَ مِنِّي سَلَامُ اللّٰهِ أَبَدًا مَا بَقِيتُ وَبَقِيَ اللَّيْلُ وَالنَّهَارُ، وَلَا جَعَلَهُ اللّٰهُ آخِرَ الْعَهْدِ مِنِّي لِزِيَارَتِكُمْ. السَّلَامُ عَلَى الْحُسَيْنِ، وَعَلَىٰ عَلِيِّ بْنِ الْحُسَيْنِ، وَعَلَىٰ أَوْلَادِ الْحُسَيْنِ، وَعَلَىٰ أَصْحَابِ الْحُسَيْنِ</p>
+      <p><i>As-salamu 'alayka ya Aba 'Abdillah, wa 'alal-arwahil-lati hallat bi-fina'ik. 'Alayka minni salamullahi abadan ma baqitu wa baqiyal-laylu wan-nahar, wa la ja'alahullahu akhiral-'ahdi minni li-ziyaratikum. As-salamu 'alal-Husayn, wa 'ala 'Aliyyibnil-Husayn, wa 'ala awladil-Husayn, wa 'ala ashabil-Husayn.</i></p>
+      <p>Peace be upon you, O Aba Abdillah, and upon the souls that came to rest beside you. Upon you be the peace of Allah from me forever, as long as I live and night and day remain, and may Allah not make this my last visit to you. Peace be upon al-Husayn, upon Ali son of al-Husayn, upon the children of al-Husayn, and upon the companions of al-Husayn.</p></div>
+      <div class="ng-card"><h4 class="ng-h">The sajda at the end</h4>
+      <p class="ng-ar" dir="rtl" lang="ar">اللّٰهُمَّ لَكَ الْحَمْدُ حَمْدَ الشَّاكِرِينَ لَكَ عَلَىٰ مُصَابِهِمْ، الْحَمْدُ لِلّٰهِ عَلَىٰ عَظِيمِ رَزِيَّتِي، اللّٰهُمَّ ارْزُقْنِي شَفَاعَةَ الْحُسَيْنِ يَوْمَ الْوُرُودِ، وَثَبِّتْ لِي قَدَمَ صِدْقٍ عِنْدَكَ مَعَ الْحُسَيْنِ وَأَصْحَابِ الْحُسَيْنِ الَّذِينَ بَذَلُوا مُهَجَهُمْ دُونَ الْحُسَيْنِ عَلَيْهِ السَّلَامُ</p>
+      <p><i>Allahumma lakal-hamdu hamdash-shakirina laka 'ala musabihim. Al-hamdu lillahi 'ala 'azimi raziyyati. Allahummar-zuqni shafa'atal-Husayni yawmal-wurud, wa thabbit li qadama sidqin 'indaka ma'al-Husayni wa ashabil-Husaynil-ladhina badhalu muhajahum dunal-Husayni 'alayhis-salam.</i></p>
+      <p>O Allah, Yours is the praise of those who thank You in their affliction. Praise be to Allah for my great grief. O Allah, grant me the intercession of al-Husayn on the Day of Arrival, and keep my foot firm in truth with You, with al-Husayn and the companions of al-Husayn, who gave their lives for al-Husayn, peace be upon him.</p></div>
+      <div class="ng-card"><h4 class="ng-h">Standing at the name of Imam al-Mahdi (AS)</h4>
+      <p>In a majlis or du'a, when the reciter says <b>"al-Qa'im"</b> (a title of Imam al-Mahdi), many people stand up and place their right hand on their head, as a pledge of readiness for him. It is a respected custom, not an obligation.</p></div>`);
     if (it.special === "jumua") return infoPage(body, `<div class="ng-card ng-sum"><p class="ng-sum-ar" dir="rtl" lang="ar">صَلَاةُ الْجُمُعَة</p><h3>Salat al-Jumu'a <small>Friday prayer</small></h3>
       <dl class="ng-facts"><div><dt>Rak'at</dt><dd>2, in congregation, in place of Zuhr</dd></div><div><dt>Before it</dt><dd>Two sermons (khutbas) by the imam</dd></div><div><dt>Ruling</dt><dd>In the Occultation most maraji' hold it is optional (wajib takhyiri): pray Jumu'a or Zuhr</dd></div></dl></div>
       <div class="ng-card"><h4 class="ng-h">How it differs</h4><ul class="ng-ol"><li>Recite al-Fatiha and a sura <b>aloud</b>. Surat al-Jumu'a in the 1st rak'at and al-Munafiqun in the 2nd are recommended.</li><li>It has <b>two qunuts</b>: in the 1st rak'at before ruku', and in the 2nd rak'at <b>after</b> ruku'.</li><li>Follow the imam in every action; do not go ahead of him.</li><li>If you miss Jumu'a, pray the normal 4 rak'at of Zuhr.</li></ul>
@@ -375,6 +443,7 @@
     const body = $("#ngBody");
     if (it.special) special(it, body);
     else { body.innerHTML = factsHTML(it) + `<div class="ng-card">${stepperHTML(`${it.build().length} steps`)}</div>`; useSteps(it.build(), body); }
+    const src = $("#ngSrc"); if (src) src.innerHTML = typeof NAMAZ_SRC !== "undefined" && NAMAZ_SRC[cur] ? `<b>Sources:</b> ${esc(NAMAZ_SRC[cur])}` : "";
     const btn = $(`#ngPicks button[data-id="${cur}"]`); if (btn) btn.scrollIntoView({ block: "nearest", inline: "center" });
   }
 

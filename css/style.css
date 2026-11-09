@@ -1443,3 +1443,26 @@ html.is-app [data-install] { display: none !important; }
 .sup-type b { color: var(--gold); display: block; margin-bottom: .3rem; font-size: 1.02rem; }
 .sup-type p { color: var(--muted); font-family: var(--serif); font-size: .92rem; line-height: 1.5; }
 .sup-disc { margin-top: 1.4rem; font-size: .82rem; color: var(--muted); line-height: 1.6; border-top: 1px solid var(--line); padding-top: 1rem; }
+
+/* Where the Fourteen rest */
+.shrine-list { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; gap: .6rem; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.shrine-list li { border: 1px solid var(--line); background: var(--card); border-radius: 16px; padding: .85rem 1rem; display: flex; flex-direction: column; gap: .2rem; font-family: var(--sans); }
+.shrine-list b { font-family: var(--display); font-size: 1.05rem; }
+.shrine-list span { color: var(--gold); font-weight: 600; font-size: .9rem; }
+.shrine-list small { color: var(--muted); font-size: .8rem; line-height: 1.45; }
+.shrine-list a { color: var(--gold); font-size: .8rem; margin-top: .2rem; text-decoration: none; }
+.sec-src:empty, #ngSrc:empty { display: none; }
+
+/* Why we celebrate, why we mourn */
+.yw-intro { font-family: var(--serif); font-style: italic; color: var(--muted); margin: 0 0 .8rem; line-height: 1.6; }
+.yw-list { display: grid; gap: .7rem; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); margin: .8rem 0; }
+.yw { border: 1px solid var(--line); background: var(--card); border-radius: 18px; padding: .9rem 1rem 1rem; border-left: 4px solid var(--gold); display: flex; flex-direction: column; gap: .3rem; font-family: var(--sans); }
+.yw.grief { border-left-color: #7a1f2b; }
+.yw.big { grid-column: 1 / -1; }
+.yw-k { font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); font-weight: 700; }
+.yw.grief .yw-k { color: #c0505f; }
+.yw time { font-size: .82rem; color: var(--muted); }
+.yw h4 { font-family: var(--display); font-size: 1.15rem; margin: 0; }
+.yw p { font-family: var(--serif); font-size: .95rem; line-height: 1.6; margin: 0; }
+.yw a { color: var(--gold); font-size: .82rem; text-decoration: none; }
+.yw small { color: var(--muted); font-size: .74rem; line-height: 1.45; }
