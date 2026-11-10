@@ -1,5 +1,5 @@
 /* ===========================================================
-   The Path of the Ahl al-Bayt — interactions
+   Shia Path — interactions
    =========================================================== */
 (() => {
   "use strict";
@@ -344,7 +344,7 @@
     rScroll.scrollTop = 0;
     reader.classList.add("open"); reader.setAttribute("aria-hidden", "false");
     document.body.classList.add("locked");
-    document.title = s.title + " · The Path of the Ahl al-Bayt";
+    document.title = s.title + " · Shia Path";
     setLast("#story/" + id, "Story", s.title);
     setTimeout(() => $(".reader-close").focus({ preventScroll: true }), 50);
   }
@@ -359,7 +359,7 @@
     rScroll.scrollTop = 0;
     reader.classList.add("open"); reader.setAttribute("aria-hidden", "false");
     document.body.classList.add("locked");
-    document.title = title + " · The Path of the Ahl al-Bayt";
+    document.title = title + " · Shia Path";
   }
   function openChapter(eraId) {
     const e = eraById[eraId]; if (!e) return;
@@ -395,13 +395,13 @@
     rScroll.scrollTop = 0;
     reader.classList.add("open"); reader.setAttribute("aria-hidden", "false");
     document.body.classList.add("locked");
-    document.title = e.name + " · The Path of the Ahl al-Bayt";
+    document.title = e.name + " · Shia Path";
   }
   function closeStory(fromHash) {
     if (!reader.classList.contains("open")) return;
     reader.classList.remove("open"); reader.setAttribute("aria-hidden", "true");
     document.body.classList.remove("locked");
-    document.title = "The Path of the Ahl al-Bayt · History & Stories for Learning Shia Islam";
+    document.title = "Shia Path · Prayer, Qur'an, Du'as & History for Every Shia Muslim";
     currentId = null;
     if (!fromHash && /^#(story|chapter|learn|lesson|imam|quran|lib)\//.test(location.hash)) history.replaceState(history.state, "", location.pathname + location.search + (screenHash || "#/home"));
     if (typeof stopQuran === "function") stopQuran();
@@ -738,7 +738,7 @@
     if (tab === "after") body.innerHTML = typeof AFTER_KARBALA === "undefined" ? "" : `<p class="note-small">What happened to the family of Husayn after Ashura, in order. Tap any step to read its full story.</p><ol class="k-days">${AFTER_KARBALA.map(a => `<li><a class="k-day reveal" href="#story/${a[2]}"><time>${esc(a[0])}</time><span>${esc(a[1])}</span></a></li>`).join("")}</ol><p class="r-sources"><b>Sources:</b> ${esc(AFTER_KARBALA_SRC)}</p>`;
     if (tab === "women") body.innerHTML = `<div class="m-list">${KARBALA_WOMEN.map(m => `<div class="mt reveal"><b>${esc(m[0])}</b><p>${esc(m[1])}</p></div>`).join("")}</div>`;
     if (tab === "after") body.innerHTML += `<h4 class="pf-h">Read the full stories</h4><div class="k-after">${["night-11", "zaynab", "captives-damascus", "arbain", "after-karbala", "sajjad", "mourning"].map(id => { const st = storyById[id]; return `<a class="ka reveal" href="#story/${id}"><div class="ka-img"><div class="ph" data-wiki="${STORY_IMAGES[id]}"></div></div><div class="ka-b"><b>${esc(st.title)}</b><small>${esc(st.when)}</small></div></a>`; }).join("")}</div>`;
-    if (tab === "killers") body.innerHTML = killersHTML() + `<p style="margin-top:1rem"><a href="#wronged" style="color:var(--gold)">See who wronged each of the Fourteen →</a></p>`;
+    if (tab === "killers") body.innerHTML = killersHTML() + `<p style="margin-top:1rem"><a href="#wronged" style="color:var(--gold)">See what each of the Fourteen endured →</a></p>`;
     $$("#kBody .ph").forEach(lazy);
     observeReveals(body);
   }
@@ -791,7 +791,7 @@
   }
   $("#pearlSearch").addEventListener("input", e => { pearlQ = e.target.value; pearlShown = 24; drawPearlGrid(); });
   function killersHTML() {
-    return `<div class="kl-grid">${KILLERS.map(k => `<div class="kl reveal"><h4>${esc(k.n)}</h4>${k.ln ? `<span class="ln-tag" dir="rtl" lang="ar">لَعْنَةُ اللّٰهِ عَلَيْهِ</span>` : ""}<p>${esc(k.d)}</p><p class="kf"><b>Their end</b>${esc(k.f)}</p></div>`).join("")}</div>`;
+    return `<div class="kl-grid">${KILLERS.map(k => `<div class="kl reveal"><h4>${esc(k.n)}</h4><p>${esc(k.d)}</p><p class="kf"><b>Their end</b>${esc(k.f)}</p></div>`).join("")}</div>`;
   }
   function renderWronged() {
     $("#wrList").innerHTML = WRONGED.map(w => `<div class="wr reveal"><b>${esc(w.who)}</b><p>${esc(w.by)}</p><a href="#story/${w.s}">Read →</a></div>`).join("");
@@ -986,7 +986,7 @@
     const activeTab = sub ? (PARENT[sub] || "learn") : tab;
     $$("#tabbar a").forEach(a => a.classList.toggle("on", a.dataset.tab === activeTab));
     if (changed) window.scrollTo(0, scrollMem[screenHash] || 0);
-    document.title = (sub ? SUB_TITLES[sub] : TAB_TITLES[tab]) + " · The Path of the Ahl al-Bayt";
+    document.title = (sub ? SUB_TITLES[sub] : TAB_TITLES[tab]) + " · Shia Path";
     onScreen(tab, sub);
     setTimeout(measure, 50);
   }
@@ -1506,7 +1506,7 @@
       const ms = t.ts[k] - now;
       if (ms > 0 && ms < 864e5) remTimers.push(setTimeout(() => {
         const body = `It is time for ${n} in ${loc.name}.`;
-        navigator.serviceWorker && navigator.serviceWorker.ready.then(r => r.showNotification(n + " · Ahl al-Bayt", { body, icon: "icons/icon-192.png", badge: "icons/icon-192.png", tag: "prayer-" + k })).catch(() => new Notification(n, { body }));
+        navigator.serviceWorker && navigator.serviceWorker.ready.then(r => r.showNotification(n + " · Shia Path", { body, icon: "icons/icon-192.png", badge: "icons/icon-192.png", tag: "prayer-" + k })).catch(() => new Notification(n, { body }));
       }, ms));
     }); });
   }

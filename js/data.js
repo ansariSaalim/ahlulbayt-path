@@ -1,5 +1,5 @@
 /* =========================================================
-   The Path of the Ahl al-Bayt — content
+   Shia Path — content
    The history of Islam as narrated by the Ahl al-Bayt and
    their followers, with proofs from Sunni books too.
    ========================================================= */
@@ -665,7 +665,7 @@ const STORIES = [
 const MASUMIN = [
   { n: "ﷺ", name: "Prophet Muhammad", title: "al-Mustafa · Seal of the Prophets", born: "17 Rabi al-Awwal, 570 CE · Mecca", died: "28 Safar 11 AH (632 CE) · Medina", age: "63", rulers: "Before the caliphate", note: "Brought the final message. Named Ali at Ghadir and left the Ummah 'the Book of Allah and my Ahl al-Bayt'.", story: "ghadir" },
   { n: "ع", name: "Fatima al-Zahra", title: "Sayyidat Nisa al-Alamin · Lady of the Women of the Worlds", born: "20 Jumada al-Thani, c. 615 CE · Mecca", died: "11 AH (632 CE) · Medina, grave unknown", age: "c. 18", rulers: "Abu Bakr", note: "Defended Ali's right and her own at Fadak; buried at night by her own will.", story: "fadak" },
-  { n: "1", name: "Ali ibn Abi Talib", title: "Amir al-Mu'minin · Commander of the Faithful", born: "13 Rajab, c. 600 CE · inside the Ka'ba", died: "21 Ramadan 40 AH (661 CE) · Najaf", age: "63", rulers: "Abu Bakr, Umar, Uthman, then his own caliphate; enemy: Muawiya", note: "25 years of patience, then 5 years of rule marked by Jamal, Siffin and Nahrawan. Struck in prayer.", story: "ali-martyrdom" },
+  { n: "1", name: "Ali ibn Abi Talib", title: "Amir al-Mu'minin · Commander of the Faithful", born: "13 Rajab, c. 600 CE · inside the Ka'ba", died: "21 Ramadan 40 AH (661 CE) · Najaf", age: "63", rulers: "Abu Bakr, Umar, Uthman, then his own caliphate; opposed at Siffin by Muawiya", note: "25 years of patience, then 5 years of rule marked by Jamal, Siffin and Nahrawan. Struck in prayer.", story: "ali-martyrdom" },
   { n: "2", name: "al-Hasan ibn Ali", title: "al-Mujtaba · the Chosen", born: "15 Ramadan 3 AH (625 CE) · Medina", died: "Safar 50 AH (670 CE) · al-Baqi, Medina", age: "47", rulers: "Muawiya", note: "Made peace to save the Shia; poisoned. Arrows struck his funeral.", story: "hasan-treaty" },
   { n: "3", name: "al-Husayn ibn Ali", title: "Sayyid al-Shuhada · Master of Martyrs", born: "3 Sha'ban 4 AH (626 CE) · Medina", died: "10 Muharram 61 AH (680 CE) · Karbala", age: "57", rulers: "Muawiya, Yazid", note: "Refused allegiance to Yazid; martyred at Karbala with about 72 companions.", story: "ashura" },
   { n: "4", name: "Ali Zayn al-Abidin", title: "al-Sajjad · the one who prostrates", born: "5 Sha'ban 38 AH (659 CE) · Medina", died: "25 Muharram 95 AH (713 CE) · al-Baqi", age: "57", rulers: "Yazid → Walid I", note: "Survived Karbala; taught Islam through du'a in al-Sahifa al-Sajjadiyya.", story: "sajjad" },
@@ -684,9 +684,9 @@ const MASUMIN = [
    --------------------------------------------------------- */
 const RULERS = [
   { group: "The first three caliphs", items: [
-    { name: "Abu Bakr", reign: "11–13 AH · 632–634", imam: "Ali, Fatima", text: "Chosen at Saqifa while Ali was burying the Prophet. Took Fadak from Fatima. Ali did not pledge allegiance for about six months, and Fatima died angry with him (Bukhari).", links: ["saqifa","fadak","door"] },
-    { name: "Umar ibn al-Khattab", reign: "13–23 AH · 634–644", imam: "Ali", text: "Opposed the writing of the Prophet's last document. Ali kept out of power but advised Umar on law and war, and Umar relied on his judgements. Set up the six-man council whose condition kept Ali from the caliphate.", links: ["pen-paper","patience","shura"] },
-    { name: "Uthman ibn Affan", reign: "23–35 AH · 644–656", imam: "Ali", text: "Appointed his Umayyad relatives as governors (Muawiya, al-Walid ibn Uqba, Marwan as his secretary). Exiled Abu Dharr; Ammar ibn Yasir was beaten. Ali mediated with the protesters and sent Hasan and Husayn to guard his house during the siege.", links: ["abu-dharr","ali-justice"] }
+    { name: "Abu Bakr", reign: "11–13 AH · 632–634", imam: "Ali, Fatima", text: "Chosen at Saqifa while Ali and Banu Hashim were burying the Prophet. In his time Fadak and Fatima's inheritance were withheld. Ali gave his pledge after about six months, after Fatima had passed away displeased (Sahih al-Bukhari 4240).", links: ["saqifa","fadak","door"] },
+    { name: "Umar ibn al-Khattab", reign: "13–23 AH · 634–644", imam: "Ali", text: "Ali kept out of power but advised Umar on law and war, and Umar relied on his judgement, saying: 'Were it not for Ali, Umar would have perished.' On the Thursday before the Prophet's death, he said the Book of Allah was enough when the Prophet asked for pen and paper (Bukhari). Before he died he set up the six-man council.", links: ["pen-paper","patience","shura"] },
+    { name: "Uthman ibn Affan", reign: "23–35 AH · 644–656", imam: "Ali", text: "Appointed several of his Umayyad relatives as governors, which led to the protests of his last years. Abu Dharr was sent to al-Rabadha. Ali mediated with the protesters and sent Hasan and Husayn to guard his house during the siege.", links: ["abu-dharr","ali-justice"] }
   ]},
   { group: "The Umayyads", items: [
     { name: "Muawiya ibn Abi Sufyan", reign: "41–60 AH · 661–680", imam: "Ali, Hasan, Husayn", text: "Fought Ali at Siffin. Broke every condition of the treaty with Imam Hasan. Made cursing Ali part of the Friday sermon. Executed Hujr ibn Adi. Arranged Imam Hasan's poisoning. Made the people pledge to his son Yazid.", links: ["siffin","hasan-treaty","muawiya-persecution","hasan-poison"] },
@@ -1160,7 +1160,7 @@ const ERA_INTRO = {
     summary: "Rich and powerful men asked for her hand and were turned away. The Prophet gave his daughter to a poor young man whose only valuable was his armour.",
     body: `
 <h4>The proposals</h4>
-<p>Fatima was the daughter of the Prophet ﷺ and the Lady of the Women of the Worlds. Many men asked to marry her, including senior companions and wealthy men who offered large dowries. Al-Nasa'i records that when Abu Bakr and then Umar asked, the Prophet turned them away. Shia narrations add his words: <strong>"I am waiting for the command of Allah about her."</strong></p>
+<p>Fatima was the daughter of the Prophet ﷺ and the Lady of the Women of the Worlds. Many men asked to marry her, including senior companions and wealthy men who offered large dowries. Al-Nasa'i records that others had asked for her hand before, and the Prophet waited for Allah's command. Shia narrations add his words: <strong>"I am waiting for the command of Allah about her."</strong></p>
 <p>Ali loved her, but he was poor. He owned almost nothing and was too shy to ask. His friends kept encouraging him: if the Prophet has refused the others, perhaps he is waiting for you.</p>
 <h4>Ali asks</h4>
 <p>One day Ali went to the Prophet's house, sat down, and could not say a word. The Prophet smiled and said: "It seems you have come for something?" Ali said yes, and finally asked for Fatima.</p>
@@ -1180,7 +1180,7 @@ const ERA_INTRO = {
 <p>From this house of clay pots came Hasan, Husayn, Zaynab and Umm Kulthum, and through Husayn, nine more Imams.</p>`,
     lesson: "The best marriage in history had the simplest dowry. Marriage in Islam is about faith and character, not wealth, so do not make it hard with heavy dowries and expensive weddings.",
     sources: "al-Nasa'i, Sunan and Khasa'is (the refused proposals); Sahih al-Bukhari (Tasbih of Fatima); al-Zamakhshari, al-Kashshaf and al-Wahidi, Asbab al-Nuzul (Surat al-Insan); Shaykh al-Tusi, al-Amali; al-Kulayni, al-Kafi; Bihar al-Anwar",
-    proof: "Al-Nasa'i records that Abu Bakr and Umar asked for Fatima and were refused, and that she was then given to Ali. Sunni commentators such as al-Zamakhshari and al-Wahidi report that Surat al-Insan was revealed about Ali, Fatima, Hasan and Husayn."
+    proof: "Al-Nasa'i records that others asked for Fatima's hand, and the Prophet waited for Allah's command before marrying her to Ali. Sunni commentators such as al-Zamakhshari and al-Wahidi report that Surat al-Insan was revealed about Ali, Fatima, Hasan and Husayn."
   };
   const k = STORIES.findIndex(s => s.id === "badr");
   STORIES.splice(k + 1, 0, story);
@@ -1247,21 +1247,21 @@ const MORE_STORIES = [
   body: `
 <p>In Safar 11 AH, the Prophet ﷺ prepared an army to march to the Byzantine frontier. He gave command to <strong>Usama ibn Zayd</strong>, about eighteen years old, son of his freed slave and beloved companion Zayd, who had been martyred at Mu'ta. Ibn Sa'd records that the senior emigrants, including <strong>Abu Bakr and Umar</strong>, were placed under Usama's command.</p>
 <p>Some objected to such a young commander. The Prophet, already ill with fever, came out with his head bandaged, climbed the pulpit and said: you criticise his command as you criticised his father's before him. By Allah, he is worthy of it. (Sahih al-Bukhari)</p>
-<p>His illness grew worse, and he kept repeating: <strong>"Send out the army of Usama! Send out the army of Usama!"</strong> Shia narrations, also recorded by al-Shahrastani, add that he cursed anyone who stayed behind from it. But the army camped at al-Jurf, just outside Medina, and delayed, and leading men kept coming back into the city.</p>
+<p>His illness grew worse, and he kept repeating: <strong>"Send out the army of Usama! Send out the army of Usama!"</strong> But the army camped at al-Jurf, just outside Medina, and delayed, and leading men kept coming back into the city.</p>
 <p>Shia scholars ask a simple question: why would the Prophet, knowing he was dying, insist on sending the senior companions far away, but keep Ali beside him? The answer is that he wanted the city clear when the succession he had announced at Ghadir took place.</p>
 <h4>His last moments</h4>
 <p>Then came the Thursday of the pen and paper. In his final days the Prophet's last advice was about the prayer and about the weak. Imam Ali said: <strong>"The Messenger of Allah passed away while his head was on my chest, and his soul flowed out into my hand, and I passed it over my face."</strong> (Nahj al-Balagha, sermon 197)</p>
 <p>Ali washed him, with al-Abbas and his sons helping, and said that the angels were helping him turn the body. The Muslims came in groups to pray over him. He was buried in his own room. And while all this was happening, a few men were meeting at Saqifa.</p>`,
-  lesson: "The Prophet's last weeks were spent preparing for what came after him: Usama's army, the pen and paper, and his repeated warnings. Very little of it was obeyed.",
+  lesson: "The Prophet's last weeks were spent preparing for what came after him: Usama's army, the pen and paper, and his repeated warnings. His orders were still unfulfilled when he passed away.",
   sources: "Ibn Sa'd, al-Tabaqat al-Kubra (Abu Bakr and Umar in Usama's army); Sahih al-Bukhari (the objection to Usama); al-Shahrastani, al-Milal wa al-Nihal; Nahj al-Balagha, sermon 197; Kitab al-Irshad",
-  proof: "Sahih al-Bukhari records the Prophet defending Usama's command from the pulpit, and Ibn Sa'd records that Abu Bakr and Umar were ordered to march under him. Neither went."
+  proof: "Sahih al-Bukhari records the Prophet defending Usama's command from the pulpit, and Ibn Sa'd records that Abu Bakr and Umar were ordered to march under him. The army had not left when the Prophet passed away."
 }},
 { before: "fatima-burial", s: {
   id: "fatima-visit", era: "after",
   title: "Her Last Days: \"I Call Allah to Witness that You Angered Me\"",
   arabic: "أيام الزهراء الأخيرة",
   when: "Jumada 11 AH (632 CE)", where: "The house of Ali and Fatima, Medina",
-  summary: "Ill and in pain, Fatima refused the visits of those who had wronged her. When she finally let them in, she made them bear witness to the Prophet's words, and to her anger.",
+  summary: "Ill and in pain, Fatima at first refused visits from the caliph. When she let them in, she reminded them of the Prophet's words about her.",
   body: `
 <h4>Knocking on doors at night</h4>
 <p>After Saqifa, Ibn Qutayba and Shia sources report that Ali put Fatima on a mount and went at night, with Hasan and Husayn, to the houses of the Ansar, asking them to stand by the pledge of Ghadir. They replied: "Daughter of the Messenger of Allah, our pledge has been given to this man. If your husband had come to us first, we would not have turned from him." Ali answered: should I have left the Prophet's body unwashed in his house and gone out to argue about power?</p>
@@ -1272,8 +1272,8 @@ const MORE_STORIES = [
 <p>Then she asked them: <strong>"Did you not hear the Messenger of Allah say: 'Fatima's pleasure is my pleasure, and Fatima's anger is my anger. Whoever loves my daughter Fatima loves me, whoever pleases Fatima pleases me, and whoever angers Fatima angers me'?"</strong> They said: yes, we heard it from the Messenger of Allah.</p>
 <p>She said: <strong>"Then I call Allah and His angels to witness that you two have angered me and have not pleased me. When I meet the Prophet, I will complain to him about you."</strong> The Sunni historian Ibn Qutayba records this.</p>
 <h4>Her will</h4>
-<p>Before she died she asked Ali: to marry her niece Umama after her, to care for her children; to make her a coffin with sides, so the shape of her body would not be seen, as she had seen done in Abyssinia (Asma bint Umays made it); to wash her himself, bury her at night, and let none of those who wronged her attend.</p>`,
-  lesson: "Fatima's anger was not personal. The Prophet tied her anger to his own, and his to Allah's. She made sure that history would remember who angered her.",
+<p>Before she died she asked Ali: to marry her niece Umama after her, to care for her children; to make her a coffin with sides, so the shape of her body would not be seen, as she had seen done in Abyssinia (Asma bint Umays made it); to wash her himself, bury her at night, and to keep the burial quiet, with only a few attending.</p>`,
+  lesson: "Fatima's anger was not personal. The Prophet tied her anger to his own, and his to Allah's. She defended a right with words, dignity and patience.",
   sources: "Ibn Qutayba al-Dinawari, al-Imama wa al-Siyasa (the visit); Ibn Tayfur, Balaghat al-Nisa (sermon to the women); Sahih al-Bukhari ('whoever angers her angers me'); Shaykh al-Tusi, al-Amali",
   proof: "Ibn Qutayba, a Sunni scholar of the 3rd century AH, records Fatima making the two of them confirm the Prophet's hadith, and then declaring that they had angered her."
 }},
@@ -1555,7 +1555,7 @@ PROOFS.push(
   ab.splice(i + 1, 0, { name: "al-Mahdi (Abbasid)", reign: "158–169 AH · 775–785", imam: "al-Kazim", text: "Had Imam al-Kazim arrested and brought to Baghdad. He released him after dreaming of Imam Ali reciting the verse about those who cut off the ties of kinship (47:22).", links: ["kazim"] });
   const m = ab.findIndex(r => r.name === "al-Mutawakkil");
   ab.splice(m + 1, 0, { name: "al-Muntasir", reign: "247–248 AH · 861–862", imam: "al-Hadi", good: true, text: "An exception. After his father al-Mutawakkil was killed, he allowed pilgrims back to Husayn's grave and eased the persecution of the family of Ali. He ruled only six months.", links: ["hadi-samarra"] });
-  RULERS[0].items[0].text = "Chosen at Saqifa while Ali was burying the Prophet. Took Fadak from Fatima, refused her inheritance and stopped her family's share of khums. Ali did not pledge for about six months, and Fatima died angry with him (Bukhari).";
+  RULERS[0].items[0].text = "Chosen at Saqifa while Ali and Banu Hashim were burying the Prophet. In his time Fadak and Fatima's inheritance were withheld. Ali gave his pledge after about six months, after Fatima had passed away displeased (Sahih al-Bukhari 4240).";
   RULERS[0].items[0].links = ["saqifa", "fadak", "door", "fatima-visit"];
   RULERS[1].items.find(r => r.name === "Umar ibn Abd al-Aziz").good = true;
   RULERS[1].items.find(r => r.name === "Yazid ibn Muawiya").links = ["husayn-departure", "ashura", "night-11", "captives-damascus", "after-karbala"];
@@ -1660,8 +1660,8 @@ const ABBAS = {
    THOSE WHO WRONGED THE AHL AL-BAYT
    --------------------------------------------------------- */
 const WRONGED = [
-  { who: "Lady Fatima al-Zahra", by: "The government formed at Saqifa: Abu Bakr took Fadak and refused her inheritance; Umar led the party that came to her door to force the pledge.", s: "door" },
-  { who: "Imam Ali", by: "Struck in prayer by Abd al-Rahman ibn Muljam, a Kharijite. Fought by Talha, al-Zubayr and A'isha at Jamal, and by Muawiya and Amr ibn al-As at Siffin; cursed from the pulpits for decades on Muawiya's orders.", s: "ali-martyrdom" },
+  { who: "Lady Fatima al-Zahra", by: "After her father, Fadak and her inheritance were withheld, and she died displeased with the caliph of the time (Sahih al-Bukhari 4240). Shia narrations also report that her house was forced open and she was injured.", s: "door" },
+  { who: "Imam Ali", by: "Struck in prayer by Abd al-Rahman ibn Muljam, a Kharijite. Three civil wars were forced on him: Jamal, Siffin and Nahrawan. For decades he was cursed from the pulpits under Umayyad rule (Sahih Muslim records Sa'd ibn Abi Waqqas refusing to do it).", s: "ali-martyrdom" },
   { who: "Imam al-Hasan", by: "Poisoned by his wife Ja'da bint al-Ash'ath on the promise of Muawiya. His funeral was turned back with arrows by Marwan ibn al-Hakam and the Umayyads.", s: "hasan-poison" },
   { who: "Imam al-Husayn", by: "Yazid ibn Muawiya ordered it; Ubaydullah ibn Ziyad organised it; Umar ibn Sa'd commanded it; Shimr ibn Dhil-Jawshan beheaded him. See the killers of Karbala below.", s: "ashura" },
   { who: "Imam Zayn al-Abidin", by: "Chained and paraded as a captive by Ibn Ziyad and Yazid. Martyred by poison under the Umayyad caliph al-Walid ibn Abd al-Malik.", s: "sajjad" },

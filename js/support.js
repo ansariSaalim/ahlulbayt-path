@@ -11,10 +11,10 @@
 /* Support for the app itself. Set comingSoon:false and fill upi/qr when ready. */
 const APP_SUPPORT = {
   comingSoon: true,
-  name: "The Path of the Ahl al-Bayt",
+  name: "Shia Path",
   upi: "",            // e.g. "yourname@okbank"
   note: "A way to support the app and keep it running is coming soon, inshaAllah.",
-  contact: "https://wa.me/917567724402?text=" + encodeURIComponent("Assalamu alaikum, I am writing from The Path of the Ahl al-Bayt app about a help request.")  // public WhatsApp contact for help requests
+  contact: "https://wa.me/917567724402?text=" + encodeURIComponent("Assalamu alaikum, I am writing from the Shia Path app about a help request.")  // public WhatsApp contact for help requests
 };
 
 /* Each person here has been checked by the team before appearing.

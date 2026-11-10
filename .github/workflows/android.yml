@@ -41,7 +41,7 @@ jobs:
           gh release delete android-latest --yes --cleanup-tag || true
           gh release create android-latest out/ahlulbayt-path.apk \
             --title "Android app 1.${{ github.run_number }}" \
-            --notes "The Path of the Ahl al-Bayt for Android. Download ahlulbayt-path.apk below, open it and tap Install." \
+            --notes "Shia Path for Android. Download ahlulbayt-path.apk below, open it and tap Install." \
             --latest
       - name: Save the logs if something failed
         if: failure()

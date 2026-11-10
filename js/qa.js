@@ -5,9 +5,9 @@
 const QA_CATS = { ali: "Imam Ali & the caliphate", belief: "Beliefs", practice: "Prayer & practice", mourn: "Muharram & shrines", sahaba: "The companions", origin: "Shia & Islam", family: "Marriage & family" };
 const QA = [
 /* ---------- Imam Ali ---------- */
-{ id: "ali-fight", c: "ali", q: "Why didn't Imam Ali fight when they attacked his house and hurt Lady Fatima?",
+{ id: "ali-fight", c: "ali", q: "Why didn't Imam Ali take up the sword for his right after the Prophet?",
 a: `<p>It was not fear. This is the man who killed Amr ibn Abd Wudd and tore off the gate of Khaybar. He held back because of a <b>promise to the Prophet</b> and to <b>save Islam itself</b>.</p>
-<ul><li><b>The Prophet's will.</b> The Prophet told Ali that the Ummah would betray him, and commanded him: if you find helpers, fight for your right; if you do not, be patient and protect your blood. When the attackers came, Ali seized Umar, threw him to the ground and said: <i>"By the One who honoured Muhammad with prophethood, were it not for a decree from Allah and a covenant the Messenger of Allah took from me, you would know that you could not enter my house."</i> (Kitab Sulaym ibn Qays)</li>
+<ul><li><b>The Prophet's will.</b> The Prophet told Ali that the Ummah would betray him, and commanded him: if you find helpers, fight for your right; if you do not, be patient and protect your blood.</li>
 <li><b>He had no army.</b> Ali said: <i>"I looked and found no helper except my family, so I spared them from death. I closed my eyes with dust in them and swallowed despite the choking."</i> (Nahj al-Balagha, sermon 26)</li>
 <li><b>Islam was in danger.</b> The Prophet had just died. Tribes were leaving Islam, false prophets had risen, the hypocrites were waiting, and the Romans and Persians were at the borders. A civil war among the Muslims would have destroyed the religion. Ali wrote: <i>"I held back my hand until I saw people turning away from Islam, trying to wipe out the religion of Muhammad. I feared that if I did not help Islam, I would see a breach in it... which for me would be a greater disaster than losing rule over you."</i> (Nahj al-Balagha, letter 62)</li>
 <li><b>Like Harun.</b> The Prophet said Ali is to him as Harun was to Musa. When the people worshipped the calf, Harun did not fight them, fearing division, and said: <i>"The people overpowered me and were about to kill me"</i> (7:150). Ali stood at the Prophet's grave and said these same words.</li></ul>
@@ -146,7 +146,7 @@ src: "The Qur'an 18:21; Kamil al-Ziyarat; al-Kafi, Kitab al-Hajj (ziyara)" },
 /* ---------- Companions ---------- */
 { id: "sahaba", c: "sahaba", q: "Do the Shia curse all the companions (Sahaba)?",
 a: `<p><b>No.</b> We love and honour the companions who stayed true: <b>Salman, Abu Dharr, Miqdad, Ammar, Jabir, Hudhayfa, Bilal, Hamza, Ja'far</b> and many more. Our books are full of their praise.</p>
-<p>But the Qur'an itself says not every companion was righteous: there were hypocrites in Medina whom even the Prophet did not know (9:101), and some fled at Uhud (3:155). So we judge each one by his actions, as the Qur'an does. We keep away from those who wronged the Ahl al-Bayt, as the Qur'an condemns the oppressors (11:18). The major maraji' have also forbidden insulting the figures that other Muslims respect.</p>`,
+<p>But the Qur'an itself says not every companion was righteous: there were hypocrites in Medina whom even the Prophet did not know (9:101), and some fled at Uhud (3:155). So we judge each one by his actions, as the Qur'an does. We keep away from those who wronged the Ahl al-Bayt, as the Qur'an condemns the oppressors (11:18). The major maraji' forbid insulting the figures that other Muslims respect. Sayyid al-Sistani's office, asked about people insulting Umar and A'isha, answered that such behaviour is "condemned, strongly denounced and contrary to the commands of the Imams of the Holy Household of the Prophet."</p>`,
 src: "The Qur'an 9:101, 3:155, 11:18; fatwas of the maraji'" },
 
 { id: "aisha", c: "sahaba", q: "Do the Shia accuse Aisha of immorality?",
@@ -154,8 +154,8 @@ a: `<p><b>No.</b> The Shia believe the wives of all the prophets are protected f
 src: "Shia tafsir of 24:11-26; fatwas of the maraji'" },
 
 { id: "cave", c: "sahaba", q: "Wasn't Abu Bakr praised for being with the Prophet in the cave (9:40)?",
-a: `<p>The verse says the Prophet told his companion: <i>"Do not grieve, Allah is with us,"</i> and then: <i>"Allah sent down His tranquillity upon <b>him</b>"</i>, on the Prophet alone. Being with someone on a journey shows companionship, not leadership; the Qur'an even calls a disbeliever the "companion" of a believer (18:37).</p>
-<p>That same night <b>Ali</b> lay in the Prophet's bed under the swords of forty men, and Allah revealed: <i>"Among the people is he who sells himself seeking the pleasure of Allah"</i> (2:207).</p>`,
+a: `<p><b>Yes, it is an honour.</b> Abu Bakr accompanied the Prophet ﷺ on the Hijra and was with him in the cave, and the Qur'an mentions it (9:40). Shia scholars do not deny this.</p>
+<p>The Shia simply hold that leadership after the Prophet was not decided by companionship, however honoured, but by the Prophet's own appointment at Ghadir. On that same night of the Hijra, Ali lay in the Prophet's bed under the swords of forty men so that the Prophet could leave safely, and Allah revealed: <i>"Among the people is he who sells himself seeking the pleasure of Allah"</i> (2:207). Both nights are part of the story of Islam.</p>`,
 src: "The Qur'an 9:40, 18:37, 2:207; Shia tafsir" },
 
 /* ---------- Origin ---------- */
@@ -200,6 +200,16 @@ a: `<p><b>Yes, a Sayyid man may marry any Muslim woman</b>, and it has always be
 <li><b>Through the mother:</b> the children of a Sayyida and a non-Sayyid father are not counted as Sayyids for these rulings, in the view of most jurists. They are still the Prophet's descendants through their mother, and that is an honour.</li>
 </ul>
 <p>Lady Fatima is the exception that proves the honour: through her, Hasan and Husayn are called the Prophet's own sons in the verse of Mubahala, "our sons" (3:61).</p>`,
-src: "Qur'an 3:61; al-Mufid, al-Irshad (the mothers of the Imams); Muhammad Hasan al-Najafi, Jawahir al-Kalam (Kitab al-Khums: the share of the Sayyids is for those descended from Hashim through the father); Sayyid al-Sistani, Islamic Laws: Khums, Zakat" }
-
+src: "Qur'an 3:61; al-Mufid, al-Irshad (the mothers of the Imams); Muhammad Hasan al-Najafi, Jawahir al-Kalam (Kitab al-Khums: the share of the Sayyids is for those descended from Hashim through the father); Sayyid al-Sistani, Islamic Laws: Khums, Zakat" },
+{ id: "unity", c: "origin", q: "How should a Shia treat Sunni Muslims?",
+a: `<p><b>As brothers and sisters in Islam.</b> We share one Allah, one Prophet ﷺ, one Qur'an and one qibla. Love for the Ahl al-Bayt is something we share with them too.</p>
+<ul>
+<li><b>Imam al-Sadiq (AS)</b> told his followers to attend their funerals, visit their sick, and be present with the people in their mosques for prayer.</li>
+<li><b>Imam Ali (AS)</b>, hearing his soldiers revile the Syrians at Siffin, told them: <i>"I dislike that you should be revilers. If you described their deeds and spoke of their situation, it would be closer to the truth."</i></li>
+<li><b>The Qur'an</b> forbids insulting even what others worship, "lest they insult Allah" (6:108).</li>
+<li><b>Sayyid al-Sistani</b>'s office, asked about people insulting figures Sunnis respect, called it "condemned, strongly denounced and contrary to the commands of the Imams of the Holy Household." He has repeatedly called Sunnis "our brothers".</li>
+<li><b>Sayyid Ali Khamenei</b> ruled in 2010: <i>"Insulting figures and symbols celebrated by Sunni brethren, including the wife of the Prophet of Islam, is prohibited."</i></li>
+</ul>
+<p>We can explain our beliefs and our history with evidence, and still keep our tongues clean. That is the way of the Ahl al-Bayt.</p>`,
+src: "Qur'an 6:108; al-Kafi, vol. 8 (al-Rawda: attend their funerals, visit their sick, pray in their mosques); Nahj al-Balagha, sermon 206; Office of Sayyid al-Sistani, answer on insulting Sunni figures (imam-us.org); Sayyid Ali Khamenei, fatwa of 30 September 2010" }
 ];

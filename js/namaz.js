@@ -391,7 +391,7 @@
       <div class="ng-card"><h4 class="ng-h">The order, step by step</h4><ol class="ng-ol">
         <li><b>Stand</b> after the namaz and its tasbih.</li>
         <li><b>The opening salaams:</b> "As-salamu 'alayka ya Aba 'Abdillah…" (Peace be upon you, O Aba Abdillah). <a href="#lib/ziyarat/ashura">Full text</a></li>
-        <li><b>The middle part</b> asks Allah to distance from His mercy those who killed Imam Husayn and who began the wrongs against the Ahl al-Bayt. This is <i>bara'a</i>: turning away from oppression.</li>
+        <li><b>The middle part</b> asks Allah to distance from His mercy those who killed Imam Husayn and oppressed the Ahl al-Bayt. This is <i>bara'a</i>: turning away from oppression.</li>
         <li><b>The salam</b> below. In the full ziyarat it is said 100 times; in the mosque it is often said once or a few times.</li>
         <li><b>The sajda:</b> everyone goes down and recites the words below, then rises.</li>
         <li>Many then say <b>"Ya Husayn"</b> and the short salam: "As-salamu 'alayka ya Aba 'Abdillah, la'anallahu qatilak."</li>

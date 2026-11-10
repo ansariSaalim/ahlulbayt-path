@@ -62,7 +62,7 @@ const COURSE = [
 <li><b>Safar 11 AH:</b> the army of Usama. The senior companions are ordered out of Medina; Ali is kept beside the Prophet.</li>
 <li><b>The Thursday:</b> the Prophet asks for pen and paper to write "a document after which you will never go astray", and is refused (Bukhari).</li>
 <li><b>28 Safar 11 AH:</b> the Prophet passes away, his head on Ali's chest. Ali washes him.</li>
-<li><b>The same day, Saqifa:</b> while Ali and the Banu Hashim are burying the Prophet, Abu Bakr is chosen by a few men. Umar himself later calls it a hasty slip (<em>falta</em>, Bukhari 6830).</li>
+<li><b>The same day, Saqifa:</b> while Ali and the Banu Hashim are burying the Prophet, Abu Bakr is chosen by those gathered there. Umar himself later calls it a hasty slip (<em>falta</em>, Bukhari 6830).</li>
 <li><b>The months after:</b> Fadak is taken. Fatima defends her right in the mosque.</li>
 <li><b>About six months later:</b> Fatima dies angry with Abu Bakr, and only then does Ali give his pledge (Bukhari 4240–4241). In that same report, Ali says he had a right to the matter because of his closeness to the Prophet, and that it was decided without him.</li>
 </ol>
@@ -336,7 +336,7 @@ const COURSE = [
 <h4>What was taken from her</h4>
 <ol><li>Fadak, her father's gift.</li><li>Her inheritance.</li><li>Her family's share of khums.</li><li>Her husband's right, the leadership.</li><li>The sanctity of her home.</li><li>Her voice and her witnesses.</li></ol>
 <h4>Her answer</h4>
-<p>The Sermon of Fadak in the Prophet's mosque. Refusing to speak to those who wronged her (Bukhari). "I call Allah to witness that you have angered me." A burial at night and a hidden grave.</p>
+<p>The Sermon of Fadak in the Prophet's mosque. Not speaking to the caliph until she died (Bukhari). "I call Allah to witness that you have angered me." A burial at night and a hidden grave.</p>
 <h4>Her worship</h4>
 <p>She taught us the <b>Tasbih of Fatima</b> after every prayer: 34 Allahu Akbar, 33 Alhamdulillah, 33 Subhanallah.</p>`,
   practice: "Recite the Tasbih of Fatima after every prayer today.",
