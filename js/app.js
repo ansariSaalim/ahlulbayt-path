@@ -20,7 +20,7 @@
 
   /* ---------- theme ---------- */
   const root = document.documentElement;
-  root.dataset.theme = store.get("abp-theme", "dark");
+  root.dataset.theme = store.get("abp-theme", "light");
   $("#themeBtn").addEventListener("click", () => {
     root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
     store.set("abp-theme", root.dataset.theme);
@@ -1053,7 +1053,7 @@
     if (tab === "quran" && !sub) loadSurahList();
     if (sub === "calendar") renderCalendar();
     if (sub === "settings") renderSettings();
-    if (sub === "namaz-guide" && window.NamazGuide) NamazGuide.render();
+    if (sub === "namaz-guide" && window.NamazGuide) { NamazGuide.render(); store.set("abp-gs-ng", 1); markDay(); }
     if (sub === "qa") renderQA();
     if (sub === "favs") renderFavs();
     if (sub === "today") renderToday();
@@ -1653,28 +1653,90 @@
   /* ===========================================================
      HOME DASHBOARD
      =========================================================== */
-  const setLast = (h, k, t) => store.set("abp-last", { h, k, t });
+  /* days the user opened something to read, pray or recite: drives the streak */
+  const dayKey = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  function markDay() { const k = dayKey(new Date()), days = store.get("abp-days", []); if (!days.includes(k)) { days.push(k); store.set("abp-days", days.slice(-400)); } }
+  function streaks() {
+    const set = new Set(store.get("abp-days", [])); let cur = 0, best = 0, run = 0;
+    const d = new Date(); if (!set.has(dayKey(d))) d.setDate(d.getDate() - 1);
+    for (const x = new Date(d); set.has(dayKey(x)); x.setDate(x.getDate() - 1)) cur++;
+    [...set].sort().forEach((k, i, a) => { const prev = i && new Date(a[i - 1] + "T12:00"), now = new Date(k + "T12:00"); run = prev && (now - prev) / 864e5 < 1.5 ? run + 1 : 1; best = Math.max(best, run); });
+    return { set, cur, best: Math.max(best, cur), total: set.size };
+  }
+  const setLast = (h, k, t) => { store.set("abp-last", { h, k, t }); markDay(); };
   let homeTimer = null;
+  const AYAT = [
+    ["رَّبِّ زِدْنِي عِلْمًا", "My Lord, increase me in knowledge.", "20:114"],
+    ["أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ", "Surely, in the remembrance of Allah do hearts find rest.", "13:28"],
+    ["إِنَّ مَعَ الْعُسْرِ يُسْرًا", "Indeed, with hardship comes ease.", "94:6"],
+    ["فَاذْكُرُونِي أَذْكُرْكُمْ", "So remember Me; I will remember you.", "2:152"],
+    ["وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ", "Whoever puts his trust in Allah, He is enough for him.", "65:3"],
+    ["لَا تَقْنَطُوا مِن رَّحْمَةِ اللَّهِ", "Do not despair of the mercy of Allah.", "39:53"],
+    ["لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا", "Allah does not burden a soul beyond what it can bear.", "2:286"],
+    ["إِنَّ اللَّهَ مَعَ الصَّابِرِينَ", "Indeed, Allah is with the patient.", "2:153"],
+    ["قُل لَّا أَسْأَلُكُمْ عَلَيْهِ أَجْرًا إِلَّا الْمَوَدَّةَ فِي الْقُرْبَىٰ", "Say: I ask of you no reward for it except love for my near relatives.", "42:23"],
+    ["إِنَّ أَكْرَمَكُمْ عِندَ اللَّهِ أَتْقَاكُمْ", "The most noble of you with Allah is the most God-conscious of you.", "49:13"]
+  ];
+  const PIC = {
+    fajr: '<path d="M4 18h16M7 18a5 5 0 0 1 10 0M12 4v5m-2.5-2.5L12 4l2.5 2.5"/>',
+    sunrise: '<path d="M4 18h16M7 18a5 5 0 0 1 10 0M12 7v2M5.6 11.6l1.4 1.4M18.4 11.6 17 13"/>',
+    dhuhr: '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.5 1.5M17.2 17.2l1.5 1.5M5.3 18.7l1.5-1.5M17.2 6.8l1.5-1.5"/>',
+    maghrib: '<path d="M4 18h16M7 18a5 5 0 0 1 10 0M12 4v5m-2.5-2.5L12 9l2.5-2.5"/>',
+    midnight: '<path d="M19 14.5A7.5 7.5 0 0 1 9.5 5a7.5 7.5 0 1 0 9.5 9.5z"/><path d="M18 3v3M16.5 4.5h3"/>'
+  };
+  const pico = k => `<svg viewBox="0 0 24 24">${PIC[k]}</svg>`;
   function renderHome() {
-    const h = hijri(new Date()), ev = upcomingEvents(60)[0];
-    $("#hdToday").outerHTML = `<a class="hd-today" id="hdToday" href="#/s/today"><div>${h ? `<p class="ht-h" dir="rtl" lang="ar">${h.d} ${HM_AR[h.m - 1]} ${h.y}</p><p class="ht-g">${h.d} ${HM[h.m - 1]} ${h.y} · ${new Date().toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" })}</p>` : `<p class="ht-g">${new Date().toDateString()}</p>`}</div>
-      ${ev ? `<div class="ht-ev"><small>${inDays(ev.i)}</small><b>${esc(ev.e[2])}</b></div>` : ""}</a>`;
+    const now = new Date(), h = hijri(now), ev = upcomingEvents(60)[0], p = dailyPearl(now);
+    const doy = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 864e5);
+    /* 1. sheet: name + pearl */
+    $("#hmSheet").innerHTML = `<div class="hm-grab"></div><div class="hm-brand"><span class="hm-logo"><svg viewBox="0 0 100 100"><g><rect x="22" y="22" width="56" height="56"/><rect x="22" y="22" width="56" height="56" transform="rotate(45 50 50)"/></g><circle cx="50" cy="50" r="12"/></svg></span><b>Shia Path.</b></div>
+      <p class="hm-quote">“${esc(p.q)}” <a href="#/s/pearls">${esc(p.who)}</a></p>`;
+    /* 2. prayer times */
     const loc = getLoc();
     if (loc) {
-      const nx = nextPrayer(loc);
-      $("#hdNext").innerHTML = nx ? `<a class="np" href="#/prayer"><div class="np-l"><small>Next · ${esc(loc.name)}</small><b>${nx.name}</b></div><div><div class="np-t">${fmtH(nx.h)}</div><div class="np-in">${countdown(nx.ts - Date.now())}</div></div></a>` : "";
-    } else $("#hdNext").innerHTML = `<a class="np-set" href="#/prayer">Set your location for prayer times & Qibla →</a>`;
-    $("#hdTiles").innerHTML = [
-      tile("#/prayer", "clock", "Prayer times", "green"), tile("#qibla", "compass", "Qibla", "green"), tile("#/quran", "book", "Qur'an"), tile("#/duas", "hands", "Duas"),
-      tile("#tasbih", "beads", "Tasbih"), tile("#rakat", "count", "Rak'at counter", "green"), tile("#/s/calendar", "cal", "Calendar"), tile("#/s/namaz-guide", "pray", "How to pray", "green"),
-      tile("#/s/stories", "scroll", "Stories"), tile("#/s/karbala", "flag", "Karbala", "red"), tile("#/s/abbas", "flag", "Moula Abbas", "green"), tile("#/s/haq", "scale", "Fatima's Haq"),
-      tile("#/s/masumin", "star", "14 Ma'sumin"), tile("#/s/qa", "qa", "Q&A", "green"), tile("#/s/pearls", "gem", "Pearls"), tile("#/s/support", "heart", "Support", "green")
-    ].join("");
+      const nx = nextPrayer(loc), t = dayTimes(loc, 0).hours;
+      const order = [["fajr", "Fajr"], ["sunrise", "Sunrise"], ["dhuhr", "Zuhr"], ["maghrib", "Maghrib"], ["midnight", "Midnight"]];
+      const short = { fajr: "Fajr", sunrise: "Sunrise", dhuhr: "Zuhr", maghrib: "Maghrib", midnight: "Midnight" };
+      $("#hmPrayer").innerHTML = `<div class="hm-row"><span class="hm-label">Prayer times</span><a class="hm-chip" href="#/s/settings">${ico("compass")}${esc(loc.name)} ›</a></div>
+        ${nx ? `<a class="hm-next" href="#/prayer"><span class="hm-nico">${pico(nx.k)}</span><span class="hm-nl"><small class="hm-in">Next · ${countdown(nx.ts - Date.now())}</small><b>${short[nx.k]}</b></span><span class="hm-nt">${fmtH(nx.h)}</span></a>` : ""}
+        <div class="hm-times">${order.map(([k, n]) => `<a href="#/prayer" class="${nx && nx.k === k ? "on" : ""}">${pico(k)}<span>${n}</span><b>${fmtH(t[k]).replace(/\s?[AP]M/i, "")}</b></a>`).join("")}</div>`;
+    } else $("#hmPrayer").innerHTML = `<div class="hm-row"><span class="hm-label">Prayer times</span></div><p class="hm-sub">Set your location to see today's prayer times and the Qibla.</p><a class="hm-btn" href="#/prayer">Set location <span>→</span></a>`;
+    /* 3. continue */
     const last = store.get("abp-last", null);
     $("#hdContinue").innerHTML = last ? `<a class="cont" href="${last.h}"><div><small>Continue · ${esc(last.k)}</small><b>${esc(last.t)}</b></div><span class="ca">›</span></a>` : "";
-    const p = dailyPearl(new Date());
-    $("#hdPearl").innerHTML = `<div class="pearl-feature"><p class="pf-label">Pearl of the day</p><blockquote>“${esc(p.q)}”</blockquote><cite>${esc(p.who)} · ${esc(p.src)}</cite><br><a href="#/s/pearls" style="display:inline-block;margin-top:.8rem;font-size:.82rem;color:var(--gold)">More pearls ›</a></div>`;
-    clearInterval(homeTimer); homeTimer = setInterval(() => { if (screenHash === "#/home" && getLoc()) { const nx = nextPrayer(getLoc()); const el = $("#hdNext .np-in"); if (nx && el) el.textContent = countdown(nx.ts - Date.now()); } }, 30000);
+    /* 4. streak */
+    const st = streaks(), week = [...Array(7)].map((_, i) => { const d = new Date(now); d.setDate(d.getDate() - 6 + i); return d; });
+    $("#hmStreak").innerHTML = `<div class="hm-row"><div><h3>${st.cur ? `${st.cur}-day streak` : "Start a daily streak"}</h3><p class="hm-sub">${st.cur ? "Keep it going: read, pray or recite something today." : "Open a story, a lesson, the Qur'an or a du'a for a few minutes to begin."}</p></div></div>
+      <div class="hm-week">${week.map((d, i) => `<span class="${st.set.has(dayKey(d)) ? "done" : ""} ${i === 6 ? "today" : ""}"><small>${d.toLocaleDateString(undefined, { weekday: "narrow" })}</small><b>${d.getDate()}</b></span>`).join("")}</div>
+      <div class="hm-stats"><div>${ico("scroll")}<b>${readSet.size}</b><span>Stories read</span></div><div>${ico("cap")}<b>${doneLessons.size}</b><span>Lessons done</span></div><div>${ico("star")}<b>${st.best}</b><span>Best streak</span></div></div>`;
+    /* 5. grid */
+    const card = (kicker, title, sub, icon, href, btn) => `<a class="hm-tile" href="${href}"><small>${kicker}</small><b>${title}</b><span class="hm-ts">${sub}</span><span class="hm-art">${ico(icon)}</span><span class="hm-btn">${btn} <span>→</span></span></a>`;
+    $("#hmGrid").innerHTML = card("Holy Qur'an", "Qur'an", "Arabic, mushaf style", "book", "#/quran", "Start reading")
+      + card("Recite", "Du'as & Ziyarat", "Mafatih & Sahifa, offline", "hands", "#/duas", "Recite")
+      + card("Calendar", h ? `${h.d} ${HM[h.m - 1]}` : "Shia calendar", ev ? `${esc(ev.e[2])} · ${inDays(ev.i)}` : "Occasions of the year", "cal", "#/s/calendar", "Open")
+      + card("Namaz", "How to pray", "Wudu, every prayer, step by step", "pray", "#/s/namaz-guide", "Learn");
+    /* 6. getting started */
+    if (!store.get("abp-gs-off", 0)) {
+      const steps = [[!!loc, "Set your location", "For prayer times, Qibla and reminders.", "#/prayer"],
+        [!!store.get("abp-gs-ng", 0), "Learn how to pray", "Open the Namaz guide: wudu and every prayer, step by step.", "#/s/namaz-guide"],
+        [favs().length > 0, "Save something you love", "Tap the star on any pearl, du'a or answer.", "#/s/pearls"]];
+      const done = steps.filter(x => x[0]).length;
+      $("#hmStart").hidden = done === 3;
+      $("#hmStart").innerHTML = `<button class="hm-x" id="hmX" aria-label="Hide">×</button><h3>Getting started</h3><p class="hm-sub">Three small steps to get comfortable.</p>
+        <div class="hm-prog"><i style="width:${done / 3 * 100}%"></i></div><p class="hm-pc">${done} of 3 done</p>
+        <ol class="hm-steps">${steps.map(x => `<li class="${x[0] ? "done" : ""}"><a href="${x[3]}"><i></i><span><b>${x[1]}</b><small>${x[2]}</small></span></a></li>`).join("")}</ol>`;
+      $("#hmX").onclick = () => { store.set("abp-gs-off", 1); $("#hmStart").hidden = true; };
+    } else $("#hmStart").hidden = true;
+    /* 7. ayah of the day */
+    const a = AYAT[doy % AYAT.length];
+    $("#hmAyah").innerHTML = `<p class="hm-label">❝ Ayah of the day</p><p class="hm-ar" dir="rtl" lang="ar">${a[0]}</p><p class="hm-en">${a[1]}</p><a href="#quran/${a[2]}">Qur'an ${a[2]}</a>`;
+    /* 8. explore */
+    $("#hdTiles").innerHTML = [
+      tile("#tasbih", "beads", "Tasbih"), tile("#qibla", "compass", "Qibla", "green"), tile("#rakat", "count", "Rak'at counter", "green"), tile("#/s/stories", "scroll", "Stories"),
+      tile("#/s/karbala", "flag", "Karbala", "red"), tile("#/s/abbas", "flag", "Moula Abbas", "green"), tile("#/s/haq", "scale", "Fatima's Haq"), tile("#/s/masumin", "star", "14 Ma'sumin"),
+      tile("#/s/qa", "qa", "Q&A", "green"), tile("#/s/pearls", "gem", "Pearls"), tile("#/s/favs", "star", "Saved"), tile("#/s/support", "heart", "Support", "green")
+    ].join("");
+    clearInterval(homeTimer); homeTimer = setInterval(() => { if (screenHash === "#/home" && getLoc()) { const nx = nextPrayer(getLoc()); const el = $("#hmPrayer .hm-in"); if (nx && el) el.textContent = "Next · " + countdown(nx.ts - Date.now()); } }, 30000);
   }
   function renderLearnTiles() {
     $("#learnTiles").innerHTML = [
