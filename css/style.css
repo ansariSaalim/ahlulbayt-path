@@ -1702,3 +1702,22 @@ html.is-app [data-install] { display: none !important; }
 .toast { bottom: calc(var(--tab) + 1.4rem + env(safe-area-inset-bottom)); }
 .pt-card { min-width: 0; }
 .qb-chips { max-width: 100%; }
+
+/* ===========================================================
+   CALMER FRONT (Musafir)
+   =========================================================== */
+.hero h1, .hero .hero-cta { display: none; }
+.hero { padding: 2.2rem 0 3.4rem; }
+.hero-trans { margin-bottom: .2rem; }
+[data-theme="light"] .hero { background: linear-gradient(165deg, #e8d3a8 0%, #c79a55 55%, #8c6430 100%); }
+[data-theme="light"] .hero-bg:not(.has-img) { background: radial-gradient(ellipse at 30% 0%, rgba(255,250,235,.55), transparent 60%); }
+[data-theme="light"] .hero-bg.has-img::after { background: linear-gradient(180deg, rgba(60,40,15,.35), rgba(60,40,15,.55)); }
+[data-theme="light"] .hero-star { color: rgba(255,248,230,.35); }
+[data-theme="light"] .hero-ayah { color: #fffaf0; text-shadow: 0 2px 14px rgba(70,45,10,.45); }
+[data-theme="light"] .hero-trans { color: #fffaf0; text-shadow: 0 1px 8px rgba(70,45,10,.4); }
+[data-theme="light"] .hero-trans span { color: #fff1cf; }
+/* the name, in an elegant serif */
+.hm-brand b, .brand em { font-family: "Cormorant Garamond", Georgia, serif !important; font-style: italic; font-weight: 600; letter-spacing: 0; }
+.hm-brand b { font-size: 3rem; }
+.hm-tag { margin-top: .35rem; font-size: .9rem; color: var(--muted); }
+.hm-tag span { font-family: var(--arabic); font-size: 1.15rem; color: var(--gold); }

@@ -1,5 +1,5 @@
 /* ===========================================================
-   Shia Path — interactions
+   Musafir — interactions
    =========================================================== */
 (() => {
   "use strict";
@@ -350,7 +350,7 @@
     rScroll.scrollTop = 0;
     reader.classList.add("open"); reader.setAttribute("aria-hidden", "false");
     document.body.classList.add("locked");
-    document.title = s.title + " · Shia Path";
+    document.title = s.title + " · Musafir";
     setLast("#story/" + id, "Story", s.title);
     setTimeout(() => $(".reader-close").focus({ preventScroll: true }), 50);
   }
@@ -365,7 +365,7 @@
     rScroll.scrollTop = 0;
     reader.classList.add("open"); reader.setAttribute("aria-hidden", "false");
     document.body.classList.add("locked");
-    document.title = title + " · Shia Path";
+    document.title = title + " · Musafir";
   }
   function openChapter(eraId) {
     const e = eraById[eraId]; if (!e) return;
@@ -401,13 +401,13 @@
     rScroll.scrollTop = 0;
     reader.classList.add("open"); reader.setAttribute("aria-hidden", "false");
     document.body.classList.add("locked");
-    document.title = e.name + " · Shia Path";
+    document.title = e.name + " · Musafir";
   }
   function closeStory(fromHash) {
     if (!reader.classList.contains("open")) return;
     reader.classList.remove("open"); reader.setAttribute("aria-hidden", "true");
     document.body.classList.remove("locked");
-    document.title = "Shia Path · Prayer, Qur'an, Du'as & History for Every Shia Muslim";
+    document.title = "Musafir · Prayer, Qur\'an, Du\'as & the History of Islam";
     currentId = null;
     if (!fromHash && /^#(story|chapter|learn|lesson|imam|quran|lib)\//.test(location.hash)) history.replaceState(history.state, "", location.pathname + location.search + (screenHash || "#/home"));
     if (typeof stopQuran === "function") stopQuran();
@@ -992,7 +992,7 @@
     const activeTab = sub ? (PARENT[sub] || "learn") : tab;
     $$("#tabbar a").forEach(a => a.classList.toggle("on", a.dataset.tab === activeTab));
     if (changed) window.scrollTo(0, scrollMem[screenHash] || 0);
-    document.title = (sub ? SUB_TITLES[sub] : TAB_TITLES[tab]) + " · Shia Path";
+    document.title = (sub ? SUB_TITLES[sub] : TAB_TITLES[tab]) + " · Musafir";
     onScreen(tab, sub);
     setTimeout(measure, 50);
   }
@@ -1542,7 +1542,7 @@
       const ms = t.ts[k] - now;
       if (ms > 0 && ms < 864e5) remTimers.push(setTimeout(() => {
         const body = `It is time for ${n} in ${loc.name}.`;
-        navigator.serviceWorker && navigator.serviceWorker.ready.then(r => r.showNotification(n + " · Shia Path", { body, icon: "icons/icon-192.png", badge: "icons/icon-192.png", tag: "prayer-" + k })).catch(() => new Notification(n, { body }));
+        navigator.serviceWorker && navigator.serviceWorker.ready.then(r => r.showNotification(n + " · Musafir", { body, icon: "icons/icon-192.png", badge: "icons/icon-192.png", tag: "prayer-" + k })).catch(() => new Notification(n, { body }));
       }, ms));
     }); });
   }
@@ -1726,7 +1726,7 @@
     const now = new Date(), h = hijri(now), ev = upcomingEvents(60)[0], p = dailyPearl(now);
     const doy = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 864e5);
     /* 1. sheet: name + pearl */
-    $("#hmSheet").innerHTML = `<div class="hm-grab"></div><div class="hm-brand"><span class="hm-logo"><svg viewBox="0 0 100 100"><g><rect x="22" y="22" width="56" height="56"/><rect x="22" y="22" width="56" height="56" transform="rotate(45 50 50)"/></g><circle cx="50" cy="50" r="12"/></svg></span><b>Shia Path.</b></div>
+    $("#hmSheet").innerHTML = `<div class="hm-grab"></div><div class="hm-brand"><span class="hm-logo"><svg viewBox="0 0 100 100"><g><rect x="22" y="22" width="56" height="56"/><rect x="22" y="22" width="56" height="56" transform="rotate(45 50 50)"/></g><circle cx="50" cy="50" r="12"/></svg></span><b>Musafir.</b></div><p class="hm-tag"><span dir="rtl" lang="ar">مُسَافِر</span> · a traveller on the path of the Ahl al-Bayt</p>
       <p class="hm-quote">“${esc(p.q)}” <a href="#/s/pearls">${esc(p.who)}</a></p>`;
     /* 2. prayer times */
     const loc = getLoc();

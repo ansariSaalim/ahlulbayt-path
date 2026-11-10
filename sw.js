@@ -1,6 +1,6 @@
-/* Shia Path: offline support */
-const VERSION = "abp-v42";
-const CORE = ["./", "index.html", "css/style.css?v=42", "js/data.js?v=42", "js/course.js?v=42", "js/pearls-nahj.js?v=42", "js/lives.js?v=42", "js/qa.js?v=42", "js/lib-index.js?v=42", "js/namaz.js?v=42", "js/support.js?v=42", "js/sources.js?v=42", "js/year.js?v=42", "js/app.js?v=42",
+/* Musafir: offline support */
+const VERSION = "abp-v43";
+const CORE = ["./", "index.html", "css/style.css?v=43", "js/data.js?v=43", "js/course.js?v=43", "js/pearls-nahj.js?v=43", "js/lives.js?v=43", "js/qa.js?v=43", "js/lib-index.js?v=43", "js/namaz.js?v=43", "js/support.js?v=43", "js/sources.js?v=43", "js/year.js?v=43", "js/app.js?v=43",
   "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png"];
 const RUNTIME = "abp-runtime";
 

@@ -1,5 +1,5 @@
 /* =========================================================
-   Shia Path — content
+   Musafir — content
    The history of Islam as narrated by the Ahl al-Bayt and
    their followers, with proofs from Sunni books too.
    ========================================================= */
