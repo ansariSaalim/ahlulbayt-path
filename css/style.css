@@ -1721,3 +1721,34 @@ html.is-app [data-install] { display: none !important; }
 .hm-brand b { font-size: 3rem; }
 .hm-tag { margin-top: .35rem; font-size: .9rem; color: var(--muted); }
 .hm-tag span { font-family: var(--arabic); font-size: 1.15rem; color: var(--gold); }
+
+/* ===========================================================
+   DU'A & ZIYARAT READER: framed, mushaf-style page
+   =========================================================== */
+.reader.is-lib .r-hero { min-height: 200px; }
+.reader.is-lib .r-hero-img { animation: none; background:
+  radial-gradient(circle at 50% 120%, color-mix(in srgb, var(--gold) 22%, transparent), transparent 60%),
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23c9a24a' stroke-opacity='.14'%3E%3Crect x='22' y='22' width='36' height='36'/%3E%3Crect x='22' y='22' width='36' height='36' transform='rotate(45 40 40)'/%3E%3C/g%3E%3C/svg%3E") !important; }
+.reader.is-lib .r-hero h2 { font-size: clamp(1.8rem, 6.5vw, 2.6rem); }
+.reader.is-lib .r-body { padding-bottom: 7.5rem; }
+.lib-frame { margin-top: .4rem; }
+.lib-page { font-family: var(--quran); font-size: calc(1.55rem * var(--ar, 1)); line-height: 2.45; text-align: justify; text-align-last: right; word-spacing: .03em; color: var(--text); }
+.lib-page p { margin: 0 0 .9rem; padding: 0; border: 0; }
+.lib-page p:last-child { margin-bottom: 0; }
+.lib-mark { display: inline-block; width: .9em; height: .9em; vertical-align: -.05em; margin: 0 .15em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cg fill='none' stroke='%23c9a24a' stroke-width='2'%3E%3Crect x='9' y='9' width='22' height='22' rx='2'/%3E%3Crect x='9' y='9' width='22' height='22' rx='2' transform='rotate(45 20 20)'/%3E%3C/g%3E%3Ccircle cx='20' cy='20' r='3' fill='%23c9a24a'/%3E%3C/svg%3E") center/contain no-repeat; }
+.lib-src { text-align: center; margin-top: 1rem; }
+.lib-player { gap: .2rem; padding: .4rem .5rem; }
+.lib-player button { width: 46px; height: 46px; }
+.lib-player b { font-size: 1.05rem; color: var(--gold); }
+.lib-player svg { fill: none !important; stroke: var(--gold); stroke-width: 1.7; }
+.lib-player .fav { border: 0; }
+.lib-player .fav svg { width: 21px; height: 21px; }
+.lib-pct { min-width: 3.2rem; text-align: center; font-size: .85rem; font-weight: 700; color: var(--muted); padding-right: .4rem; }
+/* tighter reader header on phones for every text */
+@media (max-width: 700px) {
+  .r-hero { min-height: 250px; }
+  .reader.is-lib .r-hero, .reader.is-quran .r-hero { min-height: 190px; }
+  .r-hero-text { padding-top: 1.2rem; padding-bottom: .9rem; }
+  .r-back { margin-top: .5rem; padding: .3rem .8rem; font-size: .76rem; }
+}

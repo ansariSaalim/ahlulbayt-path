@@ -355,7 +355,7 @@
     setTimeout(() => $(".reader-close").focus({ preventScroll: true }), 50);
   }
   function setMode(mode) {
-    reader.classList.remove("is-quran"); const qp = $("#qPlayer"); if (qp) qp.hidden = true; const qs = $("#qSheet"); if (qs) qs.hidden = true;
+    reader.classList.remove("is-quran", "is-lib"); const qp = $("#qPlayer"); if (qp) qp.hidden = true; const qs = $("#qSheet"); if (qs) qs.hidden = true; const lp = $("#libPlayer"); if (lp) lp.hidden = true;
     $("#rChapter").hidden = mode !== "chapter";
     $("#rStory").hidden = mode !== "story";
     $("#rLessonView").hidden = mode !== "lesson";
@@ -1158,16 +1158,24 @@
     let data;
     try { data = await libData(cid); } catch { $("#rLessonView").innerHTML = `<p class="q-err">Could not load this text. Check your internet connection and try again. Once opened, it stays available offline.</p>`; return; }
     const x = data.items.find(y => y.id === id); if (!x) return;
-    $("#rLessonView").innerHTML = `<div class="lib-bar"><button class="lib-btn" id="libSize">Aa</button><button class="lib-btn" id="libCopy">Copy</button>${favBtn("l:" + cid + "/" + id)}</div>
-      <div class="lib-text" dir="rtl" lang="ar">${x.p.map(t => `<p>${esc(t)}</p>`).join("")}</div>
+    const AR_CAT = { daily: "أَعْمَالُ كُلِّ يَوْم", taqibat: "تَعْقِيبَاتُ الصَّلَاة", duas: "الْأَدْعِيَة", ziyarat: "الزِّيَارَات", munajat: "الْمُنَاجَاة", months: "أَعْمَالُ الشُّهُور", sahifa: "الصَّحِيفَةُ السَّجَّادِيَّة" };
+    reader.classList.add("is-lib");
+    const band = c.arTitle ? it[2] : (AR_CAT[cid] || "");
+    const mark = `<span class="lib-mark" aria-hidden="true"></span>`;
+    $("#rLessonView").innerHTML = `<div class="q-frame lib-frame">${band ? `<div class="q-band"><span dir="rtl" lang="ar">${esc(band)}</span></div>` : ""}
+        <div class="lib-text lib-page" dir="rtl" lang="ar">${x.p.map(t => `<p>${esc(t)} ${mark}</p>`).join("")}</div></div>
       <p class="note-small lib-src">Arabic text: ${esc(data.src)}.</p>
       <nav class="r-nav">
         <button class="r-nav-btn" ${prev ? "" : "disabled"} onclick="location.hash='lib/${cid}/${prev ? prev[0] : ""}'"><small>Previous</small><span>${prev ? esc(prev[1]) : ""}</span></button>
         <button class="r-nav-btn" ${next ? "" : "disabled"} onclick="location.hash='lib/${cid}/${next ? next[0] : ""}'"><small>Next</small><span>${next ? esc(next[1]) : ""}</span></button>
       </nav>`;
+    const lp = $("#libPlayer");
+    lp.innerHTML = `<button id="libSize" aria-label="Text size"><b>Aa</b></button><button id="libCopy" aria-label="Copy"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2" fill="none"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3" fill="none"/></svg></button>${favBtn("l:" + cid + "/" + id)}<span class="lib-pct" id="libPct">0%</span>`;
+    lp.hidden = false;
     $("#libSize").onclick = () => { const steps = [90, 100, 115, 130, 150], cur = store.get("abp-ar", 100), nx = steps[(steps.findIndex(v => v >= cur) + 1) % steps.length]; store.set("abp-ar", nx); applyArScale(); toast(`Arabic size ${nx}%`); };
     $("#libCopy").onclick = () => (navigator.clipboard ? navigator.clipboard.writeText(it[1] + "\n\n" + x.p.join("\n\n")) : Promise.reject()).then(() => toast("Copied"), () => toast("Copy not available"));
   }
+  rScroll.addEventListener("scroll", () => { const p = $("#libPct"); if (!p || !reader.classList.contains("is-lib")) return; const max = rScroll.scrollHeight - rScroll.clientHeight; p.textContent = Math.round(max > 0 ? rScroll.scrollTop / max * 100 : 0) + "%"; }, { passive: true });
 
   /* ---------- favourites ---------- */
   var STAR = '<svg viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.7 6.3.9-4.6 4.4 1.1 6.2L12 17l-5.6 3 1.1-6.2-4.6-4.4 6.3-.9z"/></svg>';
