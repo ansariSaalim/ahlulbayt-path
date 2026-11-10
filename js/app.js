@@ -20,11 +20,17 @@
 
   /* ---------- theme ---------- */
   const root = document.documentElement;
-  root.dataset.theme = store.get("abp-theme", "light");
-  $("#themeBtn").addEventListener("click", () => {
-    root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
-    store.set("abp-theme", root.dataset.theme);
-  });
+  /* three looks: Paper (warm), White, Dark. White is the light theme with a neutral tone. */
+  function applyTheme(v) {
+    if (!["light", "white", "dark"].includes(v)) v = "light";
+    root.dataset.theme = v === "dark" ? "dark" : "light";
+    if (v === "white") root.dataset.tone = "white"; else delete root.dataset.tone;
+    store.set("abp-theme", v); if (v !== "dark") store.set("abp-theme-light", v);
+    document.querySelectorAll("#setTheme .tp").forEach(b => { b.classList.toggle("on", b.dataset.v === v); b.setAttribute("aria-checked", b.dataset.v === v); });
+    const mc = document.querySelector('meta[name="theme-color"]'); if (mc) mc.content = v === "dark" ? "#0d1714" : v === "white" ? "#ffffff" : "#fbf8f2";
+  }
+  applyTheme(store.get("abp-theme", "light"));
+  $("#themeBtn").addEventListener("click", () => applyTheme(root.dataset.theme === "dark" ? store.get("abp-theme-light", "light") : "dark"));
 
   /* ---------- toast ---------- */
   let toastT;
@@ -962,7 +968,7 @@
   /* ===========================================================
      APP SHELL: tabs, screens, back
      =========================================================== */
-  const TAB_TITLES = { home: "Home", prayer: "Prayer", quran: "The Holy Qur'an", duas: "Duas & Ziyarat", learn: "Learn" };
+  const TAB_TITLES = { home: "Home", prayer: "Prayer", prepare: "Preparing", quran: "The Holy Qur'an", duas: "Duas & Ziyarat", learn: "Learn" };
   const SUB_TITLES = { proofs: "The Proofs", timeline: "Timeline", stories: "Stories", battles: "Battles of Imam Ali", haq: "Fatima's Haq", karbala: "Karbala", abbas: "Moula Abbas", rulers: "The Caliphs", wronged: "Who Wronged Them", masumin: "The 14 Ma'sumin", lessons: "Lessons of the Fourteen", pearls: "Divine Pearls", companions: "Companions", dates: "Key Dates", reading: "Books", calendar: "Shia Calendar", settings: "Settings", "namaz-guide": "How to Pray", qa: "Q & A", favs: "Favourites", today: "Today", support: "Support & Charity" };
   const PARENT = { calendar: "home", settings: "home", "namaz-guide": "prayer", favs: "home", today: "home", support: "home" };
   const allSections = $$("section[data-screen]");
@@ -1058,7 +1064,8 @@
     if (sub === "favs") renderFavs();
     if (sub === "today") renderToday();
     if (sub === "support") renderSupport();
-    if (tab === "duas" && !sub) renderLibHome();
+    if (tab === "duas" && !sub) { renderLibHome(); renderStreaks(); }
+    if (tab === "prepare" && !sub) renderPrepare();
     if (sub === "timeline") tlProgress();
   }
 
@@ -1407,11 +1414,34 @@
   }
   document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") autoLocate(); });
 
-  /* ---------- qibla ---------- */
+  /* ---------- qibla & shrine compass ---------- */
   const KAABA = [21.4225, 39.8262];
-  function qiblaBearing(lat, lng) {
-    const p1 = lat * D2R, p2 = KAABA[0] * D2R, dl = (KAABA[1] - lng) * D2R;
+  const QTARGETS = [
+    ["qibla", "Qibla", "The Ka'ba, Mecca", 21.4225, 39.8262, ""],
+    ["karbala", "Karbala", "Imam al-Husayn (AS)", 32.6164, 44.0324, "#lib/ziyarat/warith"],
+    ["najaf", "Najaf", "Imam Ali (AS)", 31.9961, 44.3148, "#lib/ziyarat/amin-allah"],
+    ["madinah", "Madinah", "The Prophet ﷺ and al-Baqi'", 24.4672, 39.6111, "#lib/ziyarat/prophet-far"],
+    ["mashhad", "Mashhad", "Imam al-Rida (AS)", 36.2878, 59.6158, "#lib/ziyarat/rida"],
+    ["kadhimiya", "Kadhimiya", "Imam al-Kazim & Imam al-Jawad (AS)", 33.3797, 44.3374, "#lib/ziyarat/kazim"],
+    ["samarra", "Samarra", "Imam al-Hadi & Imam al-Askari (AS)", 34.1989, 43.8737, "#lib/ziyarat/askari"],
+    ["qom", "Qom", "Lady Fatima al-Ma'suma (SA)", 34.6416, 50.8790, "#lib/ziyarat/masuma"],
+    ["zaynab", "Damascus", "Lady Zaynab (SA)", 33.4447, 36.3411, ""]
+  ];
+  let qT = QTARGETS.find(t => t[0] === store.get("abp-qtarget", "qibla")) || QTARGETS[0];
+  function bearingTo(lat, lng, tlat, tlng) {
+    const p1 = lat * D2R, p2 = tlat * D2R, dl = (tlng - lng) * D2R;
     return (Math.atan2(Math.sin(dl), Math.cos(p1) * Math.tan(p2) - Math.sin(p1) * Math.cos(dl)) / D2R + 360) % 360;
+  }
+  function qiblaBearing(lat, lng) { return bearingTo(lat, lng, qT[3], qT[4]); }
+  const KAABA_SVG = $("#qbNeedle .qb-kaaba") ? $("#qbNeedle .qb-kaaba").outerHTML : "";
+  const DOME_SVG = `<svg viewBox="0 0 64 64" class="qb-kaaba qb-dome" aria-label="Shrine"><path d="M12 54h40v4H12z" fill="#a97c2a"/><path d="M16 54V38h32v16z" fill="#e9c46a"/><path d="M14 38c0-11 8-19 18-21 10 2 18 10 18 21z" fill="#2f9e6e"/><path d="M32 6v11" stroke="#d4a94f" stroke-width="2.4"/><circle cx="32" cy="6" r="2.6" fill="#d4a94f"/><path d="M28 54v-8a4 4 0 0 1 8 0v8z" fill="#7a5718"/><path d="M6 58V30h5v28zM53 58V30h5v28z" fill="#d4a94f"/></svg>`;
+  function drawQChips() {
+    const box = $("#qbChips"); if (!box) return;
+    box.innerHTML = QTARGETS.map(t => `<button class="${t[0] === qT[0] ? "on" : ""}" data-qt="${t[0]}">${t[1]}</button>`).join("");
+    $$("#qbChips button").forEach(b => b.onclick = () => { qT = QTARGETS.find(t => t[0] === b.dataset.qt); store.set("abp-qtarget", qT[0]); wasAligned = false; drawQChips(); updateQibla(); });
+    $("#qbTitle").textContent = qT[0] === "qibla" ? "Qibla" : "Towards " + qT[1];
+    const mk = $("#qbNeedle .qb-kaaba"); if (mk) mk.outerHTML = qT[0] === "qibla" ? KAABA_SVG : DOME_SVG;
+    $("#qbZy").innerHTML = qT[5] ? `${esc(qT[2])} · <a href="${qT[5]}">Recite the ziyarat facing it →</a>` : qT[0] === "qibla" ? "" : esc(qT[2]);
   }
   let heading = null, compassOn = false;
   let wasAligned = false, smooth = null, roseDeg = 0, needleDeg = 0;
@@ -1424,7 +1454,7 @@
     if (heading == null) {
       roseDeg = nearAngle(roseDeg, 0); needleDeg = nearAngle(needleDeg, b);
       rose.style.transform = `rotate(${roseDeg}deg)`; needle.style.setProperty("--r", needleDeg + "deg"); dial.classList.remove("aligned");
-      $("#qbInfo").innerHTML = `Qibla is <b>${b.toFixed(0)}°</b> from North (clockwise) at ${esc(loc.name)}.`; return;
+      $("#qbInfo").innerHTML = `${qT[0] === "qibla" ? "Qibla" : esc(qT[1])} is <b>${b.toFixed(0)}°</b> from North (clockwise) at ${esc(loc.name)} · ${Math.round(distKm(loc.lat, loc.lng, qT[3], qT[4])).toLocaleString()} km away.`; return;
     }
     const rel = ((b - heading) % 360 + 360) % 360;
     /* the letters turn against the phone; the Ka'ba needle points to the Qibla relative to the top of the phone */
@@ -1432,7 +1462,8 @@
     rose.style.transform = `rotate(${roseDeg}deg)`; needle.style.setProperty("--r", needleDeg + "deg");
     const diff = Math.abs(((rel + 180) % 360) - 180), aligned = diff < 5;
     dial.classList.toggle("aligned", aligned);
-    $("#qbInfo").innerHTML = aligned ? `<b style="color:#2fbf86">You are facing the Qibla</b>` : `Turn ${rel < 180 ? "right" : "left"} until the Ka'ba reaches the top · ${diff.toFixed(0)}° away<br><small>Qibla is ${b.toFixed(0)}° from North at ${esc(loc.name)}</small>`;
+    const tgt = qT[0] === "qibla" ? "the Qibla" : esc(qT[1]), mark = qT[0] === "qibla" ? "the Ka'ba" : esc(qT[1]);
+    $("#qbInfo").innerHTML = aligned ? `<b style="color:#2fbf86">You are facing ${tgt}</b>` : `Turn ${rel < 180 ? "right" : "left"} until ${mark} reaches the top · ${diff.toFixed(0)}° away<br><small>${qT[0] === "qibla" ? "Qibla" : esc(qT[1])} is ${b.toFixed(0)}° from North · ${Math.round(distKm(loc.lat, loc.lng, qT[3], qT[4])).toLocaleString()} km away</small>`;
     if (aligned && !wasAligned && navigator.vibrate) try { navigator.vibrate([40, 60, 40]); } catch { /* ignore */ }
     wasAligned = aligned;
   }
@@ -1499,6 +1530,11 @@
   function scheduleReminders() {
     if (LN) { nativeSchedule(); return; }
     remTimers.forEach(clearTimeout); remTimers = [];
+    if ("Notification" in window && Notification.permission === "granted") {
+      const nowMs = Date.now();
+      customReminders().forEach(r => { const [hh, mm] = r.t.split(":").map(Number); [0, 1].forEach(off => { const at = new Date(); at.setDate(at.getDate() + off); at.setHours(hh, mm, 0, 0); const ms = at - nowMs;
+        if (ms > 0 && ms < 864e5) remTimers.push(setTimeout(() => { navigator.serviceWorker && navigator.serviceWorker.ready.then(reg => reg.showNotification(r.title, { body: r.body, icon: "icons/icon-192.png", tag: "rem-" + r.title, data: { route: r.route } })).catch(() => {}); }, ms)); }); });
+    }
     const loc = getLoc();
     if (!loc || !store.get("abp-notify", false) || !("Notification" in window) || Notification.permission !== "granted") return;
     const now = Date.now();
@@ -1613,6 +1649,7 @@
           if (ev.length) add(2003 + d * 10, new Date(Y, M, D, 7, 30).getTime(), ev[0][3] === "grief" ? "Today we remember" : "Today we celebrate", ev.map(e => e[2]).join(" · ") + ". Tap to learn more.", ev[0][4] ? "#story/" + ev[0][4] : "#/s/today", "daily2");
           add(2006 + d * 10, new Date(Y, M, D, 20, 30).getTime(), "Learn today: " + st.title, st.summary, "#story/" + st.id, "daily2");
         }
+        customReminders().forEach((r, j) => { const [hh, mm] = r.t.split(":").map(Number); add(3000 + d * 50 + j, new Date(Y, M, D, hh, mm).getTime(), r.title, r.body, r.route, "duas2"); });
       }
       if (list.length) await LN.schedule({ notifications: list });
     } catch (e) { console.warn("schedule", e); }
@@ -1732,7 +1769,7 @@
     $("#hmAyah").innerHTML = `<p class="hm-label">❝ Ayah of the day</p><p class="hm-ar" dir="rtl" lang="ar">${a[0]}</p><p class="hm-en">${a[1]}</p><a href="#quran/${a[2]}">Qur'an ${a[2]}</a>`;
     /* 8. explore */
     $("#hdTiles").innerHTML = [
-      tile("#tasbih", "beads", "Tasbih"), tile("#qibla", "compass", "Qibla", "green"), tile("#rakat", "count", "Rak'at counter", "green"), tile("#/s/stories", "scroll", "Stories"),
+      tile("#tasbih", "beads", "Tasbih"), tile("#qibla", "compass", "Qibla &amp; shrines", "green"), tile("#rakat", "count", "Rak'at counter", "green"), tile("#/s/stories", "scroll", "Stories"),
       tile("#/s/karbala", "flag", "Karbala", "red"), tile("#/s/abbas", "flag", "Moula Abbas", "green"), tile("#/s/haq", "scale", "Fatima's Haq"), tile("#/s/masumin", "star", "14 Ma'sumin"),
       tile("#/s/qa", "qa", "Q&A", "green"), tile("#/s/pearls", "gem", "Pearls"), tile("#/s/favs", "star", "Saved"), tile("#/s/support", "heart", "Support", "green")
     ].join("");
@@ -1742,7 +1779,7 @@
     $("#learnTiles").innerHTML = [
       tile("#/s/stories", "scroll", "Stories"), tile("#/s/timeline", "line", "Timeline"), tile("#/s/proofs", "shield", "Proofs"), tile("#/s/battles", "sword", "Battles"),
       tile("#/s/haq", "scale", "Fatima's Haq"), tile("#/s/karbala", "flag", "Karbala", "red"), tile("#/s/abbas", "flag", "Moula Abbas", "green"), tile("#/s/masumin", "star", "14 Ma'sumin"),
-      tile("#/s/lessons", "lamp", "Lessons"), tile("#/s/pearls", "gem", "Pearls"), tile("#/s/rulers", "crown", "Caliphs"), tile("#/s/wronged", "alert", "Who wronged", "red"),
+      tile("#/s/lessons", "lamp", "Lessons"), tile("#/s/pearls", "gem", "Pearls"), tile("#/s/rulers", "crown", "Caliphs"), tile("#/s/wronged", "alert", "What they endured", "red"),
       tile("#/s/companions", "users", "Companions"), tile("#/s/dates", "cal", "Key dates"), tile("#/s/calendar", "cal", "Calendar"), tile("#/s/reading", "books", "Books"),
       tile("#/s/qa", "qa", "Q&A", "green"), tile("#/s/namaz-guide", "pray", "How to pray", "green"), tile("#/s/favs", "star", "Favourites"), tile("#/s/today", "cal", "Today", "green")
     ].join("");
@@ -1879,7 +1916,7 @@
     $("#setLocNow").textContent = loc ? "Current: " + loc.name : "No location set yet.";
     $("#setCity").innerHTML = `<option value="">Choose…</option>` + CITIES.map((c, i) => `<option value="${i}" ${loc && loc.name === c[0] ? "selected" : ""}>${c[0]}</option>`).join("");
     $("#setAr").value = store.get("abp-ar", 100); $("#setArVal").textContent = store.get("abp-ar", 100) + "%";
-    $("#setTheme").value = root.dataset.theme;
+    applyTheme(store.get("abp-theme", "light"));
     $("#setHijri").value = String(hijriAdj());
     if ($("#setNDuas")) $("#setNDuas").checked = !!store.get("abp-n-duas", true);
     if ($("#setNHadith")) $("#setNHadith").checked = !!store.get("abp-n-hadith", true);
@@ -1890,7 +1927,7 @@
   $("#setGeo").addEventListener("click", useGeo);
   $("#setCity").addEventListener("change", e => { const c = CITIES[+e.target.value]; if (c) { setLoc({ name: c[0], lat: c[1], lng: c[2], tz: c[3] }); toast(c[0] + " set ✓"); } });
   $("#setAr").addEventListener("input", e => { store.set("abp-ar", +e.target.value); $("#setArVal").textContent = e.target.value + "%"; applyArScale(); });
-  $("#setTheme").addEventListener("change", e => { root.dataset.theme = e.target.value; store.set("abp-theme", e.target.value); });
+  $$("#setTheme .tp").forEach(b => b.addEventListener("click", () => applyTheme(b.dataset.v)));
   $("#setHijri").addEventListener("change", e => { store.set("abp-hadj", +e.target.value); renderSettings(); toast("Hijri date adjusted ✓"); });
   async function enableReminders() {
     if (LN) { const ok = await nativeEnable(); if (ok) { renderPrayer(); toast("Reminders on: prayer times and daily du'as"); } return ok; }
@@ -1919,7 +1956,161 @@
     ["abp-read", "abp-lessons", "abp-last", "abp-qlast"].forEach(k => { try { localStorage.removeItem(k); } catch { /* ignore */ } });
     readSet = new Set(); doneLessons = new Set(); refreshEraBars(); renderLearn(); renderStories(); toast("Progress reset");
   });
-  scheduleReminders();
+
+
+  /* ===========================================================
+     PREPARING: daily deeds and letters to the Imam of our time
+     =========================================================== */
+  const DEEDS = [
+    { id: "fajr", t: "Fajr prayer on time", d: "Pray Fajr at its time, with presence of heart.", i: "clock", href: "#/prayer" },
+    { id: "ahd", t: "Du'a al-'Ahd", d: "Renew your pledge to the Imam of our time each morning.", i: "hands", href: "#lib/daily/ahd", btn: "Recite" },
+    { id: "tasbih", t: "Tasbih of Lady Fatima (SA)", d: "34 Allahu Akbar, 33 Alhamdulillah, 33 Subhanallah after prayer.", i: "beads", href: "#tasbih", btn: "Open counter" },
+    { id: "quran", t: "Qur'an reflection", d: "A page, or ten minutes of slow, thoughtful reading.", i: "book", href: "#/quran", btn: "Open Qur'an" },
+    { id: "senses", t: "Guard your tongue and eyes", d: "No backbiting, no lies and no haram looks today.", i: "shield" },
+    { id: "salawat", t: "Salawat", d: "Send blessings on Muhammad and his family, 100 times if you can.", i: "gem", href: "#tasbih" },
+    { id: "sadaqa", t: "A small charity", d: "Even a little, given for the safety of the Imam of our time.", i: "heart" },
+    { id: "parents", t: "Kindness to parents", d: "Call them, serve them or pray for them today.", i: "users" },
+    { id: "zuhr-jamaat", t: "Prayer in congregation", d: "Pray at least one prayer in jama'at.", i: "pray" }
+  ];
+  const deedList = () => { const custom = store.get("abp-deeds-custom", []), all = [...DEEDS, ...custom]; const ids = store.get("abp-deeds-list", ["fajr", "ahd", "tasbih", "quran", "senses"]); return ids.map(id => all.find(x => x.id === id)).filter(Boolean); };
+  const deedLog = () => store.get("abp-deeds-log", {});
+  const fmt12 = hm => { if (!hm) return ""; const [H, M] = hm.split(":").map(Number); return `${((H + 11) % 12) + 1}:${String(M).padStart(2, "0")} ${H < 12 ? "AM" : "PM"}`; };
+  let prTab = "deeds", prCustomize = false;
+  function renderPrepare(tab) {
+    if (tab) prTab = tab;
+    $$("#prTabs .tab").forEach(b => { b.classList.toggle("on", b.dataset.p === prTab); b.onclick = () => renderPrepare(b.dataset.p); });
+    if (prTab === "letters") return renderLetters();
+    const list = deedList(), log = deedLog(), today = dayKey(new Date()), done = new Set(log[today] || []), rem = store.get("abp-deeds-rem", {});
+    const n = list.filter(x => done.has(x.id)).length, tot = list.length || 1;
+    const full = k => { const l = log[k] || []; return list.length && list.every(x => l.includes(x.id)); };
+    let run = 0; { const d = new Date(); if (!full(dayKey(d))) d.setDate(d.getDate() - 1); for (; full(dayKey(d)); d.setDate(d.getDate() - 1)) run++; }
+    const week = [...Array(7)].map((_, i) => { const d = new Date(); d.setDate(d.getDate() - 6 + i); return d; });
+    const msg = n === 0 ? "Nothing ticked yet. Start with one small deed." : n < list.length ? `${n} of ${list.length} done. Keep going.` : "Every deed done today. Alhamdulillah!";
+    const C = 2 * Math.PI * 44;
+    const intro = store.get("abp-pr-intro", 1) ? `<div class="pr-how"><button class="hm-x" id="prHowX" aria-label="Hide">×</button><h3>How this works</h3><ol><li>Do the deeds on your list during the day.</li><li>Tap a deed to tick it off. Finish them all to complete the day.</li><li>Tap "Remind" on any deed to get a daily reminder at a time you choose.</li><li>Use "Customise list" to add or remove deeds.</li></ol></div>` : "";
+    $("#prBody").innerHTML = intro + `<div class="hm-card pr-today">
+        <div class="pr-top"><div class="pr-ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44"/><circle cx="50" cy="50" r="44" class="pr-arc" style="stroke-dasharray:${C};stroke-dashoffset:${C * (1 - n / tot)}"/></svg><b>${n}/${list.length}</b></div>
+        <div><small>${new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" })}</small><h3>${msg}</h3></div></div>
+        <div class="hm-week pr-week">${week.map((d, i) => { const k = dayKey(d), l = (log[k] || []).length; return `<span class="${full(k) ? "done" : l ? "part" : ""} ${i === 6 ? "today" : ""}"><small>${d.toLocaleDateString(undefined, { weekday: "narrow" })}</small><b>${d.getDate()}</b></span>`; }).join("")}</div>
+        <p class="pr-streak">${ico("star")}${run ? `<b>${run}-day streak.</b> Finish every deed today to keep it.` : "Finish every deed today to start a streak."}</p></div>
+      <div class="hm-row pr-head"><span class="hm-label">Today's deeds</span><button class="pr-link" id="prCust">${prCustomize ? "Done" : "Customise list"}</button></div>
+      ${prCustomize ? customiseHTML() : `<div class="hm-card pr-list">${list.map(x => `<div class="pr-deed ${done.has(x.id) ? "done" : ""}" data-id="${x.id}">
+          <button class="pr-tick" data-tick="${x.id}" aria-label="Tick ${esc(x.t)}"><span class="pr-ic">${ico(x.i || "star")}</span></button>
+          <div class="pr-txt" data-tick="${x.id}"><b>${esc(x.t)}</b><small>${esc(x.d || "")}</small>
+            ${x.href ? `<a class="pr-open" href="${x.href}">${esc(x.btn || "Open")} →</a>` : ""}</div>
+          <button class="pr-rem ${rem[x.id] ? "on" : ""}" data-rem="${x.id}">${ico("clock")}${rem[x.id] ? fmt12(rem[x.id]) : "Remind"}</button></div>`).join("")}</div>`}
+      <blockquote class="hm-ayah pr-quote"><p class="hm-label">❝</p><p class="hm-en">"Let each of you do what brings him closer to our love, and keep away from what brings our displeasure."</p><a>Imam al-Mahdi (AS), letter to Shaykh al-Mufid · al-Tabrisi, al-Ihtijaj</a></blockquote>`;
+    if ($("#prHowX")) $("#prHowX").onclick = () => { store.set("abp-pr-intro", 0); renderPrepare(); };
+    $("#prCust").onclick = () => { prCustomize = !prCustomize; renderPrepare(); };
+    $$("#prBody [data-tick]").forEach(el => el.addEventListener("click", e => {
+      if (e.target.closest("a")) return;
+      const id = el.dataset.tick, L = deedLog(), cur = new Set(L[today] || []);
+      cur.has(id) ? cur.delete(id) : cur.add(id); L[today] = [...cur];
+      const keys = Object.keys(L).sort(); while (keys.length > 400) delete L[keys.shift()];
+      store.set("abp-deeds-log", L); markDay();
+      if (navigator.vibrate) try { navigator.vibrate(12); } catch { /* ignore */ }
+      renderPrepare(); if (cur.size === list.length && list.length) toast("Every deed done today. Alhamdulillah!");
+    }));
+    $$("#prBody [data-rem]").forEach(b => b.onclick = () => askTime(store.get("abp-deeds-rem", {})[b.dataset.rem], t => { const r = store.get("abp-deeds-rem", {}); if (t) r[b.dataset.rem] = t; else delete r[b.dataset.rem]; store.set("abp-deeds-rem", r); renderPrepare(); remindersChanged(); }));
+    if (prCustomize) bindCustomise();
+  }
+  function customiseHTML() {
+    const ids = store.get("abp-deeds-list", ["fajr", "ahd", "tasbih", "quran", "senses"]), all = [...DEEDS, ...store.get("abp-deeds-custom", [])];
+    return `<div class="hm-card pr-list pr-cust">${all.map(x => `<label class="pr-cu"><input type="checkbox" data-cu="${x.id}" ${ids.includes(x.id) ? "checked" : ""}><span><b>${esc(x.t)}</b><small>${esc(x.d || "")}</small></span>${x.custom ? `<button data-del="${x.id}" aria-label="Delete">×</button>` : ""}</label>`).join("")}
+      <form class="pr-add" id="prAdd"><input id="prNew" maxlength="60" placeholder="Add your own deed, e.g. Visit a sick friend"><button class="hm-btn" type="submit">Add</button></form></div>`;
+  }
+  function bindCustomise() {
+    $$("#prBody [data-cu]").forEach(c => c.onchange = () => { const all = [...DEEDS, ...store.get("abp-deeds-custom", [])]; const on = new Set($$("#prBody [data-cu]").filter(x => x.checked).map(x => x.dataset.cu)); store.set("abp-deeds-list", all.filter(x => on.has(x.id)).map(x => x.id)); });
+    $$("#prBody [data-del]").forEach(b => b.onclick = e => { e.preventDefault(); store.set("abp-deeds-custom", store.get("abp-deeds-custom", []).filter(x => x.id !== b.dataset.del)); store.set("abp-deeds-list", store.get("abp-deeds-list", []).filter(x => x !== b.dataset.del)); renderPrepare(); });
+    $("#prAdd").onsubmit = e => { e.preventDefault(); const t = $("#prNew").value.trim(); if (!t) return; const id = "c" + Date.now(); store.set("abp-deeds-custom", [...store.get("abp-deeds-custom", []), { id, t, d: "Your own deed", i: "star", custom: 1 }]); store.set("abp-deeds-list", [...store.get("abp-deeds-list", ["fajr", "ahd", "tasbih", "quran", "senses"]), id]); renderPrepare(); };
+  }
+  /* small time picker sheet: cb(time | null) */
+  function askTime(cur, cb) {
+    const box = document.createElement("div"); box.className = "tm-sheet";
+    box.innerHTML = `<div class="tm-card"><h3>Daily reminder</h3><p class="hm-sub">Choose a time. You will get a reminder every day.</p><input type="time" id="tmIn" value="${cur || "06:00"}"><div class="tm-btns">${cur ? `<button class="tm-off" id="tmOff">Turn off</button>` : ""}<button class="tm-cancel" id="tmNo">Cancel</button><button class="hm-btn" id="tmOk">Save</button></div></div>`;
+    document.body.appendChild(box); const close = () => box.remove();
+    box.onclick = e => { if (e.target === box) close(); };
+    $("#tmNo", box).onclick = close;
+    if ($("#tmOff", box)) $("#tmOff", box).onclick = () => { close(); cb(null); };
+    $("#tmOk", box).onclick = () => { const v = $("#tmIn", box).value; close(); if (!v) return; cb(v); toast("Reminder set for " + fmt12(v)); askNotify(); };
+  }
+  /* user reminders from deeds and recitation streaks */
+  function customReminders() {
+    const out = [], all = [...DEEDS, ...store.get("abp-deeds-custom", [])], r = store.get("abp-deeds-rem", {});
+    Object.entries(r).forEach(([id, t]) => { const x = all.find(d => d.id === id); if (x) out.push({ t, title: "Reminder · " + x.t, body: x.d || "Tap to open your deeds.", route: "#/prepare" }); });
+    store.get("abp-rstreaks", []).forEach(s => { if (s.time) out.push({ t: s.time, title: "Your streak · " + s.name, body: "Recite today to keep your streak going.", route: s.href || "#/duas" }); });
+    return out.slice(0, 40);
+  }
+  function remindersChanged() { scheduleReminders(); }
+  /* ask once for notification permission, then reschedule */
+  async function askNotify() {
+    try {
+      if (LN) { if (await nativeEnable()) scheduleReminders(); }
+      else if ("Notification" in window && Notification.permission === "default") { if (await Notification.requestPermission() === "granted") scheduleReminders(); }
+    } catch { /* ignore */ }
+  }
+
+  /* ---------- letters ('arida) ---------- */
+  function renderLetters() {
+    const letters = store.get("abp-letters", []);
+    $("#prBody").innerHTML = `<div class="pr-how pr-write"><h3>Write to your Imam</h3><p>Tell Imam al-Mahdi (AS) what is on your heart: your thanks, your worries, your promises.</p>
+        <details class="pr-why"><summary>Why write?</summary><p>Writing a letter of need (<i>'arida</i>) to the Imam of our time is an old Shia practice. Mafatih al-Jinan gives the words of one, to be written and placed in flowing water. Writing also helps you be honest with yourself about where you stand. Your letters here are private: they stay only on this phone.</p></details></div>
+      <div class="pr-paper"><p class="pr-dear">Dear Imam of our time,</p><textarea id="prLetter" rows="9" placeholder="Your letter starts here…">${esc(store.get("abp-letter-draft", ""))}</textarea>
+        <div class="tm-btns"><button class="hm-btn" id="prSave">Save letter</button></div></div>
+      ${letters.length ? `<h3 class="hm-h">Your letters</h3>${letters.slice().reverse().map(l => `<details class="hm-card pr-old"><summary><b>${new Date(l.at).toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" })}</b><small>${esc(l.text.slice(0, 60))}${l.text.length > 60 ? "…" : ""}</small></summary><p>${esc(l.text).replace(/\n/g, "<br>")}</p><button class="tm-off" data-dl="${l.at}">Delete</button></details>`).join("")}` : ""}`;
+    $("#prLetter").oninput = e => store.set("abp-letter-draft", e.target.value);
+    $("#prSave").onclick = () => { const t = $("#prLetter").value.trim(); if (!t) return toast("Write a few words first"); store.set("abp-letters", [...letters, { at: Date.now(), text: t }]); store.set("abp-letter-draft", ""); markDay(); toast("Letter saved"); renderLetters(); };
+    $$("#prBody [data-dl]").forEach(b => b.onclick = () => { if (!confirm("Delete this letter?")) return; store.set("abp-letters", store.get("abp-letters", []).filter(l => String(l.at) !== b.dataset.dl)); renderLetters(); });
+  }
+
+  /* ===========================================================
+     RECITATION STREAKS (e.g. 40 days of Ziyarat Ashura)
+     =========================================================== */
+  const RS_CHOICES = [["Ziyarat Ashura", "#lib/ziyarat/ashura"], ["Du'a al-'Ahd", "#lib/daily/ahd"], ["Du'a Kumayl", "#lib/duas/kumayl"], ["Du'a Tawassul", "#lib/duas/tawassul"], ["Ziyarat Warith", "#lib/ziyarat/warith"], ["Ziyarat Amin Allah", "#lib/ziyarat/amin-allah"], ["Ziyarat al-Jami'a al-Kabira", "#lib/ziyarat/jamia-kabira"], ["Surat Yasin", "#quran/36"], ["Surat al-Waqi'a", "#quran/56"], ["Salawat, 100 times", "#tasbih"]];
+  function rsRun(s) { const set = new Set(s.days || []); let run = 0; const d = new Date(); if (!set.has(dayKey(d))) d.setDate(d.getDate() - 1); for (; set.has(dayKey(d)); d.setDate(d.getDate() - 1)) run++; return run; }
+  function renderStreaks() {
+    const box = $("#rsBox"); if (!box) return;
+    const list = store.get("abp-rstreaks", []), today = dayKey(new Date());
+    const how = store.get("abp-rs-intro", 1) && !list.length ? `<div class="pr-how"><button class="hm-x" id="rsHowX" aria-label="Hide">×</button><h3>How streaks work</h3><ol><li>Tap "+ Streak" to start one, like 40 days of Ziyarat Ashura, and choose a reminder time.</li><li>Each day after reciting, tap "Mark done".</li><li>Recite at any time of the day. A streak only breaks if a whole day passes without "Mark done".</li><li>Tap "Edit" to change the reminder, rename or delete a streak.</li></ol></div>` : "";
+    box.innerHTML = `<div class="hm-row rs-head"><div><h3>Your streaks</h3><p class="hm-sub">Keep a recitation steady, day after day.</p></div><button class="rs-add" id="rsAdd">+ Streak</button></div>${how}
+      ${list.map(s => { const run = rsRun(s), doneToday = (s.days || []).includes(today), lastMiss = !run && (s.days || []).length; const pct = Math.min(100, run / s.target * 100), complete = run >= s.target;
+        return `<div class="hm-card rs-card"><div class="hm-row"><div><small class="hm-label">${complete ? "Completed" : `Day ${Math.min(run + (doneToday ? 0 : 1), s.target)} of ${s.target}`}</small><h3>${esc(s.name)}</h3></div><button class="pr-link" data-rsedit="${s.id}">Edit</button></div>
+          <div class="hm-prog"><i style="width:${pct}%"></i></div><p class="rs-meta">${complete ? `${s.target} days done. Alhamdulillah!` : lastMiss ? "A day was missed, so the count starts again. Begin today." : `${run} day${run === 1 ? "" : "s"} in a row`}${s.time ? ` · reminder ${fmt12(s.time)}` : ""}</p>
+          <div class="rs-btns">${s.href ? `<a class="tm-cancel" href="${s.href}">Open</a>` : ""}${complete ? `<button class="hm-btn" data-rsagain="${s.id}">Start again</button>` : `<button class="hm-btn ${doneToday ? "rs-done" : ""}" data-rsdone="${s.id}">${doneToday ? "Done today ✓" : "Mark done"}</button>`}</div></div>`; }).join("")}`;
+    if ($("#rsHowX")) $("#rsHowX").onclick = () => { store.set("abp-rs-intro", 0); renderStreaks(); };
+    $("#rsAdd").onclick = () => editStreak(null);
+    $$("#rsBox [data-rsedit]").forEach(b => b.onclick = () => editStreak(b.dataset.rsedit));
+    $$("#rsBox [data-rsdone]").forEach(b => b.onclick = () => { const L = store.get("abp-rstreaks", []), s = L.find(x => x.id === b.dataset.rsdone); if (!s) return; s.days = s.days || []; if (s.days.includes(today)) s.days = s.days.filter(d => d !== today); else { s.days.push(today); markDay(); } s.days = s.days.slice(-120); store.set("abp-rstreaks", L); renderStreaks(); if (rsRun(s) >= s.target) toast(`${s.target} days of ${s.name}. Alhamdulillah!`); });
+    $$("#rsBox [data-rsagain]").forEach(b => b.onclick = () => { const L = store.get("abp-rstreaks", []), s = L.find(x => x.id === b.dataset.rsagain); if (s) { s.days = []; store.set("abp-rstreaks", L); renderStreaks(); } });
+  }
+  function editStreak(id) {
+    const L = store.get("abp-rstreaks", []), s = id ? L.find(x => x.id === id) : null;
+    const box = document.createElement("div"); box.className = "tm-sheet";
+    box.innerHTML = `<div class="tm-card"><h3>${s ? "Edit streak" : "New streak"}</h3>
+      <label class="tm-l">Recitation<select id="rsPick">${RS_CHOICES.map(c => `<option value="${c[1]}" ${s && s.href === c[1] ? "selected" : ""}>${c[0]}</option>`).join("")}<option value="" ${s && !s.href ? "selected" : ""}>Something else…</option></select></label>
+      <label class="tm-l" id="rsNameL">Name<input id="rsName" maxlength="50" value="${s ? esc(s.name) : ""}" placeholder="e.g. Ziyarat Ashura"></label>
+      <label class="tm-l">How many days<select id="rsTarget">${[7, 14, 21, 40].map(n => `<option ${s ? (s.target === n ? "selected" : "") : n === 40 ? "selected" : ""}>${n}</option>`).join("")}</select></label>
+      <label class="tm-l">Daily reminder (optional)<input type="time" id="rsTime" value="${s && s.time ? s.time : ""}"></label>
+      <div class="tm-btns">${s ? `<button class="tm-off" id="rsDel">Delete</button>` : ""}<button class="tm-cancel" id="rsNo">Cancel</button><button class="hm-btn" id="rsOk">${s ? "Save" : "Start"}</button></div></div>`;
+    document.body.appendChild(box); const close = () => box.remove();
+    const pick = $("#rsPick", box), name = $("#rsName", box);
+    const sync = () => { if (pick.value) name.value = pick.options[pick.selectedIndex].text; };
+    if (!s) sync(); pick.onchange = sync;
+    box.onclick = e => { if (e.target === box) close(); };
+    $("#rsNo", box).onclick = close;
+    if ($("#rsDel", box)) $("#rsDel", box).onclick = () => { if (!confirm("Delete this streak?")) return; store.set("abp-rstreaks", L.filter(x => x.id !== id)); close(); renderStreaks(); remindersChanged(); };
+    $("#rsOk", box).onclick = async () => {
+      const nm = name.value.trim() || (pick.value ? pick.options[pick.selectedIndex].text : ""); if (!nm) return toast("Give the streak a name");
+      const data = { name: nm, href: pick.value, target: +$("#rsTarget", box).value, time: $("#rsTime", box).value };
+      if (s) Object.assign(s, data); else L.push(Object.assign({ id: "r" + Date.now(), days: [] }, data));
+      store.set("abp-rstreaks", L); close(); renderStreaks();
+      remindersChanged(); toast(s ? "Streak updated" : "Streak started. Bismillah!");
+      if (data.time) askNotify();
+    };
+  }
+
+  drawQChips();
+  scheduleReminders();   /* after DEEDS and streaks are defined */
 
   /* ===========================================================
      INIT

@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Amiri+Quran&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=41" />
+<link rel="stylesheet" href="css/style.css?v=42" />
 </head>
 <body>
 
@@ -45,6 +45,7 @@
 <nav class="tabbar" id="tabbar" aria-label="Main">
   <a href="#/home" data-tab="home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></a>
   <a href="#/prayer" data-tab="prayer"><svg viewBox="0 0 24 24"><path d="M12 3c3 3 5 5.5 5 8.5V20H7v-8.5C7 8.5 9 6 12 3z"/><path d="M4 20h16M12 13v4"/></svg><span>Prayer</span></a>
+  <a href="#/prepare" data-tab="prepare"><svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/><path d="M17 3v4M15 5h4"/></svg><span>Preparing</span></a>
   <a href="#/quran" data-tab="quran"><svg viewBox="0 0 24 24"><path d="M4 5c3-1.5 5.5-1.5 8 0v15c-2.5-1.5-5-1.5-8 0z"/><path d="M20 5c-3-1.5-5.5-1.5-8 0v15c2.5-1.5 5-1.5 8 0z"/></svg><span>Quran</span></a>
   <a href="#/duas" data-tab="duas"><svg viewBox="0 0 24 24"><path d="M7 11V6a2 2 0 0 1 4 0v4M11 10V5a2 2 0 0 1 4 0v6M15 11V8a2 2 0 0 1 4 0v5a7 7 0 0 1-7 7h-1a6 6 0 0 1-6-6v-2a2 2 0 0 1 4 0"/></svg><span>Duas</span></a>
   <a href="#/learn" data-tab="learn"><svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/></svg><span>Learn</span></a>
@@ -184,7 +185,8 @@
     <div class="pt-card" id="ptTimes"></div>
     <div class="pt-row">
       <div class="pt-card qibla" id="qibla">
-        <h3>Qibla</h3>
+        <h3 id="qbTitle">Qibla</h3>
+        <div class="qb-chips" id="qbChips"></div>
         <div class="qb-dial" id="qbDial"><div class="qb-rose" id="qbRose"><span class="qn">N</span><span class="qe">E</span><span class="qs">S</span><span class="qw">W</span></div><div class="qb-needle" id="qbNeedle"><span class="qb-line"></span><svg class="qb-kaaba" viewBox="0 0 64 64" aria-label="Ka'ba">
             <polygon points="32,5 59,15 32,25 5,15" fill="#3a3a3a"/>
             <polygon points="5,15 32,25 32,59 5,49" fill="#0d0d0d"/>
@@ -197,6 +199,7 @@
             <path d="M32,5 L59,15 L59,49 L32,59 L5,49 L5,15 Z M32,25 L32,59" stroke="rgba(240,210,140,.55)" stroke-width="1" fill="none"/>
           </svg></div><span class="qb-pointer"></span><span class="qb-center"></span></div>
         <p class="qb-info" id="qbInfo">Set your location to find the Qibla.</p>
+        <p class="qb-zy" id="qbZy"></p>
         <button class="btn btn-gold qb-start" id="qbStart">Start compass</button>
       </div>
       <div class="pt-card rakat" id="rakat">
@@ -321,6 +324,18 @@
 </section>
 
 <!-- ============ DUAS ============ -->
+<section class="section prepare" id="prepare" data-screen="prepare">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Preparing</p>
+      <h2>Get ready for the Imam of our time</h2>
+      <p>One small deed at a time.</p>
+    </div>
+    <div class="tabs pr-tabs" id="prTabs" role="tablist"><button class="tab on" data-p="deeds">Daily deeds</button><button class="tab" data-p="letters">Letters</button></div>
+    <div id="prBody"></div>
+  </div>
+</section>
+
 <section class="section duas" id="duas" data-screen="duas">
   <div class="wrap">
     <div class="section-head">
@@ -328,6 +343,7 @@
       <h2>Remember Allah with the Ahl al-Bayt</h2>
       <p>The full Arabic of Mafatih al-Jinan and the Sahifa Sajjadiyya: daily recitations, taqibat, the great du'as, ziyarat, munajat and the a'mal of the year.</p>
     </div>
+    <div class="rs-box" id="rsBox"></div>
     <label class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="libSearch" type="search" placeholder="Search: Kumayl, Ashura, Friday, Sahifa…" /></label>
     <div class="lib-cats" id="libCats"></div>
     <div class="lib-cats" id="libResults"></div>
@@ -370,7 +386,12 @@
       <h3>Reading</h3>
       <label class="set-row">Arabic text size <input type="range" id="setAr" min="80" max="170" step="5" /><b id="setArVal"></b></label>
       <p class="set-preview" dir="rtl" lang="ar">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيمِ</p>
-      <label class="set-row">Theme <select id="setTheme"><option value="dark">Dark</option><option value="light">Light</option></select></label>
+      <p class="set-row">Appearance</p>
+      <div class="theme-pick" id="setTheme" role="radiogroup" aria-label="Appearance">
+        <button data-v="light" class="tp tp-paper" role="radio"><i><s></s><s></s><u><em></em><s></s></u></i><b>Paper</b></button>
+        <button data-v="white" class="tp tp-white" role="radio"><i><s></s><s></s><u><em></em><s></s></u></i><b>White</b></button>
+        <button data-v="dark" class="tp tp-dark" role="radio"><i><s></s><s></s><u><em></em><s></s></u></i><b>Dark</b></button>
+      </div>
     </div>
     <div class="set-group">
       <h3>Hijri date</h3>
@@ -778,17 +799,17 @@
   </div>
 </div>
 
-<script src="js/data.js?v=41"></script>
-<script src="js/course.js?v=41"></script>
-<script src="js/pearls-nahj.js?v=41"></script>
-<script src="js/lives.js?v=41"></script>
-<script src="js/qa.js?v=41"></script>
-<script src="js/lib-index.js?v=41"></script>
-<script src="js/namaz.js?v=41"></script>
-<script src="js/support.js?v=41"></script>
-<script src="js/sources.js?v=41"></script>
-<script src="js/year.js?v=41"></script>
+<script src="js/data.js?v=42"></script>
+<script src="js/course.js?v=42"></script>
+<script src="js/pearls-nahj.js?v=42"></script>
+<script src="js/lives.js?v=42"></script>
+<script src="js/qa.js?v=42"></script>
+<script src="js/lib-index.js?v=42"></script>
+<script src="js/namaz.js?v=42"></script>
+<script src="js/support.js?v=42"></script>
+<script src="js/sources.js?v=42"></script>
+<script src="js/year.js?v=42"></script>
 <script>if ("serviceWorker" in navigator && !window.Capacitor) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));</script>
-<script src="js/app.js?v=41"></script>
+<script src="js/app.js?v=42"></script>
 </body>
 </html>
