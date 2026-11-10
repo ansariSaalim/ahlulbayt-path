@@ -1752,3 +1752,12 @@ html.is-app [data-install] { display: none !important; }
   .r-hero-text { padding-top: 1.2rem; padding-bottom: .9rem; }
   .r-back { margin-top: .5rem; padding: .3rem .8rem; font-size: .76rem; }
 }
+
+/* ---- Musafir mark (arch, road, crescent) ---- */
+.brand-star.brand-mark { animation: none; stroke: none; fill: none; width: 28px; height: 28px; }
+.brand-mark .mk-arch { fill: none; stroke: var(--gold); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+.brand-mark .mk-fill { fill: var(--gold); stroke: none; }
+.hm-logo { background: linear-gradient(150deg, #1d4a3a, #0b1a15); box-shadow: 0 8px 20px -10px rgba(10,30,22,.6); }
+.hm-logo svg { width: 36px; height: 36px; stroke: none; fill: none; }
+.hm-logo .mk-arch { fill: none; stroke: #ecc97e; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+.hm-logo .mk-fill { fill: #ecc97e; }

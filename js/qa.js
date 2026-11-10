@@ -211,5 +211,23 @@ a: `<p><b>As brothers and sisters in Islam.</b> We share one Allah, one Prophet 
 <li><b>Sayyid Ali Khamenei</b> ruled in 2010: <i>"Insulting figures and symbols celebrated by Sunni brethren, including the wife of the Prophet of Islam, is prohibited."</i></li>
 </ul>
 <p>We can explain our beliefs and our history with evidence, and still keep our tongues clean. That is the way of the Ahl al-Bayt.</p>`,
-src: "Qur'an 6:108; al-Kafi, vol. 8 (al-Rawda: attend their funerals, visit their sick, pray in their mosques); Nahj al-Balagha, sermon 206; Office of Sayyid al-Sistani, answer on insulting Sunni figures (imam-us.org); Sayyid Ali Khamenei, fatwa of 30 September 2010" }
+src: "Qur'an 6:108; al-Kafi, vol. 8 (al-Rawda: attend their funerals, visit their sick, pray in their mosques); Nahj al-Balagha, sermon 206; Office of Sayyid al-Sistani, answer on insulting Sunni figures (imam-us.org); Sayyid Ali Khamenei, fatwa of 30 September 2010" },
+{ id: "shia-sunni-marry", c: "family", q: "Can a Shia marry a Sunni?",
+a: `<p><b>Yes, in principle.</b> Shia and Sunni are both Muslims, and a marriage between them is a valid Islamic marriage. The Shia maraji' add one main caution: <b>protecting the faith of the Shia spouse and of the children.</b></p>
+<ul>
+<li><b>A Shia man marrying a Sunni woman</b> is allowed by the maraji', as long as he isn't at risk of losing his own beliefs. Scholars encourage kindness and good character, so that the home is built on love, not argument.</li>
+<li><b>A Shia woman marrying a Sunni man</b> is where the maraji' are more careful, because a wife and children often follow the husband's way:
+<ul>
+<li><b>Sayyid al-Sistani</b>'s office: it is fine for a Shia man to marry a Sunni woman; for a Shia woman marrying a Sunni man, if there is a real chance of her being led away from her beliefs, it is not permissible.</li>
+<li><b>Ayatullah Makarem Shirazi</b> gives the same reason and does not permit it.</li>
+<li><b>Ayatullah Bahjat</b>: not permissible as an obligatory precaution.</li>
+<li><b>Ayatullah Fazel Lankarani</b>: makruh (discouraged), but valid.</li>
+</ul>
+Follow your own marja'. If her faith is strong and secure, some maraji' allow it.</li>
+<li><b>A virgin woman needs her father's permission</b> (Sistani: as a precaution, even if she is independent). This applies whoever she marries.</li>
+<li><b>The one exception everyone agrees on:</b> not with a <i>Nasibi</i>, someone openly hostile to the Ahl al-Bayt (AS). That is not the ordinary Sunni Muslim, who loves the Prophet's family too.</li>
+</ul>
+<p><b>The Sunni side:</b> many Sunni scholars also allow it (for example SeekersGuidance, a Hanafi institute, answered a Shia man that marrying a Sunni woman is permissible); some Sunni muftis are stricter. So both families may hear different opinions, and that is normal.</p>
+<p><b>Practical advice:</b> talk honestly before marriage about prayer, Muharram, how the children will be raised, and respect for each other's scholars and figures. A marriage where neither side mocks what the other holds dear is the one that lasts.</p>`,
+src: "Office of Sayyid al-Sistani, Ayatullah Makarem Shirazi, Ayatullah Bahjat and Ayatullah Fazel Lankarani, answers compiled at islamquest.net (question 1852, \"Is it permissible for Shias to get married to Sunnis?\"); Sayyid al-Sistani, Q&A on permanent marriage (sistani.org/14872, father's consent); al-Kafi, vol. 5, Kitab al-Nikah, chapter on marrying the Nawasib; al-islam.org, \"Is marriage between Shia and Sunni allowed?\"; SeekersGuidance, \"Is it permissible for a Shia man to marry a girl who is Sunni?\"" },
 ];
