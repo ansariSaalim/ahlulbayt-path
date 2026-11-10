@@ -105,13 +105,10 @@
      HERO
      =========================================================== */
   // words of the ayah float in one by one
-  const ayah = $("#heroAyah");
-  const words = ayah.textContent.trim().split(/\s+/);
-  ayah.innerHTML = words.map((w, i) => `<span class="w" style="animation-delay:${.25 + i * .18}s">${w}</span>`).join(" ");
 
   // hero photo
   const heroBg = $("#heroBg");
-  wikiImage("Imam_Husayn_Shrine", SZ.big).then(info => new Promise((res, rej) => {
+  if (!small) wikiImage("Imam_Husayn_Shrine", SZ.big).then(info => new Promise((res, rej) => {
     const im = new Image(); im.onload = () => res(info); im.onerror = rej; im.src = info.src;
   })).then(info => {
     heroBg.style.background = `url("${info.src}") center/cover no-repeat`;
@@ -121,7 +118,7 @@
 
   // floating golden motes (like lantern light)
   (function motes() {
-    const c = $("#motes"); if (!c || reduceMotion) return;
+    const c = $("#motes"); if (!c || reduceMotion || small || window.Capacitor) { if (c) c.remove(); return; }
     const ctx = c.getContext("2d");
     const sprite = document.createElement("canvas"); sprite.width = sprite.height = 32;
     const sc = sprite.getContext("2d"), g = sc.createRadialGradient(16, 16, 0, 16, 16, 16);
@@ -968,9 +965,9 @@
   /* ===========================================================
      APP SHELL: tabs, screens, back
      =========================================================== */
-  const TAB_TITLES = { home: "Home", prayer: "Prayer", prepare: "Preparing", quran: "The Holy Qur'an", duas: "Duas & Ziyarat", learn: "Learn" };
+  const TAB_TITLES = { home: "Home", prayer: "Prayer", prepare: "Preparing", quran: "Qur'an", duas: "Recite", learn: "Learn" };
   const SUB_TITLES = { proofs: "The Proofs", timeline: "Timeline", stories: "Stories", battles: "Battles of Imam Ali", haq: "Fatima's Haq", karbala: "Karbala", abbas: "Moula Abbas", rulers: "The Caliphs", wronged: "Who Wronged Them", masumin: "The 14 Ma'sumin", lessons: "Lessons of the Fourteen", pearls: "Divine Pearls", companions: "Companions", dates: "Key Dates", reading: "Books", calendar: "Shia Calendar", settings: "Settings", "namaz-guide": "How to Pray", qa: "Q & A", favs: "Favourites", today: "Today", support: "Support & Charity" };
-  const PARENT = { calendar: "home", settings: "home", "namaz-guide": "prayer", favs: "home", today: "home", support: "home" };
+  const PARENT = { calendar: "duas", settings: "home", "namaz-guide": "prayer", favs: "home", today: "home", support: "home" };
   const allSections = $$("section[data-screen]");
   const footerEl = $(".footer");
   let screenHash = "", appNav = 0;
@@ -986,10 +983,12 @@
       if (vis && changed) { sec.classList.remove("screen-in"); void sec.offsetWidth; sec.classList.add("screen-in"); }
     });
     if (footerEl) footerEl.hidden = !!sub || tab !== "home";
-    document.body.classList.toggle("scr-sub", !!sub);
-    document.body.classList.toggle("scr-tab", !sub && tab !== "home");
+    const hub = sub === "calendar" || (!sub && (tab === "quran" || tab === "duas"));
+    document.body.classList.toggle("scr-sub", !!sub && !hub);
+    document.body.classList.toggle("scr-tab", !sub && tab !== "home" && !hub);
+    document.body.classList.toggle("hub", hub);
     $("#abTitle").textContent = sub ? (SUB_TITLES[sub] || "") : TAB_TITLES[tab];
-    const activeTab = sub ? (PARENT[sub] || "learn") : tab;
+    const activeTab = sub ? (PARENT[sub] || "learn") : tab === "quran" ? "duas" : tab;
     $$("#tabbar a").forEach(a => a.classList.toggle("on", a.dataset.tab === activeTab));
     if (changed) window.scrollTo(0, scrollMem[screenHash] || 0);
     document.title = (sub ? SUB_TITLES[sub] : TAB_TITLES[tab]) + " · Musafir";
@@ -1722,6 +1721,44 @@
     ["قُل لَّا أَسْأَلُكُمْ عَلَيْهِ أَجْرًا إِلَّا الْمَوَدَّةَ فِي الْقُرْبَىٰ", "Say: I ask of you no reward for it except love for my near relatives.", "42:23"],
     ["إِنَّ أَكْرَمَكُمْ عِندَ اللَّهِ أَتْقَاكُمْ", "The most noble of you with Allah is the most God-conscious of you.", "49:13"]
   ];
+  // Ayah of the day: 60 refs; Arabic (Uthmani) + Qarai English fetched from the Qur'an API and cached, offline falls back to AYAT
+  const AOTD = ["2:152","13:28","94:6","2:186","3:139","39:53","65:3","2:153","2:45","29:69","9:51","14:7","16:97","16:128","17:24","18:46",
+    "20:114","25:63","25:74","28:24","33:41","40:60","42:23","49:10","50:16","55:13","67:2","76:8","76:9","93:3","93:5","94:5","103:3","112:1",
+    "2:156","2:201","3:8","6:162","23:118","89:27","89:28","3:190","7:205","8:2","10:62","11:115","12:87","15:99","20:25","21:83","24:35",
+    "26:80","27:62","31:17","35:15","40:44","57:4","64:16","73:8","98:5"];
+  let aotdTimer = null;
+  function paintAotd(x, now) {
+    const ar = $("#heroAyah"), en = $("#heroTrans"), k = $("#aotdK"); if (!ar) return;
+    k.textContent = "Ayah of the day · " + now.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" });
+    ar.classList.remove("in"); en.classList.remove("in");
+    ar.textContent = x.ar;
+    en.innerHTML = `“${esc(x.en)}” <a href="#quran/${x.ref}">Qur'an ${x.ref} ›</a>`;
+    requestAnimationFrame(() => { ar.classList.add("in"); en.classList.add("in"); });
+  }
+  async function fetchAyah(ref) {
+    const hit = store.get("abp-aotd-" + ref, null); if (hit) return hit;
+    let j = null;
+    for (const tr of ["en.qarai", "en.sahih"]) {
+      try { const r = await fetch(`https://api.alquran.cloud/v1/ayah/${ref}/editions/quran-uthmani,${tr}`); const k = await r.json(); if (k.code === 200 && k.data && k.data[1] && k.data[1].text) { j = k; break; } } catch { /* next */ }
+    }
+    if (!j) throw 0;
+    let ar = String(j.data[0].text || "").replace(/^\uFEFF/, "").trim();
+    const [s, v] = ref.split(":");
+    if (v === "1" && s !== "1" && s !== "9") { const w = ar.split(/\s+/); if (/^بِسْمِ/.test(w[0]) && w.length > 4) ar = w.slice(4).join(" "); }
+    const tr = j.data.slice(1).map(d => d && d.text).find(Boolean) || "";
+    const x = { ref, ar, en: tr.replace(/\s+/g, " ").trim() };
+    if (!x.ar || !x.en) throw 0;
+    store.set("abp-aotd-" + ref, x); return x;
+  }
+  function renderAotd(now, doy) {
+    const ref = AOTD[doy % AOTD.length], off = AYAT[doy % AYAT.length], fall = { ref: off[2], ar: off[0], en: off[1] };
+    const cached = store.get("abp-aotd-" + ref, null);
+    if (cached) { paintAotd(cached, now); } else {
+      if (!$("#heroAyah").textContent) paintAotd(fall, now);
+      fetchAyah(ref).then(x => paintAotd(x, now)).catch(() => {});
+    }
+    fetchAyah(AOTD[(doy + 1) % AOTD.length]).catch(() => {}); // tomorrow's, for offline
+  }
   const PIC = {
     fajr: '<path d="M4 18h16M7 18a5 5 0 0 1 10 0M12 4v5m-2.5-2.5L12 4l2.5 2.5"/>',
     sunrise: '<path d="M4 18h16M7 18a5 5 0 0 1 10 0M12 7v2M5.6 11.6l1.4 1.4M18.4 11.6 17 13"/>',
@@ -1772,9 +1809,8 @@
         <ol class="hm-steps">${steps.map(x => `<li class="${x[0] ? "done" : ""}"><a href="${x[3]}"><i></i><span><b>${x[1]}</b><small>${x[2]}</small></span></a></li>`).join("")}</ol>`;
       $("#hmX").onclick = () => { store.set("abp-gs-off", 1); $("#hmStart").hidden = true; };
     } else $("#hmStart").hidden = true;
-    /* 7. ayah of the day */
-    const a = AYAT[doy % AYAT.length];
-    $("#hmAyah").innerHTML = `<p class="hm-label">❝ Ayah of the day</p><p class="hm-ar" dir="rtl" lang="ar">${a[0]}</p><p class="hm-en">${a[1]}</p><a href="#quran/${a[2]}">Qur'an ${a[2]}</a>`;
+    /* 7. ayah of the day (hero) */
+    renderAotd(now, doy);
     /* 8. explore */
     $("#hdTiles").innerHTML = [
       tile("#tasbih", "beads", "Tasbih"), tile("#qibla", "compass", "Qibla &amp; shrines", "green"), tile("#rakat", "count", "Rak'at counter", "green"), tile("#/s/stories", "scroll", "Stories"),
@@ -1800,19 +1836,69 @@
   let surahs = store.get("abp-surahs", null);
   async function loadSurahList() {
     const last = store.get("abp-qlast", null);
-    $("#qrContinue").innerHTML = last ? `<a class="cont" href="#quran/${last.n}:${last.a}"><div><small>Continue reading</small><b>${esc(last.name)} · ayah ${last.a}</b></div><span class="ca">›</span></a>` : "";
-    $("#qrQuick").innerHTML = [["Yasin", "36"], ["Ayat al-Kursi", "2:255"], ["al-Rahman", "55"], ["al-Waqi'a", "56"], ["al-Mulk", "67"], ["al-Kahf", "18"], ["al-Insan", "76"], ["al-Qadr", "97"], ["al-Fatiha", "1"]].map(q => `<a href="#quran/${q[1]}">${q[0]}</a>`).join("");
+    renderKhatm();
+    $("#qrQuick").innerHTML = QPOP.map(q => `<a class="qp" href="#quran/${q[1]}"><span class="qp-ar" dir="rtl" lang="ar">${q[3]}</span><b>${q[0]}</b><small>${q[2]}</small></a>`).join("");
     if (!surahs) {
       try { const r = await fetch(QAPI + "/surah"); const j = await r.json(); surahs = j.data.map(s => [s.number, s.englishName, s.name, s.englishNameTranslation, s.numberOfAyahs, s.revelationType]); store.set("abp-surahs", surahs); }
       catch { $("#qrList").innerHTML = `<li class="q-err">Connect to the internet once to load the Qur'an. After that, the suras you open are saved for offline reading.</li>`; return; }
     }
-    drawSurahs();
+    drawSurahs(); renderKhatm(); if (!$("#qrJuz").closest(".qr-pane").hidden) drawJuz();
   }
+  const QPOP = [["Yasin", "36", "The heart of the Qur'an", "يس"], ["Ayat al-Kursi", "2:255", "The Throne verse", "آية الكرسي"], ["al-Rahman", "55", "Which of His favours?", "الرحمن"],
+    ["al-Waqi'a", "56", "Recited at night", "الواقعة"], ["al-Mulk", "67", "Before sleep", "الملك"], ["al-Kahf", "18", "On Fridays", "الكهف"],
+    ["al-Insan", "76", "Revealed about the Ahl al-Bayt", "الإنسان"], ["al-Qadr", "97", "The Night of Power", "القدر"], ["al-Fatiha", "1", "The Opening", "الفاتحة"],
+    ["al-Jumu'a", "62", "Friday prayer", "الجمعة"], ["al-Tawhid", "112", "Equal to a third of the Qur'an", "التوحيد"], ["al-Fajr", "89", "The sura of Imam Husayn (AS)", "الفجر"]];
+  // standard juz starting points (Madinah mushaf)
+  const JUZ = ["1:1","2:142","2:253","3:93","4:24","4:148","5:82","6:111","7:88","8:41","9:93","11:6","12:53","15:1","17:1","18:75","21:1","23:1","25:21","27:56","29:46","33:31","36:28","39:32","41:47","46:1","51:31","58:1","67:1","78:1"];
+  /* ---- Khatm: furthest ayah reached in each sura ---- */
+  const AYAT_TOTAL = 6236;
+  const khatm = () => store.get("abp-khatm", {});
+  const sCount = n => surahs && surahs[n - 1] ? surahs[n - 1][4] : 0;
+  function markRead(n, upto) {
+    const K = khatm(), was = K[n] || 0; if (upto <= was) return;
+    K[n] = upto; store.set("abp-khatm", K);
+    const d = dayKey(new Date()), T = store.get("abp-khatm-day", {}); store.set("abp-khatm-day", { d, c: (T.d === d ? T.c : 0) + (upto - was) });
+  }
+  function juzDone(k) {
+    if (!surahs) return false;
+    const K = khatm(), [ss] = JUZ[k].split(":").map(Number);
+    let es, ea;
+    if (k === 29) { es = 114; ea = sCount(114); } else { const [ns, na] = JUZ[k + 1].split(":").map(Number); if (na === 1) { es = ns - 1; ea = sCount(es); } else { es = ns; ea = na - 1; } }
+    for (let s = ss; s <= es; s++) if ((K[s] || 0) < (s === es ? ea : sCount(s))) return false;
+    return true;
+  }
+  function renderKhatm() {
+    const box = $("#qrKhatm"); if (!box) return;
+    const K = khatm(), read = Object.entries(K).reduce((t, [s, v]) => t + Math.min(v, sCount(+s) || v), 0);
+    const pct = Math.min(100, read / AYAT_TOTAL * 100), pctTxt = pct > 0 && pct < 1 ? pct.toFixed(1) : Math.floor(pct);
+    const done = JUZ.map((_, i) => juzDone(i)), nDone = done.filter(Boolean).length;
+    const T = store.get("abp-khatm-day", {}), today = T.d === dayKey(new Date()) ? T.c : 0;
+    const last = store.get("abp-qlast", null);
+    box.innerHTML = `<div class="kh-top"><div><p class="kh-k">Your khatm</p><p class="kh-p"><b>${pctTxt}</b><i>%</i> <span>read</span></p><p class="kh-n">${read.toLocaleString()} of ${AYAT_TOTAL.toLocaleString()} ayat</p></div>
+      <svg class="kh-art" viewBox="0 0 120 100" aria-hidden="true"><path d="M14 86 62 50l8 6-46 36z" fill="#8b5a30"/><path d="M106 86 58 50l-8 6 46 36z" fill="#a8723f"/><path d="M58 50h4l2 4h-8z" fill="#6d4423"/>
+        <path d="M22 50 58 32l40 14-38 20z" fill="#1d5a40"/><path d="M22 50l38 16v5L22 55z" fill="#f4ead2"/><path d="M60 66l38-20v5L60 71z" fill="#e7dabb"/><path d="M33 49 58 37l28 10-26 13z" fill="none" stroke="#e2bd62" stroke-width="1.6"/><circle cx="59" cy="48" r="4.5" fill="none" stroke="#e2bd62" stroke-width="1.4"/>
+        <path d="M96 44c4 6 6 16 4 28" fill="none" stroke="#2f8a57" stroke-width="3" stroke-linecap="round" stroke-dasharray="0.1 4.2"/></svg></div>
+      <div class="kh-bars" aria-label="${nDone} of 30 juz complete">${done.map(x => `<i class="${x ? "on" : ""}"></i>`).join("")}</div>
+      <p class="kh-j">${nDone} of 30 juz complete</p>
+      <span class="kh-today">${today ? `${today} ayat read today` : "Nothing read today"}</span>
+      <a class="kh-go" href="${last ? `#quran/${last.n}:${last.a}` : "#quran/1"}">${last ? `Continue ${esc(last.name)} · ayah ${last.a}` : "Start with al-Fatiha"} <span>→</span></a>`;
+  }
+  function drawJuz() {
+    const nm = n => surahs ? surahs[n - 1][1] : "Sura " + n;
+    $("#qrJuz").innerHTML = JUZ.map((r, i) => { const [s, v] = r.split(":"); return `<li><a href="#quran/${r}"><span class="qr-n">${i + 1}</span><span class="qr-t"><b>Juz ${i + 1}</b><small>Starts at ${esc(nm(+s))} ${s}:${v}</small></span><span class="qr-ar">الجزء ${arNum(i + 1)}</span></a></li>`; }).join("");
+  }
+  $$("#qrSeg button").forEach(b => b.onclick = () => {
+    $$("#qrSeg button").forEach(x => x.classList.toggle("on", x === b));
+    $$("#quran .qr-pane").forEach(p => p.hidden = p.dataset.pane !== b.dataset.v);
+    if (b.dataset.v === "juz") drawJuz();
+    store.set("abp-qrseg", b.dataset.v);
+  });
+  { const v = store.get("abp-qrseg", "sura"), b = $(`#qrSeg button[data-v="${v}"]`); if (b && v !== "sura") setTimeout(() => b.click(), 0); }
   function drawSurahs() {
     const q = ($("#qrSearch").value || "").toLowerCase().replace(/[-' ]/g, "");
     $("#qrList").innerHTML = surahs.filter(s => !q || String(s[0]) === q || (s[1] + s[3]).toLowerCase().replace(/[-' ]/g, "").includes(q)).map(s => `<li><a href="#quran/${s[0]}"><span class="qr-n">${s[0]}</span><span class="qr-t"><b>${esc(s[1])}</b><small>${esc(s[3])} · ${s[4]} ayat · ${s[5]}</small></span><span class="qr-ar">${s[2].replace("سُورَةُ ", "")}</span></a></li>`).join("") || `<li class="q-err">No sura found.</li>`;
   }
-  $("#qrSearch").addEventListener("input", () => surahs && drawSurahs());
+  $("#qrSearch").addEventListener("input", () => { const b = $('#qrSeg button[data-v="sura"]'); if (b && !b.classList.contains("on")) b.click(); if (surahs) drawSurahs(); });
   const qAudio = new Audio(); let qAyat = [], qPlayAll = false, qIdx = -1, qSel = -1, qSurah = null, qSaveT = 0;
   const arNum = n => String(n).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
   const PLAY_I = '<svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg>', PAUSE_I = '<svg viewBox="0 0 24 24"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>';
@@ -1823,6 +1909,7 @@
   function playAyah(i) {
     if (!qAyat[i] || !qAyat[i].audio) { stopQuran(); return; }
     qIdx = i; qSel = i; qPos(); qMark(-1, "sel");
+    if (qSurah && qSurah.n) markRead(qSurah.n, i + 1);
     const el = qMark(i, "playing"); if (el) el.scrollIntoView({ block: "center", behavior: "smooth" });
     qAudio.src = qAyat[i].audio; qBtn(true);
     qAudio.play().catch(() => { qBtn(false); toast("Tap play again to start audio"); });
@@ -1906,11 +1993,14 @@
       if (!reader.classList.contains("is-quran") || !qSurah || qSurah.n !== n) { rScroll.removeEventListener("scroll", onScroll); return; }
       clearTimeout(qSaveT); qSaveT = setTimeout(() => {
         const top = rScroll.getBoundingClientRect().top + 80;
-        const first = $$("#rLessonView .q-ay").find(e => e.getBoundingClientRect().bottom > top);
+        const all = $$("#rLessonView .q-ay"), first = all.find(e => e.getBoundingClientRect().bottom > top);
         if (first) save(+first.id.slice(3));
+        const vis = all.filter(e => e.getBoundingClientRect().top < innerHeight - 60).pop();
+        if (vis) markRead(n, +vis.id.slice(3));
       }, 250);
     };
     rScroll.addEventListener("scroll", onScroll, { passive: true });
+    setTimeout(() => { if (qSurah && qSurah.n === n && reader.classList.contains("is-quran")) onScroll(); }, 4000);
     if (a) setTimeout(() => { const el = $("#qa-" + a); if (el) { el.scrollIntoView({ block: "center" }); qSel = a - 1; qPos(); el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 2600); } }, 80);
   }
 
@@ -2074,28 +2164,27 @@
   /* ===========================================================
      RECITATION STREAKS (e.g. 40 days of Ziyarat Ashura)
      =========================================================== */
-  const RS_CHOICES = [["Ziyarat Ashura", "#lib/ziyarat/ashura"], ["Du'a al-'Ahd", "#lib/daily/ahd"], ["Du'a Kumayl", "#lib/duas/kumayl"], ["Du'a Tawassul", "#lib/duas/tawassul"], ["Ziyarat Warith", "#lib/ziyarat/warith"], ["Ziyarat Amin Allah", "#lib/ziyarat/amin-allah"], ["Ziyarat al-Jami'a al-Kabira", "#lib/ziyarat/jamia-kabira"], ["Surat Yasin", "#quran/36"], ["Surat al-Waqi'a", "#quran/56"], ["Salawat, 100 times", "#tasbih"]];
+  const RS_CHOICES = [["Ziyarat Ashura", "#lib/ziyarat/ashura"], ["Du'a al-'Ahd", "#lib/daily/ahd"], ["Du'a Kumayl", "#lib/duas/kumayl"], ["Du'a Tawassul", "#lib/duas/tawassul"], ["Ziyarat Warith", "#lib/ziyarat/warith"], ["Ziyarat Amin Allah", "#lib/ziyarat/amin-allah"], ["Ziyarat al-Jami'a al-Kabira", "#lib/ziyarat/jamia-kabira"], ["Surat Yasin", "#quran/36"], ["Surat al-Waqi'a", "#quran/56"], ["Surat al-Mulk", "#quran/67"], ["Surat al-Rahman", "#quran/55"], ["Surat al-Kahf", "#quran/18"], ["Salawat, 100 times", "#tasbih"]];
   function rsRun(s) { const set = new Set(s.days || []); let run = 0; const d = new Date(); if (!set.has(dayKey(d))) d.setDate(d.getDate() - 1); for (; set.has(dayKey(d)); d.setDate(d.getDate() - 1)) run++; return run; }
   function renderStreaks() {
     const box = $("#rsBox"); if (!box) return;
     const list = store.get("abp-rstreaks", []), today = dayKey(new Date());
     const how = store.get("abp-rs-intro", 1) && !list.length ? `<div class="pr-how"><button class="hm-x" id="rsHowX" aria-label="Hide">×</button><h3>How streaks work</h3><ol><li>Tap "+ Streak" to start one, like 40 days of Ziyarat Ashura, and choose a reminder time.</li><li>Each day after reciting, tap "Mark done".</li><li>Recite at any time of the day. A streak only breaks if a whole day passes without "Mark done".</li><li>Tap "Edit" to change the reminder, rename or delete a streak.</li></ol></div>` : "";
-    box.innerHTML = `<div class="hm-row rs-head"><div><h3>Your streaks</h3><p class="hm-sub">Keep a recitation steady, day after day.</p></div><button class="rs-add" id="rsAdd">+ Streak</button></div>${how}
+    box.innerHTML = `${list.length ? `<div class="hm-row rs-head"><div><h3>Your streaks</h3><p class="hm-sub">Keep a recitation steady, day after day.</p></div></div>` : ""}${how}
       ${list.map(s => { const run = rsRun(s), doneToday = (s.days || []).includes(today), lastMiss = !run && (s.days || []).length; const pct = Math.min(100, run / s.target * 100), complete = run >= s.target;
         return `<div class="hm-card rs-card"><div class="hm-row"><div><small class="hm-label">${complete ? "Completed" : `Day ${Math.min(run + (doneToday ? 0 : 1), s.target)} of ${s.target}`}</small><h3>${esc(s.name)}</h3></div><button class="pr-link" data-rsedit="${s.id}">Edit</button></div>
           <div class="hm-prog"><i style="width:${pct}%"></i></div><p class="rs-meta">${complete ? `${s.target} days done. Alhamdulillah!` : lastMiss ? "A day was missed, so the count starts again. Begin today." : `${run} day${run === 1 ? "" : "s"} in a row`}${s.time ? ` · reminder ${fmt12(s.time)}` : ""}</p>
           <div class="rs-btns">${s.href ? `<a class="tm-cancel" href="${s.href}">Open</a>` : ""}${complete ? `<button class="hm-btn" data-rsagain="${s.id}">Start again</button>` : `<button class="hm-btn ${doneToday ? "rs-done" : ""}" data-rsdone="${s.id}">${doneToday ? "Done today ✓" : "Mark done"}</button>`}</div></div>`; }).join("")}`;
     if ($("#rsHowX")) $("#rsHowX").onclick = () => { store.set("abp-rs-intro", 0); renderStreaks(); };
-    $("#rsAdd").onclick = () => editStreak(null);
     $$("#rsBox [data-rsedit]").forEach(b => b.onclick = () => editStreak(b.dataset.rsedit));
-    $$("#rsBox [data-rsdone]").forEach(b => b.onclick = () => { const L = store.get("abp-rstreaks", []), s = L.find(x => x.id === b.dataset.rsdone); if (!s) return; s.days = s.days || []; if (s.days.includes(today)) s.days = s.days.filter(d => d !== today); else { s.days.push(today); markDay(); } s.days = s.days.slice(-120); store.set("abp-rstreaks", L); renderStreaks(); if (rsRun(s) >= s.target) toast(`${s.target} days of ${s.name}. Alhamdulillah!`); });
+    $$("#rsBox [data-rsdone]").forEach(b => b.onclick = () => { const L = store.get("abp-rstreaks", []), s = L.find(x => x.id === b.dataset.rsdone); if (!s) return; s.days = s.days || []; if (s.days.includes(today)) s.days = s.days.filter(d => d !== today); else { s.days.push(today); markDay(); } s.days = s.days.slice(-120); store.set("abp-rstreaks", L); renderStreaks(); renderQrStreaks(); if (rsRun(s) >= s.target) toast(`${s.target} days of ${s.name}. Alhamdulillah!`); });
     $$("#rsBox [data-rsagain]").forEach(b => b.onclick = () => { const L = store.get("abp-rstreaks", []), s = L.find(x => x.id === b.dataset.rsagain); if (s) { s.days = []; store.set("abp-rstreaks", L); renderStreaks(); } });
   }
-  function editStreak(id) {
+  function editStreak(id, preset) {
     const L = store.get("abp-rstreaks", []), s = id ? L.find(x => x.id === id) : null;
     const box = document.createElement("div"); box.className = "tm-sheet";
     box.innerHTML = `<div class="tm-card"><h3>${s ? "Edit streak" : "New streak"}</h3>
-      <label class="tm-l">Recitation<select id="rsPick">${RS_CHOICES.map(c => `<option value="${c[1]}" ${s && s.href === c[1] ? "selected" : ""}>${c[0]}</option>`).join("")}<option value="" ${s && !s.href ? "selected" : ""}>Something else…</option></select></label>
+      <label class="tm-l">Recitation<select id="rsPick">${RS_CHOICES.map(c => `<option value="${c[1]}" ${(s ? s.href === c[1] : preset === c[0]) ? "selected" : ""}>${c[0]}</option>`).join("")}<option value="" ${s && !s.href ? "selected" : ""}>Something else…</option></select></label>
       <label class="tm-l" id="rsNameL">Name<input id="rsName" maxlength="50" value="${s ? esc(s.name) : ""}" placeholder="e.g. Ziyarat Ashura"></label>
       <label class="tm-l">How many days<select id="rsTarget">${[7, 14, 21, 40].map(n => `<option ${s ? (s.target === n ? "selected" : "") : n === 40 ? "selected" : ""}>${n}</option>`).join("")}</select></label>
       <label class="tm-l">Daily reminder (optional)<input type="time" id="rsTime" value="${s && s.time ? s.time : ""}"></label>
@@ -2106,16 +2195,27 @@
     if (!s) sync(); pick.onchange = sync;
     box.onclick = e => { if (e.target === box) close(); };
     $("#rsNo", box).onclick = close;
-    if ($("#rsDel", box)) $("#rsDel", box).onclick = () => { if (!confirm("Delete this streak?")) return; store.set("abp-rstreaks", L.filter(x => x.id !== id)); close(); renderStreaks(); remindersChanged(); };
+    if ($("#rsDel", box)) $("#rsDel", box).onclick = () => { if (!confirm("Delete this streak?")) return; store.set("abp-rstreaks", L.filter(x => x.id !== id)); close(); renderStreaks(); renderQrStreaks(); remindersChanged(); };
     $("#rsOk", box).onclick = async () => {
       const nm = name.value.trim() || (pick.value ? pick.options[pick.selectedIndex].text : ""); if (!nm) return toast("Give the streak a name");
       const data = { name: nm, href: pick.value, target: +$("#rsTarget", box).value, time: $("#rsTime", box).value };
       if (s) Object.assign(s, data); else L.push(Object.assign({ id: "r" + Date.now(), days: [] }, data));
-      store.set("abp-rstreaks", L); close(); renderStreaks();
+      store.set("abp-rstreaks", L); close(); renderStreaks(); renderQrStreaks();
       remindersChanged(); toast(s ? "Streak updated" : "Streak started. Bismillah!");
       if (data.time) askNotify();
     };
   }
+
+  function renderQrStreaks() {
+    const box = $("#qrStreaks"); if (!box) return;
+    const today = dayKey(new Date()), list = store.get("abp-rstreaks", []).filter(s => (s.href || "").startsWith("#quran/"));
+    box.innerHTML = list.map(s => { const run = rsRun(s), done = (s.days || []).includes(today), pct = Math.min(100, run / s.target * 100);
+      return `<div class="qs-card"><a class="qs-main" href="${s.href}"><small>${run >= s.target ? "Completed" : `Day ${Math.min(run + (done ? 0 : 1), s.target)} of ${s.target}`}</small><b>${esc(s.name)}</b><span class="hm-prog"><i style="width:${pct}%"></i></span></a><button class="qs-do ${done ? "on" : ""}" data-qsdone="${s.id}" aria-label="Mark done">${done ? "✓" : "Done"}</button></div>`; }).join("");
+    $$("#qrStreaks [data-qsdone]").forEach(b => b.onclick = () => { const L = store.get("abp-rstreaks", []), s = L.find(x => x.id === b.dataset.qsdone); if (!s) return; s.days = s.days || []; if (s.days.includes(today)) s.days = s.days.filter(d => d !== today); else { s.days.push(today); markDay(); } s.days = s.days.slice(-120); store.set("abp-rstreaks", L); renderQrStreaks(); renderStreaks(); if (rsRun(s) >= s.target) toast(`${s.target} days of ${s.name}. Alhamdulillah!`); });
+  }
+  $("#qrAdd").onclick = () => editStreak(null, "Surat Yasin");
+  $("#duAdd").onclick = () => editStreak(null);
+  renderQrStreaks();
 
   drawQChips();
   scheduleReminders();   /* after DEEDS and streaks are defined */
