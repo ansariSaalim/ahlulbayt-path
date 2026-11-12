@@ -983,7 +983,7 @@
       if (vis && changed) { sec.classList.remove("screen-in"); void sec.offsetWidth; sec.classList.add("screen-in"); }
     });
     if (footerEl) footerEl.hidden = !!sub || tab !== "home";
-    const hub = sub === "calendar" || (!sub && (tab === "quran" || tab === "duas"));
+    const hub = sub === "calendar" || (!sub && (tab === "quran" || tab === "duas" || tab === "prayer"));
     document.body.classList.toggle("scr-sub", !!sub && !hub);
     document.body.classList.toggle("scr-tab", !sub && tab !== "home" && !hub);
     document.body.classList.toggle("hub", hub);
@@ -1368,20 +1368,33 @@
   }
   const countdown = ms => { const m = Math.round(ms / 60000), h = Math.floor(m / 60); return h ? `in ${h} h ${m % 60} min` : `in ${m} min`; };
   let ptOff = 0; const IMSAK_MIN = 15;
+  const PIC = {
+    fajr: '<path d="M4 18h16M7 18a5 5 0 0 1 10 0M12 4v5m-2.5-2.5L12 4l2.5 2.5"/>',
+    sunrise: '<path d="M4 18h16M7 18a5 5 0 0 1 10 0M12 7v2M5.6 11.6l1.4 1.4M18.4 11.6 17 13"/>',
+    dhuhr: '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.5 1.5M17.2 17.2l1.5 1.5M5.3 18.7l1.5-1.5M17.2 6.8l1.5-1.5"/>',
+    maghrib: '<path d="M4 18h16M7 18a5 5 0 0 1 10 0M12 4v5m-2.5-2.5L12 9l2.5-2.5"/>',
+    midnight: '<path d="M19 14.5A7.5 7.5 0 0 1 9.5 5a7.5 7.5 0 1 0 9.5 9.5z"/><path d="M18 3v3M16.5 4.5h3"/>'
+  };
+  const pico = k => `<svg viewBox="0 0 24 24">${PIC[k]}</svg>`;
   function renderPrayer() {
     const loc = getLoc(), box = $("#ptTimes");
     if (!loc) {
-      box.innerHTML = `<h3>Prayer times</h3><p class="muted">Set your location to see today's prayer times and the Qibla (Ja'fari method).</p><div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.8rem"><button class="btn btn-gold" id="ptGeo">Use my location</button><a class="btn btn-ghost" href="#/s/settings" style="color:var(--gold);border-color:var(--gold)">Choose a city</a></div>`;
+      box.innerHTML = `<div class="hm-row"><span class="hm-label">Prayer times</span></div><p class="hm-sub">Set your location to see prayer times and the Qibla (Ja'fari method).</p><button class="hm-btn" id="ptGeo">Use my location <span>→</span></button><a class="pt-city" href="#/s/settings">or choose a city</a>`;
       $("#ptGeo").onclick = useGeo; $("#qbInfo").textContent = "Set your location to find the Qibla."; return;
     }
     const t = dayTimes(loc, ptOff), nx = ptOff === 0 ? nextPrayer(loc) : null, day = new Date(Date.now() + ptOff * 864e5), h = hijri(day);
     const imsak = t.hours.fajr - IMSAK_MIN / 60;
-    box.innerHTML = `<div class="pt-top"><div class="pt-day"><button class="pt-arr" id="ptPrev" aria-label="Previous day">‹</button><div><h3 style="margin:0">${ptOff === 0 ? "Today" : day.toLocaleDateString(undefined, { weekday: "long" })}</h3><small>${day.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "long", year: "numeric" })}</small>${h ? `<small class="pt-hij">${h.d} ${HM[h.m - 1]} ${h.y}</small>` : ""}</div><button class="pt-arr" id="ptNext" aria-label="Next day">›</button></div><a class="pt-loc" href="#/s/settings">${esc(loc.name)} ›</a></div>
-      ${ptOff !== 0 ? `<button class="pt-today" id="ptToday">Back to today</button>` : ""}
-      <ul class="pt-list"><li class="minor imsak"><b>Imsak (Sehar)<small>stop eating</small></b><span>${fmtH(imsak)}</span></li>${PNAMES.map(([k, n, c]) => `<li class="${c === "minor" ? "minor" : c === "main" ? "main" : ""} ${nx && nx.k === k && nx.ts === t.ts[k] ? "next" : ""}"><b>${n}</b><span>${fmtH(t.hours[k])}</span></li>`).join("")}</ul>
-      <p class="pt-foot">${nx ? `Next: <b style="color:var(--gold)">${nx.name}</b> ${countdown(nx.ts - Date.now())}. ` : ""}Ja'fari method (Fajr 16°, Maghrib 4°, Isha 14°). Imsak is ${IMSAK_MIN} minutes before Fajr: when fasting, stop eating a little before Fajr to be sure (Sayyid al-Sistani, Islamic Laws). Asr and Isha show their <b>best</b> time; you may pray Asr any time after Zuhr, and Isha any time after Maghrib, up to midnight — together or apart. Check against your marja's timetable.</p>`;
+    const order = [["fajr", "Fajr"], ["sunrise", "Sunrise"], ["dhuhr", "Zuhr"], ["maghrib", "Maghrib"], ["midnight", "Midnight"]];
+    const short = { fajr: "Fajr", sunrise: "Sunrise", dhuhr: "Zuhr", maghrib: "Maghrib", midnight: "Midnight" };
+    const dayLbl = ptOff === 0 ? "Today" : ptOff === 1 ? "Tomorrow" : ptOff === -1 ? "Yesterday" : day.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" });
     const notifOn = store.get("abp-notify", false) && (LN || ("Notification" in window && Notification.permission === "granted"));
-    box.insertAdjacentHTML("beforeend", `<div class="pt-extra">${loc.auto ? `<span class="pt-chip">Following your location</span>` : `<button class="pt-chip-b" id="ptUseGeo">Use my location instead</button>`}${(LN || "Notification" in window) ? (notifOn ? `<span class="pt-chip">Reminders on</span>` : `<button class="pt-chip-b" id="ptNotify">Turn on prayer reminders</button>`) : ""}</div>`);
+    box.innerHTML = `<div class="hm-row"><span class="hm-label">Prayer times</span><a class="hm-chip" href="#/s/settings">${ico("compass")}${esc(loc.name)} ›</a></div>
+      <div class="pt-dayrow"><button class="pt-mini" id="ptPrev" aria-label="Previous day">‹</button><div><b>${dayLbl}</b><small>${day.toLocaleDateString(undefined, { day: "numeric", month: "long" })}${h ? ` · ${h.d} ${HM[h.m - 1]} ${h.y}` : ""}</small></div><button class="pt-mini" id="ptNext" aria-label="Next day">›</button></div>
+      ${nx ? `<div class="hm-next"><span class="hm-nico">${pico(nx.k)}</span><span class="hm-nl"><small class="hm-in">Next · ${countdown(nx.ts - Date.now())}</small><b>${short[nx.k]}</b></span><span class="hm-nt">${fmtH(nx.h)}</span></div>` : ptOff !== 0 ? `<button class="pt-back" id="ptToday">Back to today</button>` : ""}
+      <div class="hm-times">${order.map(([k, n]) => `<div class="t ${nx && nx.k === k ? "on" : ""}">${pico(k)}<span>${n}</span><b>${fmtH(t.hours[k]).replace(/\s?[AP]M/i, "")}</b></div>`).join("")}</div>
+      <p class="pt-more"><span>Imsak <b>${fmtH(imsak)}</b></span><span>Asr <b>${fmtH(t.hours.asr)}</b></span><span>Sunset <b>${fmtH(t.hours.sunset)}</b></span><span>Isha <b>${fmtH(t.hours.isha)}</b></span></p>
+      <div class="pt-extra">${loc.auto ? `<span class="pt-chip">Following your location</span>` : `<button class="pt-chip-b" id="ptUseGeo">Use my location</button>`}${(LN || "Notification" in window) ? (notifOn ? `<span class="pt-chip">Reminders on</span>` : `<button class="pt-chip-b" id="ptNotify">Turn on reminders</button>`) : ""}</div>
+      <details class="pt-note"><summary>About these times</summary><p>Ja'fari method (Fajr 16°, Maghrib 4°, Isha 14°). Zuhr and Asr share one time from midday until sunset; Maghrib and Isha share one time until midnight. Asr and Isha above are their preferred times. Imsak is ${IMSAK_MIN} minutes before Fajr, for fasting. Check against your marja's timetable.</p></details>`;
     if ($("#ptUseGeo")) $("#ptUseGeo").onclick = useGeo;
     if ($("#ptNotify")) $("#ptNotify").onclick = enableReminders;
     $("#ptPrev").onclick = () => { ptOff--; renderPrayer(); };
@@ -1759,14 +1772,6 @@
     }
     fetchAyah(AOTD[(doy + 1) % AOTD.length]).catch(() => {}); // tomorrow's, for offline
   }
-  const PIC = {
-    fajr: '<path d="M4 18h16M7 18a5 5 0 0 1 10 0M12 4v5m-2.5-2.5L12 4l2.5 2.5"/>',
-    sunrise: '<path d="M4 18h16M7 18a5 5 0 0 1 10 0M12 7v2M5.6 11.6l1.4 1.4M18.4 11.6 17 13"/>',
-    dhuhr: '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.5 1.5M17.2 17.2l1.5 1.5M5.3 18.7l1.5-1.5M17.2 6.8l1.5-1.5"/>',
-    maghrib: '<path d="M4 18h16M7 18a5 5 0 0 1 10 0M12 4v5m-2.5-2.5L12 9l2.5-2.5"/>',
-    midnight: '<path d="M19 14.5A7.5 7.5 0 0 1 9.5 5a7.5 7.5 0 1 0 9.5 9.5z"/><path d="M18 3v3M16.5 4.5h3"/>'
-  };
-  const pico = k => `<svg viewBox="0 0 24 24">${PIC[k]}</svg>`;
   function renderHome() {
     const now = new Date(), h = hijri(now), ev = upcomingEvents(60)[0], p = dailyPearl(now);
     const doy = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 864e5);

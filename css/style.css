@@ -1861,3 +1861,30 @@ body.hub .ab-back { display: none; }
 .kh-go span { font-size: 1.3rem; line-height: 1; }
 .kh-go:active { transform: scale(.985); }
 .tabbar { background: linear-gradient(var(--card), var(--card)), var(--ink); }
+
+/* ===========================================================
+   PRAYER TAB (Mimber-style card)
+   =========================================================== */
+.prayer-tools .wrap { padding-top: .6rem; }
+.pt-main { margin-bottom: 1rem; }
+.hm-times .t { display: flex; flex-direction: column; align-items: center; gap: .15rem; padding: .7rem .1rem; border-radius: 16px; background: var(--soft); color: var(--text); }
+.hm-times .t.on { background: var(--pill); color: var(--pill-fg); }
+.hm-times .t.on svg, .hm-times .t.on span { color: var(--pill-fg); }
+.pt-dayrow { display: flex; align-items: center; gap: .7rem; margin: .9rem 0 .2rem; }
+.pt-dayrow > div { flex: 1; min-width: 0; display: grid; }
+.pt-dayrow b { font-size: 1rem; }
+.pt-dayrow small { color: var(--muted); font-size: .82rem; }
+.pt-mini { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line); background: var(--card); color: var(--gold); font-size: 1.2rem; line-height: 1; cursor: pointer; flex-shrink: 0; }
+.pt-back { display: block; margin: .9rem 0; border: 0; border-radius: 999px; padding: .6rem 1rem; background: var(--soft); color: var(--text); font: 600 .9rem inherit; font-family: inherit; cursor: pointer; }
+.pt-more { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .3rem .8rem; margin: .9rem .2rem 0; font-size: .82rem; color: var(--muted); }
+.pt-more b { color: var(--text); font-weight: 600; margin-left: .2rem; }
+.pt-main .pt-extra { margin-top: .9rem; }
+.pt-note { margin-top: .8rem; font-size: .82rem; color: var(--muted); }
+.pt-note summary { cursor: pointer; font-weight: 600; color: var(--gold); list-style: none; }
+.pt-note summary::-webkit-details-marker { display: none; }
+.pt-note p { margin: .5rem 0 0; line-height: 1.5; }
+.pt-city { display: block; margin-top: .7rem; text-align: center; color: var(--gold); font-weight: 600; text-decoration: none; }
+a.pg-add { text-decoration: none; display: inline-block; }
+.pt-more { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .3rem; text-align: center; margin: .9rem 0 0; }
+.pt-more span { display: grid; gap: .1rem; font-size: .72rem; }
+.pt-more b { margin: 0; font-size: .86rem; white-space: nowrap; }
