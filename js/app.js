@@ -884,26 +884,6 @@
     }));
     $("#longDuas").innerHTML = LONG_DUAS.map(l => `<div class="ld reveal"><b>${esc(l[0])}</b><small>${esc(l[1])}</small><p>${esc(l[2])}</p>${typeof LONG_DUA_SRC !== "undefined" && LONG_DUA_SRC[l[0]] ? `<p class="p-src"><b>Source:</b> ${esc(LONG_DUA_SRC[l[0]])}</p>` : ""}</div>`).join("");
     observeReveals($("#namaz-dua"));
-    // tasbih counter
-    const phases = [["Allahu Akbar", "اللّٰهُ أَكْبَرُ", 34], ["Alhamdulillah", "الْحَمْدُ لِلّٰهِ", 33], ["Subhanallah", "سُبْحَانَ اللّٰهِ", 33]];
-    let ph = 0, n = 0;
-    const draw = () => {
-      $("#tsPhase").textContent = ph < 3 ? phases[ph][0] : "Complete · may Allah accept";
-      $("#tsAr").textContent = ph < 3 ? phases[ph][1] : "تَقَبَّلَ اللّٰهُ";
-      $("#tsCount").textContent = ph < 3 ? n : "✓";
-      $("#tsOf").textContent = ph < 3 ? "of " + phases[ph][2] : "100";
-      const total = phases.slice(0, Math.min(ph, 3)).reduce((a, p) => a + p[2], 0) + (ph < 3 ? n : 0);
-      $("#tsBar").style.width = total + "%";
-    };
-    $("#tsBtn").addEventListener("click", () => {
-      if (ph >= 3) { ph = 0; n = 0; draw(); return; }
-      n++;
-      if (navigator.vibrate) try { navigator.vibrate(n === phases[ph][2] ? 60 : 12); } catch { /* ignore */ }
-      if (n >= phases[ph][2]) { ph++; n = 0; }
-      draw();
-    });
-    $("#tsReset").addEventListener("click", () => { ph = 0; n = 0; draw(); });
-    draw();
   }
 
   /* ---------- Imam profiles ---------- */
@@ -966,8 +946,8 @@
      APP SHELL: tabs, screens, back
      =========================================================== */
   const TAB_TITLES = { home: "Home", prayer: "Prayer", prepare: "Preparing", quran: "Qur'an", duas: "Recite", learn: "Learn" };
-  const SUB_TITLES = { proofs: "The Proofs", timeline: "Timeline", stories: "Stories", battles: "Battles of Imam Ali", haq: "Fatima's Haq", karbala: "Karbala", abbas: "Moula Abbas", rulers: "The Caliphs", wronged: "Who Wronged Them", masumin: "The 14 Ma'sumin", lessons: "Lessons of the Fourteen", pearls: "Divine Pearls", companions: "Companions", dates: "Key Dates", reading: "Books", calendar: "Shia Calendar", settings: "Settings", "namaz-guide": "How to Pray", qa: "Q & A", favs: "Favourites", today: "Today", support: "Support & Charity" };
-  const PARENT = { calendar: "duas", settings: "home", "namaz-guide": "prayer", favs: "home", today: "home", support: "home" };
+  const SUB_TITLES = { tasbih: "Tasbih", proofs: "The Proofs", timeline: "Timeline", stories: "Stories", battles: "Battles of Imam Ali", haq: "Fatima's Haq", karbala: "Karbala", abbas: "Moula Abbas", rulers: "The Caliphs", wronged: "Who Wronged Them", masumin: "The 14 Ma'sumin", lessons: "Lessons of the Fourteen", pearls: "Divine Pearls", companions: "Companions", dates: "Key Dates", reading: "Books", calendar: "Shia Calendar", settings: "Settings", "namaz-guide": "How to Pray", qa: "Q & A", favs: "Favourites", today: "Today", support: "Support & Charity" };
+  const PARENT = { tasbih: "prayer", calendar: "duas", settings: "home", "namaz-guide": "prayer", favs: "home", today: "home", support: "home" };
   const allSections = $$("section[data-screen]");
   const footerEl = $(".footer");
   let screenHash = "", appNav = 0;
@@ -987,6 +967,7 @@
     document.body.classList.toggle("scr-sub", !!sub && !hub);
     document.body.classList.toggle("scr-tab", !sub && tab !== "home" && !hub);
     document.body.classList.toggle("hub", hub);
+    document.body.classList.toggle("tsb-on", sub === "tasbih");
     $("#abTitle").textContent = sub ? (SUB_TITLES[sub] || "") : TAB_TITLES[tab];
     const activeTab = sub ? (PARENT[sub] || "learn") : tab === "quran" ? "duas" : tab;
     $$("#tabbar a").forEach(a => a.classList.toggle("on", a.dataset.tab === activeTab));
@@ -1112,7 +1093,20 @@
   }
   function renderLibHome() {
     if (typeof LIB === "undefined" || !$("#libCats")) return;
-    $("#libCats").innerHTML = LIB.map(c => `<a class="lib-cat" href="#lib/${c.id}"><span><b>${esc(c.name)}</b><small>${esc(c.desc)}</small></span><em>${c.items.length}</em></a>`).join("");
+    const CARD = {
+      daily: ["أَعْمَالُ كُلِّ يَوْم", "Every Day", "Sabah, 'Ahd, the du'a and ziyarat of each day of the week"],
+      taqibat: ["تَعْقِيبَاتُ الصَّلَاة", "After Namaz", "Taqibat after every prayer, and at sunrise and sunset"],
+      ziyarat: ["الزِّيَارَات", "Ziyarat", "Ashura, Warith, Arba'in, Moula Abbas, Jami'a Kabira and the Ma'sumin"],
+      duas: ["الْأَدْعِيَةُ الْمَشْهُورَة", "Well-known Du'as", "Kumayl, Tawassul, Nudba, Faraj, Jawshan, Mujir and more"],
+      months: ["أَعْمَالُ الشُّهُور", "Months of the Year", "Rajab, Sha'ban, Iftitah, Abu Hamza and the Day of Arafa"],
+      munajat: ["الْمُنَاجَاة", "Munajat", "The fifteen whispered prayers of Imam al-Sajjad (AS)"],
+      sahifa: ["الصَّحِيفَةُ السَّجَّادِيَّة", "Sahifa Sajjadiyya", "The Psalms of Islam, from Imam Zayn al-Abidin (AS)"]
+    };
+    const card = (id, big) => { const c = LIB.find(x => x.id === id); if (!c) return ""; const k = CARD[id] || [c.name, c.name, c.desc];
+      return `<a class="rc ${big ? "rc-big" : ""}" href="#lib/${c.id}"><span class="rc-t"><span class="rc-ar" dir="rtl" lang="ar">${k[0]}</span><b>${esc(k[1])}</b><small>${esc(k[2])}</small><em>${c.items.length} texts</em></span>${big ? `<span class="rc-art" aria-hidden="true"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="47"/><g><rect x="27" y="27" width="46" height="46"/><rect x="27" y="27" width="46" height="46" transform="rotate(45 50 50)"/></g><circle class="i" cx="50" cy="50" r="11"/></svg></span>` : ""}</a>`; };
+    $("#libCats").innerHTML = `<p class="rc-k">Du'as & Ziyarat</p>${card("ziyarat", 1)}
+      <h3 class="rc-h">Every day</h3><p class="rc-s">Morning, evening and after each prayer</p><div class="rc-grid">${card("daily")}${card("taqibat")}</div>
+      <h3 class="rc-h">Du'as & a'mal</h3><p class="rc-s">Supplications for every day, need and season</p>${card("duas", 1)}<div class="rc-grid">${card("months")}${card("munajat")}</div>${card("sahifa", 1)}`;
   }
   function libSearch(q) {
     q = q.trim().toLowerCase();
@@ -1138,6 +1132,19 @@
       <ol class="ch-list lib-list">${c.items.map((it, k) => `<li style="animation-delay:${Math.min(k, 12) * .04}s"><a href="#lib/${c.id}/${it[0]}"><span class="ch-n">${k + 1}</span><span class="ch-t"><b>${esc(it[1])}</b><small>${c.arTitle ? `<span dir="rtl" lang="ar" class="lib-art">${esc(it[2])}</span>` : esc(it[2])} · ${libMins(it[3])} min</small></span></a></li>`).join("")}</ol>`;
     showReader(c.name);
   }
+  /* split long du'a paragraphs into readable lines at natural breaks */
+  const bare = w => w.replace(/[\u064B-\u065F\u0670\u0640]/g, "").replace(/^[\u0671\u0623\u0625]/, "\u0627");
+  const BREAK = w => { const b = bare(w); return /^(السلام|اللهم|يا|و?لعن|اشهد|أشهد)/.test(b) || b === "و" || b === "يا"; };
+  function libLines(p) {
+    const w = p.split(/\s+/).filter(Boolean); if (w.length <= 12) return [p];
+    const out = []; let cur = [];
+    for (let i = 0; i < w.length; i++) {
+      if (cur.length >= 6 && (BREAK(w[i]) || cur.length >= 14) && w.length - i > 3) { out.push(cur.join(" ")); cur = []; }
+      cur.push(w[i]);
+    }
+    if (cur.length) out.push(cur.join(" "));
+    return out;
+  }
   async function openLibItem(cid, id) {
     const c = libCat(cid); if (!c) return;
     const k = c.items.findIndex(x => x[0] === id); if (k < 0) return;
@@ -1161,16 +1168,19 @@
     reader.classList.add("is-lib");
     const band = c.arTitle ? it[2] : (AR_CAT[cid] || "");
     const mark = `<span class="lib-mark" aria-hidden="true"></span>`;
-    $("#rLessonView").innerHTML = `<div class="q-frame lib-frame">${band ? `<div class="q-band"><span dir="rtl" lang="ar">${esc(band)}</span></div>` : ""}
-        <div class="lib-text lib-page" dir="rtl" lang="ar">${x.p.map(t => `<p>${esc(t)} ${mark}</p>`).join("")}</div></div>
-      <p class="note-small lib-src">Arabic text: ${esc(data.src)}.</p>
+    const TR = typeof Translit === "function";
+    const lines = x.p.flatMap(libLines);
+    reader.classList.toggle("no-tr", !store.get("abp-tr", 1));
+    $("#rLessonView").innerHTML = `${band ? `<p class="dl-band" dir="rtl" lang="ar">${esc(band)}</p>` : ""}<div class="dl-list">${lines.map(l => `<div class="dl"><p class="dl-ar" dir="rtl" lang="ar">${esc(l)}</p>${TR ? `<p class="dl-tr">${esc(Translit(l))}</p>` : ""}</div>`).join(`<i class="dl-dot" aria-hidden="true"></i>`)}</div>
+      <p class="note-small lib-src">Arabic text: ${esc(data.src)}.${TR ? " The transliteration under each line is generated letter by letter from the vowelled Arabic, as a reading aid; where the Arabic leaves a vowel unmarked it may be slightly off, so follow the Arabic and a teacher." : ""}</p>
       <nav class="r-nav">
         <button class="r-nav-btn" ${prev ? "" : "disabled"} onclick="location.hash='lib/${cid}/${prev ? prev[0] : ""}'"><small>Previous</small><span>${prev ? esc(prev[1]) : ""}</span></button>
         <button class="r-nav-btn" ${next ? "" : "disabled"} onclick="location.hash='lib/${cid}/${next ? next[0] : ""}'"><small>Next</small><span>${next ? esc(next[1]) : ""}</span></button>
       </nav>`;
     const lp = $("#libPlayer");
-    lp.innerHTML = `<button id="libSize" aria-label="Text size"><b>Aa</b></button><button id="libCopy" aria-label="Copy"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2" fill="none"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3" fill="none"/></svg></button>${favBtn("l:" + cid + "/" + id)}<span class="lib-pct" id="libPct">0%</span>`;
+    lp.innerHTML = `<button id="libTr" class="${store.get("abp-tr", 1) ? "on" : ""}" aria-label="Show or hide transliteration"><b>abc</b></button><button id="libSize" aria-label="Text size"><b>Aa</b></button><button id="libCopy" aria-label="Copy"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2" fill="none"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3" fill="none"/></svg></button>${favBtn("l:" + cid + "/" + id)}<span class="lib-pct" id="libPct">0%</span>`;
     lp.hidden = false;
+    $("#libTr").onclick = () => { const v = store.get("abp-tr", 1) ? 0 : 1; store.set("abp-tr", v); reader.classList.toggle("no-tr", !v); $("#libTr").classList.toggle("on", !!v); toast(v ? "Transliteration on" : "Transliteration off"); };
     $("#libSize").onclick = () => { const steps = [90, 100, 115, 130, 150], cur = store.get("abp-ar", 100), nx = steps[(steps.findIndex(v => v >= cur) + 1) % steps.length]; store.set("abp-ar", nx); applyArScale(); toast(`Arabic size ${nx}%`); };
     $("#libCopy").onclick = () => (navigator.clipboard ? navigator.clipboard.writeText(it[1] + "\n\n" + x.p.join("\n\n")) : Promise.reject()).then(() => toast("Copied"), () => toast("Copy not available"));
   }
@@ -2221,6 +2231,88 @@
   $("#qrAdd").onclick = () => editStreak(null, "Surat Yasin");
   $("#duAdd").onclick = () => editStreak(null);
   renderQrStreaks();
+
+  /* ===========================================================
+     TASBIH (beads, ring, sound, vibration, slide to reset)
+     =========================================================== */
+  (function tasbih() {
+    const MODES = {
+      fatima: { name: "Tasbih of Lady Fatima (SA)", segs: [["اللّٰهُ أَكْبَرُ", "Allahu Akbar", 34], ["الْحَمْدُ لِلّٰهِ", "Alhamdulillah", 33], ["سُبْحَانَ اللّٰهِ", "Subhanallah", 33]] },
+      salawat: { name: "Salawat", segs: [["اللّٰهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ وَآلِ مُحَمَّدٍ", "Allahumma salli 'ala Muhammad wa Aali Muhammad", 100]] },
+      free: { name: "Free count (33)", segs: [["سُبْحَانَ اللّٰهِ", "Dhikr of your choice", 33]] }
+    };
+    let st = Object.assign({ mode: "fatima", n: 0, snd: 1, vib: 1 }, store.get("abp-tsb", {}));
+    if (!MODES[st.mode]) st.mode = "fatima";
+    const save = () => store.set("abp-tsb", st);
+    const M = () => MODES[st.mode], total = () => M().segs.reduce((t, s) => t + s[2], 0);
+    function where() { let n = st.n; for (let i = 0; i < M().segs.length; i++) { if (n < M().segs[i][2]) return { i, n }; n -= M().segs[i][2]; } return { i: M().segs.length, n: 0 }; }
+    /* ring */
+    const R = 92, C = 110, P = a => [C + R * Math.sin(a), C - R * Math.cos(a)];
+    const arc = (a0, a1) => { const [x0, y0] = P(a0), [x1, y1] = P(a1); return `M${x0.toFixed(2)} ${y0.toFixed(2)}A${R} ${R} 0 ${a1 - a0 > Math.PI ? 1 : 0} 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`; };
+    function ring() {
+      const segs = M().segs, T = total(), gap = segs.length > 1 ? 0.09 : 0.0001; let a = 0, done = st.n, out = "";
+      segs.forEach(s => {
+        const span = s[2] / T * 2 * Math.PI, a0 = a + gap / 2, a1 = a + span - gap / 2;
+        out += `<path class="tr" d="${arc(a0, a1)}"/>`;
+        const f = Math.max(0, Math.min(1, done / s[2])); if (f > 0) out += `<path class="pr" d="${arc(a0, a0 + (a1 - a0) * Math.max(f, .002))}"/>`;
+        if (segs.length > 1) { const [dx, dy] = P(a); out += `<circle class="dt" cx="${dx.toFixed(2)}" cy="${dy.toFixed(2)}" r="4.5"/>`; }
+        done -= s[2]; a += span;
+      });
+      if (segs.length === 1) { const [dx, dy] = P(0); out += `<circle class="dt" cx="${dx}" cy="${dy}" r="4.5"/>`; }
+      $("#tbRing").innerHTML = out;
+    }
+    /* beads */
+    const SP = 60, NB = 11; let phase = 0, anim = 0;
+    const by = x => 40 + 0.00075 * (x - 200) ** 2;
+    $("#tbBeads").innerHTML = `<defs><radialGradient id="wood" cx="38%" cy="32%" r="70%"><stop offset="0" stop-color="#d9b28a"/><stop offset=".45" stop-color="#a8713f"/><stop offset="1" stop-color="#5f3a1c"/></radialGradient><linearGradient id="tbGold" x1="0" x2="1"><stop offset="0" stop-color="#f3d58a"/><stop offset="1" stop-color="#b8892f"/></linearGradient></defs><path class="str" d="M-40 ${by(-40)} Q200 ${2 * by(200) - (by(-40) + by(440)) / 2} 440 ${by(440)}"/><g id="tbBg"></g>`;
+    function beads() {
+      let g = ""; for (let i = 0; i < NB; i++) { const x = -60 + (i - phase) * SP, y = by(x); g += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="27" fill="url(#wood)"/><ellipse cx="${(x - 8).toFixed(1)}" cy="${(y - 11).toFixed(1)}" rx="8" ry="4.5" fill="rgba(255,240,215,.35)"/>`; }
+      const mx = 200 + 30, my = by(mx); g += `<rect x="${mx - 5}" y="${my - 16}" width="10" height="32" rx="4" fill="url(#tbGold)"/>`;
+      $("#tbBg").innerHTML = g;
+    }
+    function slide() { cancelAnimationFrame(anim); const t0 = performance.now(); const step = now => { const k = Math.min(1, (now - t0) / 220); phase = 1 - Math.pow(1 - k, 3); beads(); if (k < 1) anim = requestAnimationFrame(step); else { phase = 0; beads(); } }; anim = requestAnimationFrame(step); }
+    /* sound */
+    let ac = null;
+    function tick(big) {
+      if (!st.snd) return;
+      try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); const o = ac.createOscillator(), g = ac.createGain(), t = ac.currentTime;
+        o.type = "sine"; o.frequency.value = big ? 660 : 1500; g.gain.setValueAtTime(big ? .25 : .18, t); g.gain.exponentialRampToValueAtTime(.001, t + (big ? .35 : .05));
+        o.connect(g).connect(ac.destination); o.start(t); o.stop(t + (big ? .36 : .06)); } catch { /* no audio */ }
+    }
+    const buzz = p => { if (st.vib && navigator.vibrate) try { navigator.vibrate(p); } catch { /* ignore */ } };
+    function draw() {
+      const w = where(), segs = M().segs, end = w.i >= segs.length;
+      $("#tbN").textContent = end ? "✓" : w.n; $("#tbOf").textContent = end ? `${total()} · complete` : `/ ${segs[w.i][2]}`;
+      $("#tbAr").textContent = end ? "تَقَبَّلَ اللّٰهُ" : segs[w.i][0];
+      $("#tbEn").textContent = end ? "May Allah accept it. Tap to begin again." : segs[w.i][1] + (segs.length > 1 ? ` · ${w.i + 1} of ${segs.length}` : "");
+      $("#tbSound").classList.toggle("off", !st.snd); $("#tbVib").classList.toggle("off", !st.vib);
+      ring();
+    }
+    $("#tbTap").onclick = () => {
+      if (st.n >= total()) { st.n = 0; save(); draw(); return; }
+      st.n++; save(); slide();
+      const w = where(), segEnd = w.n === 0;
+      if (st.n >= total()) { buzz([80, 60, 80]); tick(true); markDay(); } else if (segEnd) { buzz(60); tick(true); } else { buzz(12); tick(false); }
+      draw();
+    };
+    $("#tbSound").onclick = () => { st.snd = st.snd ? 0 : 1; save(); draw(); toast(st.snd ? "Sound on" : "Sound off"); };
+    $("#tbVib").onclick = () => { st.vib = st.vib ? 0 : 1; save(); draw(); if (st.vib) buzz(30); toast(st.vib ? "Vibration on" : "Vibration off"); };
+    $("#tbMode").onclick = () => {
+      const box = document.createElement("div"); box.className = "tm-sheet";
+      box.innerHTML = `<div class="tm-card"><h3>Choose dhikr</h3>${Object.entries(MODES).map(([k, m]) => `<button class="tb-opt ${k === st.mode ? "on" : ""}" data-m="${k}"><b>${m.name}</b><small>${m.segs.map(s => `${s[1]} ×${s[2]}`).join(" · ")}</small></button>`).join("")}<div class="tm-btns"><button class="tm-cancel" id="tbNo">Close</button></div></div>`;
+      document.body.appendChild(box); const close = () => box.remove();
+      box.onclick = e => { if (e.target === box) close(); }; $("#tbNo", box).onclick = close;
+      $$(".tb-opt", box).forEach(b => b.onclick = () => { st.mode = b.dataset.m; st.n = 0; save(); draw(); close(); });
+    };
+    /* slide to reset */
+    const track = $("#tbSlide"), knob = $("#tbKnob"); let sx = null, max = 0;
+    knob.addEventListener("pointerdown", e => { sx = e.clientX; max = track.clientWidth - knob.offsetWidth - 10; knob.setPointerCapture(e.pointerId); knob.style.transition = "none"; });
+    knob.addEventListener("pointermove", e => { if (sx === null) return; const dx = Math.max(0, Math.min(max, e.clientX - sx)); knob.style.transform = `translateX(${dx}px)`; track.style.setProperty("--p", dx / max); });
+    const up = e => { if (sx === null) return; const dx = e.clientX - sx; sx = null; knob.style.transition = ""; knob.style.transform = ""; track.style.setProperty("--p", 0);
+      if (dx >= max * .85) { st.n = 0; save(); draw(); buzz(40); toast("Reset"); } };
+    knob.addEventListener("pointerup", up); knob.addEventListener("pointercancel", up);
+    beads(); draw();
+  })();
 
   drawQChips();
   scheduleReminders();   /* after DEEDS and streaks are defined */

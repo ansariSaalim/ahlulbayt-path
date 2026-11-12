@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Amiri+Quran&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=47" />
+<link rel="stylesheet" href="css/style.css?v=48" />
 </head>
 <body>
 
@@ -247,14 +247,7 @@
           <a class="nd-l" href="#lesson/namaz-rules">Doubts, travel, Salat al-Ayat</a>
         </div>
       </div>
-      <div class="tasbih reveal" id="tasbih">
-        <h3>Tasbih of Lady Fatima</h3>
-        <p class="ts-phase" id="tsPhase">Allahu Akbar</p>
-        <p class="ts-ar" id="tsAr" dir="rtl" lang="ar">اللّٰهُ أَكْبَرُ</p>
-        <button class="ts-btn" id="tsBtn" aria-label="Count"><span id="tsCount">0</span><small id="tsOf">of 34</small></button>
-        <div class="ts-bar"><i id="tsBar"></i></div>
-        <button class="ts-reset" id="tsReset">Reset</button>
-      </div>
+      <a class="tasbih-link reveal" href="#/s/tasbih"><span class="tl-ar" dir="rtl" lang="ar">تَسْبِيحُ الزَّهْرَاء</span><b>Tasbih of Lady Fatima (SA)</b><small>34 Allahu Akbar, 33 Alhamdulillah, 33 Subhanallah after every prayer.</small><span class="tl-go">Open the counter →</span></a>
     </div>
   </div>
 </section>
@@ -351,6 +344,18 @@
     <div class="dua-list" id="duaList"></div>
     <h3 class="sub-h reveal">When to recite the great du'as</h3>
     <div class="long-duas" id="longDuas"></div>
+  </div>
+</section>
+
+<!-- ============ TASBIH ============ -->
+<section class="section tsb" id="tasbih" data-screen="sub">
+  <div class="wrap">
+    <div class="tsb-tools"><button class="tb-ic" id="tbSound" aria-label="Sound"><svg viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path class="w" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg></button><button class="tb-ic" id="tbVib" aria-label="Vibration"><svg viewBox="0 0 24 24"><rect x="8" y="4" width="8" height="16" rx="1.5"/><path class="w" d="M5 8v8M2.5 10v4M19 8v8M21.5 10v4"/></svg></button><button class="tb-ic" id="tbMode" aria-label="Choose dhikr"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg></button></div>
+    <svg class="tsb-beads" id="tbBeads" viewBox="0 0 400 150" aria-hidden="true"></svg>
+    <button class="tsb-tap" id="tbTap" aria-label="Count"><svg class="tsb-ring" id="tbRing" viewBox="0 0 220 220"></svg><span class="tsb-n" id="tbN">0</span><span class="tsb-of" id="tbOf">/ 34</span></button>
+    <p class="tsb-ar" id="tbAr" dir="rtl" lang="ar"></p>
+    <p class="tsb-en" id="tbEn"></p>
+    <div class="tsb-slide" id="tbSlide"><span class="tsb-knob" id="tbKnob">›</span><span class="tsb-lbl">Slide to reset</span></div>
   </div>
 </section>
 
@@ -801,17 +806,18 @@
   </div>
 </div>
 
-<script src="js/data.js?v=47"></script>
-<script src="js/course.js?v=47"></script>
-<script src="js/pearls-nahj.js?v=47"></script>
-<script src="js/lives.js?v=47"></script>
-<script src="js/qa.js?v=47"></script>
-<script src="js/lib-index.js?v=47"></script>
-<script src="js/namaz.js?v=47"></script>
-<script src="js/support.js?v=47"></script>
-<script src="js/sources.js?v=47"></script>
-<script src="js/year.js?v=47"></script>
+<script src="js/data.js?v=48"></script>
+<script src="js/course.js?v=48"></script>
+<script src="js/pearls-nahj.js?v=48"></script>
+<script src="js/lives.js?v=48"></script>
+<script src="js/qa.js?v=48"></script>
+<script src="js/lib-index.js?v=48"></script>
+<script src="js/translit.js?v=48"></script>
+<script src="js/namaz.js?v=48"></script>
+<script src="js/support.js?v=48"></script>
+<script src="js/sources.js?v=48"></script>
+<script src="js/year.js?v=48"></script>
 <script>if ("serviceWorker" in navigator && !window.Capacitor) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));</script>
-<script src="js/app.js?v=47"></script>
+<script src="js/app.js?v=48"></script>
 </body>
 </html>

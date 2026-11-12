@@ -1888,3 +1888,76 @@ a.pg-add { text-decoration: none; display: inline-block; }
 .pt-more { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .3rem; text-align: center; margin: .9rem 0 0; }
 .pt-more span { display: grid; gap: .1rem; font-size: .72rem; }
 .pt-more b { margin: 0; font-size: .86rem; white-space: nowrap; }
+
+/* ===========================================================
+   RECITE: category cards (Mimber style)
+   =========================================================== */
+#libCats { display: block; }
+.rc-k { margin: 1.4rem 0 .7rem; font-size: .76rem; letter-spacing: .2em; text-transform: uppercase; font-weight: 700; color: var(--muted); }
+.rc-h { margin: 1.6rem 0 .1rem; font-size: 1.5rem; font-weight: 800; color: var(--text); }
+.rc-s { margin: 0 0 .8rem; color: var(--muted); font-size: .95rem; }
+.rc-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin-bottom: .75rem; }
+.rc { display: flex; align-items: center; gap: .8rem; padding: 1.2rem 1.15rem; border-radius: 26px; background: var(--card); border: 1px solid var(--line); text-decoration: none; color: var(--text); }
+.rc-big { margin-bottom: .75rem; padding: 1.4rem 1.3rem; }
+.rc:active { transform: scale(.985); }
+.rc-t { flex: 1; min-width: 0; display: grid; gap: .2rem; }
+.rc-ar { font-family: var(--arabic); font-size: 1.35rem; line-height: 1.6; color: var(--gold); text-align: right; }
+.rc-big .rc-ar { text-align: left; font-size: 1.55rem; }
+.rc-t b { font-size: 1.15rem; font-weight: 800; line-height: 1.2; }
+.rc-big .rc-t b { font-size: 1.35rem; }
+.rc-t small { color: var(--muted); font-size: .86rem; line-height: 1.4; }
+.rc-t em { font-style: normal; font-weight: 700; color: var(--gold); font-size: .9rem; margin-top: .45rem; }
+.rc-art { width: 88px; height: 88px; flex-shrink: 0; filter: drop-shadow(0 8px 12px rgba(40,60,30,.25)); }
+.rc-art svg { width: 100%; height: 100%; }
+.rc-art circle { fill: #2f5d34; stroke: #d9b765; stroke-width: 2.5; }
+.rc-art rect { fill: none; stroke: #e6c779; stroke-width: 2.2; }
+.rc-art circle.i { fill: #e6c779; stroke: none; }
+@media (min-width: 760px) { .rc-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* ===========================================================
+   DU'A READER: line by line (Arabic + transliteration)
+   =========================================================== */
+.is-lib .dl-band { text-align: center; font-family: var(--arabic); color: var(--gold); font-size: 1.15rem; margin: .4rem 0 1.4rem; }
+.dl-list { max-width: 660px; margin: 0 auto; text-align: center; }
+.dl { padding: .2rem .4rem; }
+.dl-ar { font-family: var(--arabic); font-size: calc(1.75rem * var(--ar, 1)); line-height: 2.05; color: var(--text); margin: 0; }
+.dl-tr { margin: .35rem 0 0; color: var(--muted); font-size: 1.02rem; line-height: 1.5; }
+.no-tr .dl-tr { display: none; }
+.dl-dot { display: block; width: 6px; height: 6px; border-radius: 50%; background: color-mix(in srgb, var(--text) 14%, transparent); margin: 1.4rem auto; }
+#libTr b { font-size: .8rem; letter-spacing: .02em; }
+#libTr.on { color: var(--gold); }
+
+/* ===========================================================
+   TASBIH SCREEN
+   =========================================================== */
+.tsb .wrap { display: flex; flex-direction: column; align-items: center; padding-top: .2rem; padding-bottom: 1.2rem; min-height: calc(100vh - var(--bar) - var(--tab) - 5rem); }
+.tsb-tools { align-self: flex-end; display: flex; gap: .4rem; }
+.tb-ic { width: 44px; height: 44px; border: 0; background: transparent; color: var(--text); display: grid; place-items: center; cursor: pointer; border-radius: 50%; }
+.tb-ic svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tb-ic.off { color: var(--muted); opacity: .55; }
+.tb-ic.off .w { display: none; }
+.tsb-beads { width: calc(100% + 2.4rem); max-width: 560px; margin: .6rem -1.2rem 0; overflow: visible; }
+.tsb-beads .str { fill: none; stroke: #6b4a2c; stroke-width: 2.2; }
+.tsb-tap { position: relative; width: min(78vw, 320px); aspect-ratio: 1; border: 0; background: transparent; margin: 1rem 0 .4rem; cursor: pointer; display: grid; place-items: center; color: var(--text); -webkit-user-select: none; user-select: none; }
+.tsb-tap:active .tsb-n { transform: scale(.94); }
+.tsb-ring { position: absolute; inset: 0; width: 100%; height: 100%; }
+.tsb-ring .tr { fill: none; stroke: color-mix(in srgb, var(--text) 10%, transparent); stroke-width: 9; stroke-linecap: round; }
+.tsb-ring .pr { fill: none; stroke: var(--gold); stroke-width: 9; stroke-linecap: round; }
+.tsb-ring .dt { fill: var(--gold); }
+.tsb-n { font-size: clamp(4.2rem, 22vw, 6rem); font-weight: 800; line-height: 1; letter-spacing: -.03em; transition: transform .08s; margin-top: -.6rem; }
+.tsb-of { position: absolute; top: 64%; font-size: 1.3rem; font-weight: 700; color: var(--muted); }
+.tsb-ar { font-family: var(--arabic); font-size: clamp(2rem, 9vw, 2.8rem); line-height: 1.7; text-align: center; margin: .6rem 0 0; color: var(--text); }
+.tsb-en { margin: .1rem 0 1.4rem; color: var(--muted); text-align: center; font-size: .95rem; }
+.tsb-slide { --p: 0; position: relative; width: 100%; max-width: 480px; height: 66px; border-radius: 20px; border: 1px solid var(--line); background: var(--card); display: grid; place-items: center; margin-top: auto; touch-action: none; overflow: hidden; }
+.tsb-lbl { color: var(--muted); font-size: 1.05rem; font-weight: 600; opacity: calc(1 - var(--p) * 1.4); }
+.tsb-knob { position: absolute; left: 5px; top: 5px; bottom: 5px; width: 62px; border-radius: 15px; background: var(--soft); display: grid; place-items: center; font-size: 1.6rem; color: var(--text); cursor: grab; transition: transform .25s ease; touch-action: none; }
+.tb-opt { display: grid; gap: .15rem; width: 100%; text-align: left; padding: .8rem 1rem; margin: 0 0 .5rem; border-radius: 16px; border: 1px solid var(--line); background: var(--card); color: var(--text); font: inherit; cursor: pointer; }
+.tb-opt small { color: var(--muted); }
+.tb-opt.on { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 10%, var(--card)); }
+.tasbih-link { display: grid; gap: .3rem; padding: 1.3rem; border-radius: 24px; border: 1px solid var(--line); background: var(--card); text-decoration: none; color: var(--text); text-align: center; }
+.tasbih-link .tl-ar { font-family: var(--arabic); font-size: 1.6rem; color: var(--gold); }
+.tasbih-link small { color: var(--muted); }
+.tasbih-link .tl-go { margin-top: .4rem; font-weight: 700; color: var(--gold); }
+body.tsb-on .tabbar { display: none; }
+body.tsb-on .tsb .wrap { min-height: calc(100dvh - var(--bar) - 1.5rem); padding-bottom: calc(1rem + env(safe-area-inset-bottom)); }
+body.tsb-on main, body.tsb-on .tsb { padding-bottom: 0 !important; }

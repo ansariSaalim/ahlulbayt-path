@@ -1,6 +1,6 @@
 /* Musafir: offline support */
-const VERSION = "abp-v47";
-const CORE = ["./", "index.html", "css/style.css?v=47", "js/data.js?v=47", "js/course.js?v=47", "js/pearls-nahj.js?v=47", "js/lives.js?v=47", "js/qa.js?v=47", "js/lib-index.js?v=47", "js/namaz.js?v=47", "js/support.js?v=47", "js/sources.js?v=47", "js/year.js?v=47", "js/app.js?v=47",
+const VERSION = "abp-v48";
+const CORE = ["./", "index.html", "css/style.css?v=48", "js/data.js?v=48", "js/course.js?v=48", "js/pearls-nahj.js?v=48", "js/lives.js?v=48", "js/qa.js?v=48", "js/lib-index.js?v=48", "js/translit.js?v=48", "js/namaz.js?v=48", "js/support.js?v=48", "js/sources.js?v=48", "js/year.js?v=48", "js/app.js?v=48",
   "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png"];
 const RUNTIME = "abp-runtime";
 
